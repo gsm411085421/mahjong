@@ -1,0 +1,241 @@
+*{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+body,ul,li,h1,h2,h3,h4,h5,h6,p,ol,dt,dd,dl{
+    border:none;
+    list-style: none;
+    font-weight: normal;
+}
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-transition: opacity .5s ease;
+    transition: opacity .5s ease;
+}
+a{
+    text-decoration: none;
+}
+.clear:after{
+    content: "";
+    display: block;
+    clear:both;
+}
+/*rem单位换算*/
+@charset "UTF-8";
+@media screen and (max-width: 319px) {
+    html {
+        font-size: 85.33333px; } }
+@media screen and (min-width: 320px) and (max-width: 359px) {
+    html {
+        font-size: 85.33333px; } }
+@media screen and (min-width: 360px) and (max-width: 374px) {
+    html {
+        font-size: 96px; } }
+@media screen and (min-width: 375px) and (max-width: 383px) {
+    html {
+        font-size: 100px; } }
+@media screen and (min-width: 384px) and (max-width: 399px) {
+    html {
+        font-size: 102.4px; } }
+@media screen and (min-width: 400px) and (max-width: 413px) {
+    html {
+        font-size: 106.66667px; } }
+@media screen and (min-width: 414px) {
+    html {
+        font-size: 110.4px; } }
+body{
+    margin:0;
+    padding:0;
+}
+.mylayer_shade{
+    position: absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background-color:#000;
+    opacity: .4;
+    z-index: 100;
+}
+.mylayer_bomb-box{
+    width:2.5rem;
+    border-radius:.125rem;
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-left:-1.25rem;
+    margin-top:-1rem;
+    background-color:#fff;
+    background-image: url("../images/mylayer_bg.png");
+    background-repeat: no-repeat;
+    background-position:  1rem .2rem;
+    background-size:1.7rem 1.7rem;
+    padding-bottom:.15rem;
+    padding-top:.5rem;
+    z-index: 200;
+}
+.mylayer_title{
+    width:100%;
+    height:.5rem;
+    line-height:.5rem;
+    text-align:center;
+    font-size:.135rem;
+    color:#559afe;
+    background-color:#eef5ff;
+    border-top-left-radius: .125rem;
+    border-top-right-radius: .125rem;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.mylayer_explain{
+    width:100%;
+    padding:.05rem .25rem;
+    font-size:0.125rem;
+    color:#4d4d4d;
+    text-align:center;
+    line-height:.3rem;
+    margin:0;
+    box-sizing: border-box;
+}
+.green_explain{
+    color:#559afe;
+    font-size:.15rem;
+}
+.mylayer_know-btn{
+    display:block;
+    width:1.5rem;
+    height:.36rem;
+    margin:.1rem auto 0;
+    border-radius:.18rem;
+    background-color:#559afe;
+    font-size: .12rem;
+    color:#fff;
+    text-align:center;
+    line-height:.36rem;
+}
+.mylayer_delete{
+    width:.25rem;
+    height:.25rem;
+    position:absolute;;
+    top:-.08rem;
+    right:-.08rem;
+}
+/*支付弹窗*/
+.mylayer_main{
+    padding:0 .15rem;
+    margin-bottom:.2rem;
+}
+.mylayer_payone,.mylayer_paytwo,.mylayer_paythree{
+    width:100%;
+    height:.5rem;
+    border-bottom:1px solid #f0eff4;
+    position:relative;
+    padding:.05rem .5rem;
+    font-size:.14rem;
+    color:#4d4d4d;
+}
+.mylayer_paytwo{
+    padding-top:.17rem;
+}
+.mylayer_paytwo span{
+    color:#f79495;
+}
+.mylayer_paythree{
+    padding-top:.08rem;
+}
+.mylayer_payone{
+    text-align:center;
+    line-height:.4rem;
+}
+.mylayer_payone span{
+    color:#f76163;
+}
+.mylayer_paytwo_l,.mylayer_paythree_l{
+    width:.28rem;
+    height:.28rem;
+    position:absolute;
+    top:.12rem;
+    left:0;
+}
+.mylayer_paytwo_l .mylayer_paytwo_img1,.mylayer_paytwo_l .mylayer_paytwo_img2,.mylayer_paythree_l .mylayer_paytwo_img1,.mylayer_paythree_l .mylayer_paytwo_img2{
+    width:.28rem;
+    height:.28rem;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.mylayer_paytwo_img1{
+    display:none;
+}
+.mylayer_paytwo_img2{
+    display:block;
+}
+.mylayer_active .mylayer_paytwo_img1{
+    display:block;
+}
+.mylayer_active .mylayer_paytwo_img2{
+    display:none;
+}
+.mylayer_paytwo_r,.mylayer_paythree_r{
+    width:.15rem;
+    height:.15rem;
+    position:absolute;
+    top:.17rem;
+    right:.12rem;
+}
+.mylayer_paytwo_img1,.mylayer_paytwo_img2{
+    width:.15rem;
+    height:.15rem;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.mylayer_paytwo_img1{
+    display:none;
+}
+.mylayer_paytwo_img2{
+    display:block;
+}
+.mylayer_active .mylayer_paytwo_img1{
+    display:block;
+}
+.mylayer_active .mylayer_paytwo_img2{
+    display:none;
+}
+.integral{
+    font-size:.12rem;
+    color:#b3b3b3;
+}
+/*评价窗口*/
+.mylayer_explain_t{
+    font-size:.15rem;
+    color:#559afe;
+    text-align:left;
+    overflow: hidden;
+    padding-top:.02rem;
+}
+.star_appraise{
+    float:right;
+    padding-top:.04rem;
+}
+.star_appraise img{
+    width:.2rem;
+    margin-right:.1rem;
+}
+#appraise_field{
+    width:100%;
+    height:1rem;
+    outline: none;
+    resize: none;
+    border-radius:.13rem;
+    padding:.1rem;
+    font-size:.12rem;
+}
+.mylayer_paytwo .voiceConsult img{
+    height:.2rem;
+    top:.045rem;
+}

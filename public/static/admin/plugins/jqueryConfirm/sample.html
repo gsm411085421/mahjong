@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery-confirm 示例</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./dist/jquery-confirm.min.css">
+    <style type="text/css">
+        #wrap-div button{display: block;margin-bottom:20px;}
+    </style>
+</head>
+<body>
+<div style="width:600px;padding-left:20px;margin-top:50px;border:1px solid #ccc;" id="wrap-div">
+    
+    <button type="button" class="btn btn-primary" id="alert">alert</button>
+    <button type="button" class="btn btn-primary" id="confirm">confirm</button>
+    <button type="button" class="btn btn-primary" id="dialog">dialog</button>
+    <button type="button" class="btn btn-primary" id="ajax">异步加载</button>
+
+</div>
+
+    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="./dist/jquery-confirm.min.js"></script>
+    <script>
+        $("#alert").click(function(){
+            $.alert({
+                title:"This is alert",
+                content:"this is content",
+                theme : 'light',// dark supervan material bootstrap
+                animation : 'scaleY', 
+                buttons : false,
+                autoClose : 'close|4000',
+            })
+        })
+
+        $("#confirm").click(function(){
+            $.confirm({
+                title: 'Confirm!',
+                content: 'Simple confirm!',
+                buttons: {
+                    confirm: {
+                        text:'确认',
+                        action:function(){
+                            $.alert('确认')
+                        },
+                    },
+                    cancel: function () {
+                        $.alert('Canceled!');
+                    },
+                    somethingElse: {
+                        text: 'Something else',
+                        btnClass: 'btn-primary',
+                        keys: ['enter', 'shift'],
+                        action: function(){
+                            $.alert('Something else?');
+                        }
+                    }
+                }
+            });
+        })
+
+        $("#dialog").click(function(){
+            $.dialog({
+                title: 'Text content!',
+                content: 'Simple modal!',
+            });
+        })
+
+        $("#ajax").click(function(){
+            $.alert({
+                content:"url:table.html"
+            })
+        })
+    </script>
+</body>
+</html>
