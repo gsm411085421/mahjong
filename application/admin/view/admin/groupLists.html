@@ -1,0 +1,78 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <a class="btn btn-primary" href="{:url('createUserGroup')}" role="button">添加用户组</a>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户组</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $data as $v}
+                    <tr>
+                        <td>{$v.id}</td>
+                        <td>{$v.title}</td>
+                        <td>
+                            {eq name="$v['status']" value="1"}
+                            <span class="label label-success" onclick="adminGroupStatus(this, {$v.id}, 0)" style="cursor: pointer;">正常</span>
+                            {else /}
+                            <span class="label label-danger" onclick="adminGroupStatus(this, {$v.id}, 1)" style="cursor: pointer;">禁用</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            <a role="button" class="btn btn-primary" href="{:url('createUserGroup',['id'=>$v['id']])}"><i class="fa fa-pencil"></i></a>
+                            <button type="button" class="btn btn-danger" onclick="groupDelete(this,{$v.id})"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+    var requsetUrl = {
+        setStatus : "{:url('setUserGroupStatus')}",
+        delete : "{:url('userGroupDelete')}"
+    };
+    /** 设置用户组状态 */
+    function adminGroupStatus(obj, id, setStatus) {
+        $.post(requsetUrl.setStatus, {id:id, status:setStatus}, function(res){
+            if (res.code) {
+                var replaceHtml = '';
+                if (setStatus == 1) {
+                    replaceHtml = '<span class="label label-success" onclick="adminGroupStatus(this, '+id+', 0)" style="cursor: pointer;">正常</span>';
+                } else {
+                    replaceHtml = '<span class="label label-danger" onclick="adminGroupStatus(this, '+id+', 1)" style="cursor: pointer;">禁用</span>'
+                }
+                $(obj).parent().html(replaceHtml);
+            } else {
+                bayMax.warning(res.msg);
+            }
+        })
+    }
+    /** 删除用户组 */
+    function groupDelete(obj, id) {
+        bayMax.deleteConfirm(function(){
+            $.post(requsetUrl.delete, {id:id}, function(res){
+                if (res.code) {
+                    $(obj).closest('tr').fadeOut().remove();
+                } else {
+                    bayMax.warning(res.msg);
+                }
+            })
+        })
+    }
+</script>

@@ -1,0 +1,102 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{:url('createUser')}" role="button">添加用户</a>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>电话</th>
+                        <th>上次登录</th>
+                        <th>登录次数</th>
+                        <th>创建时间</th>
+                        <th>所属用户组</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $data as $v}
+                    <tr>
+                        <td>{$v.id}</td>
+                        <td>{$v.user}</td>
+                        <td>{$v.phone}</td>
+                        <td>{$v.last_login_time ? : '未登录'}</td>
+                        <td>{$v.login_times}</td>
+                        <td>{$v.create_at}</td>
+                        <td>
+                            {foreach $v.groups_text as $groupText}
+                            <span class="label label-default">{$groupText}</span>
+                            {/foreach}
+                        </td>
+                        <td>
+                            {eq name="$v['status']" value="1"}
+                            <span class="label label-success" onclick="adminStatus(this, {$v.id}, 0)" style="cursor: pointer;">正常</span>
+                            {else /}
+                            <span class="label label-danger" onclick="adminStatus(this, {$v.id}, 1)" style="cursor: pointer;">禁用</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            <a role="button" class="btn btn-primary" href="{:url('createUser',['id'=>$v['id']])}"><i class="fa fa-pencil"></i></a>
+                            {gt name="$v['id']" value="1"}
+                            <button type="button" class="btn btn-danger" onclick="adminDelete(this,{$v.id})"><i class="fa fa-trash-o"></i></button>
+                            {/gt}
+                        </td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+    var requsetUrl = {
+        setStatus : "{:url('setUserStatus')}",
+        delete : "{:url('userDelete')}"
+    };
+    /** 设置用户状态 */
+    function adminStatus(obj, id, setStatus) {
+        if (id == 1) {
+            bayMax.warning('超级管理员不能被禁用');return;
+        }
+        $.post(requsetUrl.setStatus, {id:id, status:setStatus}, function(res){
+            if (res.code) {
+                var replaceHtml = '';
+                if (setStatus == 1) {
+                    replaceHtml = '<span class="label label-success" onclick="adminStatus(this, '+id+', 0)" style="cursor: pointer;">正常</span>';
+                } else {
+                    replaceHtml = '<span class="label label-danger" onclick="adminStatus(this, '+id+', 1)" style="cursor: pointer;">禁用</span>'
+                }
+                $(obj).parent().html(replaceHtml);
+            } else {
+                bayMax.warning(res.msg);
+            }
+        })
+    }
+    /** 删除用户 */
+    function adminDelete(obj, id) {
+        if (id == 1) {
+            bayMax.warning('超级管理员不能删除');return;
+        } 
+        bayMax.deleteConfirm(function(){
+            $.post(requsetUrl.delete, {id:id}, function(res){
+                if (res.code) {
+                    $(obj).closest('tr').fadeOut().remove();
+                } else {
+                    bayMax.warning(res.msg);
+                }
+            })
+        })
+    }
+</script>

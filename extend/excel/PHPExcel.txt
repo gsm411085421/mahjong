@@ -1,0 +1,77 @@
+Setting a cell value by coordiante:
+    1.$obj->getActiveSheet()->setCellValue('A1', 'hello');
+    2.$obj->getActiveSheet()->getCell('A1')->setValue('world');
+
+Setting a date and/or time value in a cell:
+    $time = time();
+    $excelDateValue = PHPExcel_Shared_Date::PHPToExcel($time);
+
+    1.$obj->getActiveSheet()->setCellValue('A1', $excelDateValue);
+    2.$obj->getActiveSheet()->getStyle('A1')->getNumberFormat()->setFormatCode(
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME
+    );
+
+Setting a number with leading zeros:
+    1.$obj->getActiveSheet()->setCellValueExplicit('A1', '0123123',
+        PHPExcel_Cell_DateType::TYPE_STRING
+    );
+    2.$obj->getActiveSheet()->setCellValue('A1',123123);
+      $obj->getActiveSheet()->getStyle('A1')->getNumberFormat()->setFormatCode('0000000');
+
+Setting a range of cells from an array:
+    $arrayData = [
+        [null, 2000, 2001, 2002],
+        ['A', 1, 2, 3],
+        ['B', 3, 2, 1],
+        ['C', 4, 5, 6],
+        ['D', 6, 5, 4],
+    ];
+    $obj->getActiveSheet()->fromArray($arrayData, null, 'A1');
+
+Setting a cell value by column and row:
+    $obj->getActiveSheet()->setCellValueByColumnAndRow(0,1,'hello');// the cell 'A1'
+
+获取单元格的值:
+    1.$obj->getActiveSheet()->getCell('A1')->getValue();
+    2.$obj->getActiveSheet()->getCellByColumnAndRow(1,0)->getValue();
+
+获取单元格计算后的值:
+    1.$obj->getActiveSheet()->getCell('A1')->getCalculatedValue();
+    2.$obj->getActiveSheet()->getCellByColumnAndRow(1,0)->getCalculatedValue();
+
+Looping cells:
+    1.using iterators
+    $objWorksheet = $obj->getActiveSheet();
+    foreach($objWorksheet->getRowIterator() as $row){
+        $cellIterator = $row->getCellIterator();
+        $cellIterator->setIterateOnlyExistingCells(false); // loops all cless, 使用更多内存
+        foreach($cellIterator as $cell){
+            $cell->getValue(); // the cell value
+        }
+    }
+    2.using indexes
+    $objWorksheet = $obj->getActiveSheet();
+    $highestRow = $objWorksheet->getHighestRow(); // 最大行
+    $highestColumn = $objWorksheet->getHighestColumn(); // 最大列
+    $highestColumnIndex = PHPExcel_Cell::columnIndexFromString($highestColumn); // 最大列索引
+    for($row = 1; $row <= $highestRow; $row++){// 遍历行
+        for($col = 0; $col <= $highestColumnIndex; $col++){ // 遍历列
+            $objWorksheet->getCellByColumnAndRow($col, $row)->getValue(); // the cell value
+        }
+    }
+
+Formatting cells:
+    $styleArray = [
+        'font' => ['bold'=>true],
+        'alignment' => ['horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_RIGHT],
+    ];
+    $obj->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+
+Conditional formatting a cell:
+    $objConditional = new PHPExcel_Style_Conditional();
+    $objConditional->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLS);
+    $objConditional->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_LESSTHAN);
+    $objConditional->addCondition('0');
+    $objConditional->getStyle()->getFont()->getColor()
+        ->setARGB(PHPExcel_Style_Color::COLOR_RED);
+

@@ -1,41 +1,57 @@
-<?php 
+<?php
 namespace app\admin\controller;
-use think\Controller;
+use think\Session;
 use think\Loader;
-use think\helper\hash\Md5;
+use think\Config;
+use think\Controller;
 
 class Login extends Controller
 {
+    private static $_token_name = 'flash_login_token';
+
+    public function _initialize()
+    {
+        Session::init();
+    }
+
     public function index()
     {
-        return $this->fetch();
+        //åˆå§‹åŒ–ç®¡ç†å‘˜è¡¨
+        // $initAdmin = new \app\admin\modeldata\Admin;
+        // $initAdmin->run();
+        $token = md5($this->request->server('REQUEST_TIME_FLOAT'));
+        Session::set(self::$_token_name, $token);
+        $error = Session::pull('login_error');
+        return $this->fetch('', ['token'=>$token, 'error'=>$error]);
     }
-/**
- * µÇÂ¼
- * @return [type] [description]
- */
+
     public function login()
     {
-        if ($this->request->isPost()) {
-            $info = $this->request->post();
-            if (session('__token__') === $info['__token__']) {
-                $res = Loader::model('Admin')->login($info['name'], $info['password'], $this->request->ip());    
-            } else {
-                $res = ['code'=>0, 'msg'=>'·Ç·¨Ìá½»'];
-            } 
+        $input = $this->request->post();
+        // token éªŒè¯
+        if (!isset($input['__token__']) || ($input['__token__'] !== Session::pull(self::$_token_name))) {
+            Session::flash('login_error', 'éžæ³•è¯·æ±‚');
+            $this->redirect('Login/index');
         } else {
-            $res = ['code'=>0, 'msg'=> '·Ç·¨ÇëÇó'];
+            $check = Loader::model('admin')->loginCheck($input['user'], $input['password'], $this->request->ip(true));
+            if ($check['code']) {
+                $info = $check['data']['info'];
+                Session::set(Config::get('session_name.uid'), $info['id']);
+                unset($info['id']);
+                $info['login_times'] = intval($info['login_times']) + 1;
+                Session::set(Config::get('session_name.uinfo'), $info);
+                $this->redirect('Index/index');
+            } else {
+                Session::flash('login_error', $check['data']['msg']);
+                $this->redirect('index');
+            }
         }
-        if ($res['code'])session('admin_user',$res['data']['info']); 
-        return $res;
+
     }
-/**
- * ÍË³ö
- * @return [type] [description]
- */
+
     public function logout()
     {
-      session('admin_user',null);
-      $this->redirect('login/index');
+        Session::destroy();
+        $this->redirect('Login/index');
     }
 }

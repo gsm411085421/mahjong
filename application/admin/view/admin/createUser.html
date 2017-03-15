@@ -1,0 +1,130 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header"></div>
+        <div class="box-body">
+            <form action="{:url('addUser')}" method="POST" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="inputUser" class="col-sm-2 control-label">用户名</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="user" id="inputUser" class="form-control" value="{$detail.user??''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-2 control-label">密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" name="password" id="inputPassword" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputConfirm_password" class="col-sm-2 control-label">确认密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" name="password_confirm" id="inputConfirm_password" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPhone" class="col-sm-2 control-label">电话</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="phone" id="inputPhone" class="form-control" value="{$detail.phone??''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputHeadimg" class="col-sm-2 control-label">头像</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="file" id="inputHeadimg">
+                            <input type="hidden" name="headimg" id="hidden-headimg" value="{$detail.headimg??''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputGroups" class="col-sm-2 control-label">用户组</label>
+                        <div class="col-sm-8">
+                            <select name="groups[]" id="inputGroups" class="form-control" multiple>
+                                <option value="" disabled>请选择</option>
+                                {foreach $groupLists as $group}
+                                <option value="{$group.id}" {:isset($detail['groups'])&&in_array($group['id'], $detail['groups'])?'selected':''}>{$group.title}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input" class="col-sm-2 control-label">状态</label>
+                        <div class="col-sm-8">
+                            <div class="checkbox">
+                                <input type="checkbox" name="status" value="1" <?=isset($detail['status'])&&$detail['status']==1?'checked':'' ?>>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <input type="hidden" name="id" value="{$detail.id??''}">
+                            <button type="button" class="btn btn-default pull-right" onclick="history.back()">返回</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script>
+    var requsetUrl = {
+        upload : "{:url('Upload/image')}",
+        lists  : "{:url('adminLists')}",
+    };
+    function buildInitialPreview()
+    {
+        var path = $("#hidden-headimg").val();
+        if (path) {
+            path = '/uploads/'+path;
+            return '<img src="'+path+'" width="200px">';
+        } else {
+            return false;
+        }
+    }
+    $(function(){
+        $("#inputHeadimg").fileinput({
+            initialCaption : '',
+            overwriteInitial : true,
+            uploadUrl : requsetUrl.upload, 
+            allowedFileTypes : ['image'],
+            initialPreview : buildInitialPreview(),
+            showCaption : false,
+            language : 'zh',
+        }).on('fileuploaded', function(event,data,previewId,index){
+            if (data.response.code) {
+                $("#hidden-headimg").val(data.response.data.savename)
+            } else {
+                bayMax.warning(data.response.msg)
+            }
+        }).on('filecleared', function(event){
+            $("#hidden-headimg").val('');
+        });
+
+        $('form :checkbox[name=status]').bootstrapSwitch({
+            onColor : 'success', 
+            offColor: 'danger'
+        });
+
+        $("#inputGroups").select2();
+
+        $('form :submit').on('click', function(event){
+            event.preventDefault();
+            var $form = $(this).closest('form');
+            $.post($form.attr('action'), $form.serializeArray(), function(res){
+                if (res.code) {
+                    bayMax.msg(res.msg, function(){
+                        {literal}
+                        $.pjax({ url: requsetUrl.lists, container: '#pjax-container'})
+                        {/literal}
+                    })
+                } else {
+                    bayMax.warning(res.msg)
+                }
+            })
+        })
+    })
+</script>
