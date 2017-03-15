@@ -1,0 +1,29 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+  <div class="box">
+    <div class="box-header"><center><h3>{$desc}</h3></center></div>
+      <div class="box-body">
+          <div>
+            <form action="{:url('Notice/saveConfig')}" method="POST" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="textareaBanks" class="col-sm-2 control-label">规则内容</label>
+                    <div class="col-sm-10">
+                        <textarea name="System_regulation" id="textareaBanks" class="form-control" rows="18"></textarea>
+                        <div class="help-block">自行换行</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </form>
+          </div>
+      </div>
+  </div>
+</section>
