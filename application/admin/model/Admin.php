@@ -118,6 +118,7 @@ class Admin extends Base
         $info = $this->visible(['password'])->field(true)->where('user', $user)->find();
         if ($info) {
             if (Hash::check($password, $info['password'])) {// 密码验证通过
+                dump(123);die;
                 if ($info['status'] == 1) { // 可用状态
                     unset($info['password']);
                     $this->_loginUpdate($info['id'], $info['login_times'], $ip);
