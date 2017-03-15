@@ -32,6 +32,8 @@
   -->
   <link rel="stylesheet" href="/static/admin/dist/css/skins/skin-blue.min.css">
 
+
+
   <script src="/static/admin/plugins/jQuery/jquery-2.2.3.min.js"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -321,8 +323,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 系统公告</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> 活动公告</a></li>
+            <li class="active"><a href="{:url('Notice/systemNotice')}"><i class="fa fa-circle-o"></i> 系统公告</a></li>
+            <li><a href="{:url('Notice/active')}"><i class="fa fa-circle-o"></i> 活动公告</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> 平台规则</a></li>
           </ul>
         </li>
@@ -335,7 +337,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 商品管理</a></li>
+            <li class="active"><a href="{:url('Goods/goodsManage')}"><i class="fa fa-circle-o"></i> 商品管理</a></li>
            <!--  <li><a href="#"><i class="fa fa-circle-o"></i> 商品分类</a></li> -->
             <li><a href="#"><i class="fa fa-circle-o"></i> 订单管理</a></li>
           </ul>
@@ -479,6 +481,9 @@
 <!-- AdminLTE App -->
 <script src="/static/admin/dist/js/app.js"></script>
 <script src="/static/admin/dist/js/baymax.js"></script>
+
+
+
 <script>
       $.pjax.defaults.timeout = 5000;
       $.pjax.defaults.maxCacheLength = 0;

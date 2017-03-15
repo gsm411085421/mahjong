@@ -1,0 +1,233 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+
+  <section class="content" style="">
+      <div class="box-body">
+          <button class="btn btn-primary" style="margin-bottom: 20px;" data-toggle="modal" data-target="#myModel" type="button">添加系统公告</button>
+            <div class="modal fade" id="myModel" tabindex="-1" role="dialog" aria-labelledby="myModelLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">添加系统公告</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">  
+                                    <label for="inputEmail3" class="col-sm-2 control-label">公告标题:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="title" placeholder="请输入公告标题">
+                                    </div>
+                                </div> 
+                                    <div class="form-group">  
+                                    <label for="inputEmail3" class="col-sm-2 control-label">公告内容:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="content" placeholder="请输入公告内容">
+                                    </div>
+                                </div> 
+                                <div style="margin-left: 70%;">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary" onclick="saveNotice()" >保存</button>
+                                </div> 
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <tr>
+                    <td>序号</td>
+                    <td>公告标题</td>
+                    <td>公告内容</td>
+                    <td>是否开启</td>
+                    <td>操作</td>
+                </tr>
+                {volist name='list' id='v'}
+                <tr>
+                    <td>{$i}</td>
+                    <td>{$v.title}</td>
+                    <td>{$v.content}</td>
+                    <td>
+                        {eq name="v.status" value="1"}
+                        <span class="label label-success" onclick="changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击关闭">开启</span>
+                        {else/}
+                        <span class="label label-default" onclick="changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击开启">关闭</span>
+                        {/eq}
+                    </td>
+                    <td>
+                       <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modelNotice" data-placement="bottom" data-title="编辑" onclick="editNotice(this,{$v.id});">
+                        <i class="fa fa-edit"></i>
+                       </button>
+                        <div class="modal fade" id="modelNotice" tabindex="-1" role="dialog" aria-labelledby="myModelLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">编辑系统公告</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">  
+                                                <label for="inputEmail3" class="col-sm-2 control-label">公告标题:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="editTitle" placeholder="请输入公告标题">
+                                                </div>
+                                            </div> 
+                                                <div class="form-group">  
+                                                <label for="inputEmail3" class="col-sm-2 control-label">公告内容:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="editContent" placeholder="请输入公告内容">
+                                                </div>
+                                            </div> 
+                                            <div style="margin-left: 70%;">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                <button type="button" class="btn btn-primary" onclick="changeNotice()" >保存</button>
+                                            </div> 
+                                            <div style="display: none;">
+                                                <input  id="editNoticeId" type="" name="">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="deleteNotice(this,{$v.id});">
+                        <i class="fa fa-trash"></i>
+                       </button>
+                    </td>
+                </tr>
+                {/volist}
+            </table>
+            <div style="margin-left: 36%">{$list->render()}</div>
+        </div>
+    </section>
+
+ 
+  
+    <script type="text/javascript">
+
+    var index;//table中tr的下标
+
+    //切换系统公告状态
+    function changeStatus(obj,id,status){
+        if(status==1){
+            var status = 0;
+        }else{
+            var status = 1;
+        }
+        index = $(obj).parents('tr').index();
+        var data = {id:id,status:status};
+        var url = "{:url('Notice/changeStatus')}";
+        $.post(url,data,function(e){
+            if(e.code==1){
+                if(status==0){
+                    $(".table.table-bordered tr").eq(index).find('td:eq(3) span').html('关闭').attr({class:'label label-default',onclick:'changeStatus(this,'+id+',0)'});
+                }else{
+                    $(".table.table-bordered tr").eq(index).find('td:eq(3) span').html('开启').attr({class:'label label-success',onclick:'changeStatus(this,'+id+',1)'});
+                }
+            }else{
+                $.alert({
+                    title:'是否开启',
+                    content:'切换失败！'
+                })
+            }
+        })
+    }
+
+    //编辑系统公告时将数据传入模态框
+    function editNotice(obj,id){
+        index = $(obj).parents('tr').index();
+        var title = $(".table.table-bordered tr").eq(index).find('td:eq(1)').html();
+        var content = $(".table.table-bordered tr").eq(index).find('td:eq(2)').html();
+        $('#editNoticeId').val(id);
+        $('#editTitle').val(title);
+        $('#editContent').val(content);
+    }
+
+    //保存编辑后的系统公告
+    function changeNotice(){
+        var id = $("#editNoticeId").val();
+        var title = $("#editTitle").val();
+        var content = $("#editContent").val();
+        var data = {id:id,title:title,content:content};
+        var url = "{:url('Notice/changeNotice')}";
+        $.post(url,data,function(e){
+            if(e.code==1){
+                $(".table.table-bordered tr").eq(index).find('td:eq(1)').html(title);
+                $(".table.table-bordered tr").eq(index).find('td:eq(2)').html(content);
+                $('#modelNotice').modal('hide');
+                $.alert({
+                    title:'修改',
+                    content:'修改成功！'
+                }) 
+            }else{
+                $.alert({
+                    title:'修改',
+                    content:'修改失败！'
+                })
+            }
+        })
+    }
+
+    //储存系统公告
+    function saveNotice(){
+        var title = $("#title").val();
+        var content = $("#content").val();
+        var data = {title:title,content:content};
+        var url = "{:url('Notice/saveNotice')}";
+        $.post(url,data,function(e){
+            if(e.code==1){
+                $('#modelNotice').modal('hide');
+                $.alert({
+                    title:'保存',
+                    content:'保存成功！'
+                })
+                window.location.reload();
+            }else{
+                $.alert({
+                    title:'保存',
+                    content:'保存失败！'
+                })
+            }
+        })
+    }
+
+    //删除系统公告
+    function deleteNotice(obj,id){
+        $.confirm({
+        title : '删除？',
+        content : '确定要删除吗？',
+        animation : 'scaleY',
+        closeAnimation : 'scale',
+        type : 'red',
+        icon: 'fa fa-warning',
+        buttons : {
+                yes : {
+                    text : '确定',
+                    btnClass : 'btn-red',
+                    keys : ['enter'],
+                    action : function(){
+                        var data = {id:id};
+                        var url = "{:url('Notice/deleteNotice')}"; 
+                        $.post(url,data,function(e){
+                            if(e.code==1){
+                               $(obj).parents('tr').remove();
+                            }else{
+                                bayMax.warning('删除失败');
+                            }
+                        })
+                    }
+                },
+                no : {
+                    text : '取消',
+                }
+            },
+        })
+    }
+    </script>
+
+
