@@ -1,0 +1,15 @@
+{
+  "presets": [
+    ["env", {
+      "modules": "umd",
+      "targets": {
+        "browsers": ["last 2 versions"]
+      }
+    }]
+  ],
+  "env": {
+    "production": {
+      "presets": ["babili"]
+    }
+  }
+}
