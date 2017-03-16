@@ -32,6 +32,8 @@
   -->
   <link rel="stylesheet" href="/static/admin/dist/css/skins/skin-blue.min.css">
 
+
+
   <script src="/static/admin/plugins/jQuery/jquery-2.2.3.min.js"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -82,7 +84,7 @@
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="/static/dist/img/avatar5.png" class="img-circle" alt="User Image">
+                        <img src="/static/admin/dist/img/avatar5.png" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -281,13 +283,13 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 会员中心</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> 代理管理</a></li>
+            <!-- <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 会员中心</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> 代理管理</a></li> -->
             <li><a href="#"><i class="fa fa-circle-o"></i> 充值管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> 提现管理</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <!-- <li class="treeview">
           <a href="#">
             <i class="fa fa-gears"></i> 
             <span>房间管理</span>
@@ -298,8 +300,8 @@
           <ul class="treeview-menu">
             <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 房间管理</a></li>
           </ul>
-        </li>
-        <li class="treeview">
+        </li> -->
+        <!-- <li class="treeview">
           <a href="#">
             <i class="fa fa-pie-chart"></i> 
             <span>结算管理</span>
@@ -311,7 +313,7 @@
             <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 结算记录</a></li>
             <li calss="active"><a href="#"><i class="fa fa-circle-o"></i> 处罚管理</a></li>
           </ul>
-        </li>
+        </li> -->
         <li class="treeview">
           <a href="#">
             <i class="fa fa-edit"></i> 
@@ -321,9 +323,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 系统公告</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> 活动公告</a></li>
-            <li><a href="{:url('Notice/regulation')}"><i class="fa fa-circle-o"></i> 平台规则</a></li>
+            <li class="active"><a href="{:url('Notice/noticeList','type=0')}"><i class="fa fa-circle-o"></i> 系统公告</a></li>
+            <li><a href="{:url('Notice/noticeList','type=1')}"><i class="fa fa-circle-o"></i> 活动公告</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -335,8 +336,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 商品管理</a></li>
-           <!--  <li><a href="#"><i class="fa fa-circle-o"></i> 商品分类</a></li> -->
+            <li class="active"><a href="{:url('Goods/goodsManage')}"><i class="fa fa-circle-o"></i> 商品管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> 订单管理</a></li>
           </ul>
         </li>
@@ -352,6 +352,7 @@
             <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 房间配置</a></li>
             <li><a href="{:url('System/index')}"><i class="fa fa-circle-o"></i> 底分配置</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> 业务配置</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> 平台规则</a></li>
           </ul>
         </li>
       </ul>
@@ -479,6 +480,9 @@
 <!-- AdminLTE App -->
 <script src="/static/admin/dist/js/app.js"></script>
 <script src="/static/admin/dist/js/baymax.js"></script>
+
+
+
 <script>
       $.pjax.defaults.timeout = 5000;
       $.pjax.defaults.maxCacheLength = 0;

@@ -117,7 +117,7 @@ class Admin extends Base
     {
         $info = $this->visible(['password'])->field(true)->where('user', $user)->find();
         if ($info) {
-            if (Hash::check($password, $info['password'])) {// 密码验证通过
+            if (Hash::check($password, $info['password'], 'md5')) {// 密码验证通过
                 if ($info['status'] == 1) { // 可用状态
                     unset($info['password']);
                     $this->_loginUpdate($info['id'], $info['login_times'], $ip);
@@ -148,5 +148,15 @@ class Admin extends Base
             'login_times'     => ++ $loginTimes
         ];
         return $this->save($update, ['id'=>$id]);
+    }
+
+    /**
+     * 获取管理员名字
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function getUser($id)
+    {
+        return $this->where('id',$id)->value('user');
     }
 }

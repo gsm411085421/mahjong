@@ -39,4 +39,27 @@ class Base extends Controller
             throw new \think\exception\HttpResponseException($response);
         }
     }
+
+    /**
+     * 图片上传
+     * @return [type] string 图片保存路径
+     */
+    protected function uploadImg($name="image"){
+        //验证图片 
+        $file = $this->request->file($name);
+        if(!$file->check(config('upload_img_rule'))){ 
+            return ['code'=>0, 'msg'=>$file->getError()];
+        }
+        $info = $file->move(config('img_save_root'));
+        if($info){
+            $result = ['code'=>1, 'data'=>config('img_save_url').str_replace('\\', '/', $info->getSaveName())];
+        }
+        else{
+            $result = ['code'=>0, 'msg'=>$info->getError()];
+        }      
+        return $result;
+    }
+
+
+
 }
