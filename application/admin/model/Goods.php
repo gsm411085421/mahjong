@@ -1,21 +1,17 @@
 <?php 
 namespace app\admin\model;
-use think\Model;
 
-class Goods extends Model{
+class Goods extends Base
+{
 
     /**
      * 根据主键删除一条商品信息
      * @param  [type] $id [description]
      * @return [type]     [description]
      */
-    public function deleteGoods($id){
-        $res = $this->where('id', $id)->delete();
-        if($res){
-            return ['code'=>1,'msg'=>'删除成功'];
-        }else{
-            return ['code'=>0,'msg'=>'删除失败'];
-        } 
+    public function deleteGoods($id)
+    {
+        return parent::deleteOne($id);    
     }
 
     /**
@@ -32,8 +28,9 @@ class Goods extends Model{
      * @param  array  $input [description]
      * @return [type]        [description]
      */
-    public function saveGoods(array $input){
-        $handle = $this->allowField(true)->isUpdate(false)->validate(true)->save($input);
+    public function saveGoods(array $input)
+    {
+        $handle = $this->allowField(true)->validate(true)->isUpdate(false)->save($input);
         if ($handle) {
             return ['code'=>1, 'msg'=>'添加成功', 'data'=>['id'=>$this->id]];
         }else{
@@ -47,27 +44,12 @@ class Goods extends Model{
      * @return [type]       [description]
      */
     public function changeGoods(array $data){
-        $res = $this->allowField(true)->isUpdate(true)->validate(true)->save($data);
+        $res = $this->allowField(true)->validate(true)->isUpdate(true)->save($data);
         if($res){
             return ['code'=>1,'msg'=>'修改成功'];
         }else{
-            return ['code'=>0,'msg'=>'修改失败'];
+            return ['code'=>0,'msg'=>$this->getError()??'添加失败'];
         }   
-    }
-
-    /**
-     * 切换商品状态
-     * @param  [type] $id     商品主键id
-     * @param  [type] $status 商品状态值
-     * @return [type]         [description]
-     */
-    public function changeStatus($id,$status){
-        $res = $this->isUpdate(true)->save(['id'=>$id,'status'=>$status]);
-        if($res){
-                return ['code'=>1,'msg'=>'修改成功'];
-        }else{
-                return ['code'=>0,'msg'=>'修改失败'];
-        } 
     }
 
 

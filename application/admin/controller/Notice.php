@@ -1,5 +1,6 @@
 <?php  
 namespace app\admin\controller;
+
 use think\Loader;
 
 class Notice extends Base
@@ -10,7 +11,8 @@ class Notice extends Base
      * 系统公告页面
      * @return [type] [description]
      */
-    public function systemNotice(){
+    public function systemNotice()
+    {
         $this->view->desc = '系统公告'; 
         $data = Loader::model('Notice')->showRule();
         return $this->fetch('', [
@@ -22,7 +24,8 @@ class Notice extends Base
      * 活动管理页面
      * @return [type] [description]
      */
-    public function active(){
+    public function active()
+    {
         $this->view->desc = '活动公告';
         $data = Loader::model('Notice')->showActive();
         return $this->fetch('', [
@@ -34,7 +37,8 @@ class Notice extends Base
      * 存入一条系统公告
      * @return [type] [description]
      */
-    public function saveNotice(){
+    public function saveNotice()
+    {
         if($this->request->isPost()){
             $input = $this->request->post();
             return Loader::model('Notice')->saveNotice($input);        
@@ -42,11 +46,12 @@ class Notice extends Base
     }
 
     /**
-     * 存入一条活动管理
+     * 存入一条活动公告
      * @return [type] [description]
      */
-    public function saveActive(){
-        if($this->request->isPost()->isPost()){
+    public function saveActive()
+    {
+        if($this->request->isPost()){
             $input = $this->request->post();
             return Loader::model('Notice')->saveActive($input);        
         }  
@@ -54,63 +59,50 @@ class Notice extends Base
 
 
     /**
-     * 删除一条系统公告
+     * 删除一条公告
      * @return [type] [description]
      */
-    public function deleteNotice(){
+    public function deleteNotice()
+    {
         if($this->request->isPost()){
             $data = $this->request->post();
             return Loader::model('Notice')->deleteNotice($data['id']);
         }  
     }
 
-    /**
-     * 删除一条活动管理
-     * @return [type] [description]
-     */
-    public function deleteActive(){
-        if($this->request->isPost()){
-            $data = $this->request->post();
-            return Loader::model('Notice')->deleteActive($data['id']);
-        }  
-    }
 
     /**
-     * 修改系统公告信息
+     * 修改公告信息
      * @return [type] [description]
      */
-    public function changeNotice(){
+    public function changeNotice()
+    {
         if($this->request->isPost()){
             $data = $this->request->post();
             return Loader::model('Notice')->changeNotice($data);
         }
     }
 
-    /**
-     * 修改活动管理信息
-     * @return [type] [description]
-     */
-    public function changeActive(){
-        if($this->request->isPost()){
-            $data = $this->request->post();
-            return Loader::model('Notice')->changeActive($data);
-        }
-    }
+
 
     /**
      * 修改公告状态
      * @return [type] [description]
      */
-    public function changeStatus(){
+    public function changeStatus()
+    {
         if($this->request->isPost()){
             $data = $this->request->post();
-            return Loader::model('Notice')->changeStatus($data['id'],$data['status']);  
+            $res = parent::model()->setStatus($data['status'],['id'=>$data['id']]);
+            if ($res) {
+                $handle = ['code'=>1,'msg'=>'修改成功'];
+            } else {
+                $handle = ['code'=>0,'msg'=>'修改失败'];
+            }
+            return $handle; 
         }
     }
 
 
-    public function rule(){
-        return $this->fetch();
-    }
 
 }

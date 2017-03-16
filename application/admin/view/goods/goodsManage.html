@@ -52,7 +52,7 @@
                                 </div>
                                 <div style="margin-left: 70%;">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                    <button type="button" onclick="saveGoods()" class="btn btn-primary">保存</button>
+                                    <button type="button" onclick="handle.save()" class="btn btn-primary">保存</button>
                                 </div>
                             </form>
                         </div>
@@ -63,11 +63,11 @@
                 <tr>
                     <td>序号</td>
                     <td>商品名字</td>
-                    <td>商品价格</td>
+                    <td>商品价格(元)</td>
                     <td>商品图片</td>
                     <td>商品详情</td>
-                    <td>商品数量</td>
-                    <td>是否开启</td>
+                    <td>商品数量(件)</td>
+                    <td>是否出售</td>
                     <td>操作</td>
                 </tr>
                 {volist name='list' id='v'}
@@ -80,13 +80,13 @@
                     <td>{$v.goods_num}</td>
                     <td>
                         {eq name="v.status" value="1"}
-                        <span class="label label-success" onclick="changestatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击关闭">开启</span>
+                        <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击否">是</span>
                         {else/}
-                        <span class="label label-default" onclick="changestatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击开启">关闭</span>
+                        <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击是">否</span>
                         {/eq}
                     </td>
                     <td>
-                      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editModel" data-placement="bottom" data-title="编辑" onclick="editGoods(this,{$v.id})">
+                      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editModel" data-placement="bottom" data-title="编辑" onclick="handle.editGoods(this,{$v.id})">
                       <i class="fa fa-edit"></i>
                       </button>
                       <div class="modal fade" id="editModel" tabindex="-1" role="dialog" aria-labelledby="myModelLabel">
@@ -131,7 +131,7 @@
                                     </div>
                                     <div style="margin-left: 70%;">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                        <button type="button" onclick="changeGoods()"  class="btn btn-primary">保存</button>
+                                        <button type="button" onclick="handle.changeGoods()"  class="btn btn-primary">保存</button>
                                     </div>
                                     <div style="display: none;"> 
                                         <input id="editId" type="text"  name="">
@@ -141,7 +141,7 @@
                          </div>
                       </div>
                       </div>
-                      <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="goodsDelete(this,{$v.id});">
+                      <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this,{$v.id});">
                       <i class="fa fa-trash"></i>
                       </button>
                     </td>
@@ -159,11 +159,151 @@
 <script type="text/javascript">
 
     var index;//table中tr的下标
+
+    var requestUrl = {
+        save : "{:url('Goods/saveGoods')}",
+        changeStatus : "{:url('Goods/changestatus')}",
+        upload : "{:url('Goods/upload')}",
+        delete : "{:url('Goods/deleteGoods')}",
+        changeGoods : "{:url('Goods/changeGoods')}"
+    };
+
+    var handle = {
+        save : function(){
+            var goodsName = $("#goodsName").val();
+            var goodsPrice = $("#goodsPrice").val();
+            var goodsNum = $("#goods_num").val();
+            var goodDetail = $("#goods_detail").val();
+            var goodImg = $("#imgUrl").val();
+            var data = {name:goodsName,price:goodsPrice,goods_img:goodImg,goods_num:goodsNum,
+                goods_detail:goodDetail};
+            console.log(data);
+            $.post(requestUrl.save,data,function(e){
+                if(e.code==1){
+                    $('#myModel').modal('hide');
+                    $.alert({
+                        title:'保存',
+                        content:e.msg
+                    })
+                    window.location.reload();
+                }else{
+                    $.alert({
+                        title:'保存',
+                        content:e.msg
+                    })
+                }
+            })
+        },
+
+        changeStatus : function(obj,id,status){
+            if(status==1){
+                var status = 0;
+            }else{
+                var status = 1;
+            }
+            index = $(obj).parents('tr').index();
+            var data = {id:id,status:status};
+            $.post(requestUrl.changeStatus,data,function(e){
+                if(e.code==1){
+                    if(status==0){
+                        $(".table.table-bordered tr").eq(index).find('td:eq(6) span').html('否').attr({class:'label label-default',onclick:'handle.changeStatus(this,'+id+',0)'});
+                    }else{                                                                  
+                        $(".table.table-bordered tr").eq(index).find('td:eq(6) span').html('是').attr({class:'label label-success',onclick:'handle.changeStatus(this,'+id+',1)'});
+                    }
+                }else{
+                    $.alert({
+                        title:'是否开启',
+                        content:'切换失败！'
+                    })
+                }
+            })
+        },
+
+        //编辑时将当条数据写入模态框
+        editGoods : function(obj,id){
+            index = $(obj).parents('tr').index();
+            var name = $(".table.table-bordered tr").eq(index).find('td:eq(1)').html();
+            var price = $(".table.table-bordered tr").eq(index).find('td:eq(2)').html();
+            var goods_num = $(".table.table-bordered tr").eq(index).find('td:eq(5)').html();
+            var goods_detail = $(".table.table-bordered tr").eq(index).find('td:eq(4)').html();
+            var goods_img = $(".table.table-bordered tr").eq(index).find('img').attr('src');
+            $('#editId').val(id);
+            $('#editName').val(name);
+            $('#editPrice').val(price);
+            $('#editNum').val(goods_num);
+            $('#editDetail').val(goods_detail);
+            $('#editImg').val(goods_img);
+            $('#input-2').fileinput('refresh', {
+            initialPreview:'<img src="'+goods_img+'" class="file-preview-image" alt="" title="">',
+            });
+        },
+
+        changeGoods : function(){
+            var id = $('#editId').val();
+            var name = $('#editName').val();
+            var price = $('#editPrice').val();
+            var goods_num = $('#editNum').val();
+            var goods_img = $('#editImg').val();
+            var goods_detail = $('#editDetail').val();
+            var data = {id:id,name:name,price:price,goods_num:goods_num,goods_img:goods_img,goods_detail:goods_detail};
+            $.post(requestUrl.changeGoods,data,function(e){
+                if(e.code==1){
+                    $(".table.table-bordered tr").eq(index).find('td:eq(1)').html(name);
+                    $(".table.table-bordered tr").eq(index).find('td:eq(2)').html(price);
+                    $(".table.table-bordered tr").eq(index).find('img').attr('src',goods_img);
+                    $(".table.table-bordered tr").eq(index).find('td:eq(4)').html(goods_detail);
+                    $(".table.table-bordered tr").eq(index).find('td:eq(5)').html(goods_num);
+                    $('#editModel').modal('hide');
+                    $.alert({
+                        title:'修改',
+                        content:e.msg
+                    })    
+                }else{
+                    $.alert({
+                        title:'修改',
+                        content:e.msg
+                    })
+                }
+            })
+        },
+
+        delete : function(obj,id){
+            $.confirm({
+            title : '删除？',
+            content : '确定要删除吗？',
+            animation : 'scaleY',
+            closeAnimation : 'scale',
+            type : 'red',
+            icon: 'fa fa-warning',
+            buttons : {
+                    yes : {
+                        text : '确定',
+                        btnClass : 'btn-red',
+                        keys : ['enter'],
+                        action : function(){
+                            var data = {id:id};
+                            $.post(requestUrl.delete,data,function(e){
+                                if(e==1){
+                                   $(obj).parents('tr').remove();
+                                }else{
+                                    bayMax.warning('删除失败');
+                                }
+                            })
+                        }
+                    },
+                    no : {
+                        text : '取消',
+                    }
+                },
+            })
+        },
+
+    };
     
     //添加商品中的文件上传
     $("#input-4").fileinput({
         language: 'zh', //设置语言
-        uploadUrl: "{:url('Goods/upload')}", //上传的地址
+        uploadUrl: requestUrl.upload, //上传的地址
         allowedFileExtensions : ['jpg', 'png','gif'],//接收的文件后缀,
         maxFileCount: 1,
         enctype: 'multipart/form-data',
@@ -180,55 +320,10 @@
     });
 
 
-    //切换商品开启的状态
-    function changestatus(obj,id,status){
-        if(status==1){
-            var status = 0;
-        }else{
-            var status = 1;
-        }
-        index = $(obj).parents('tr').index();
-        var data = {id:id,status:status};
-        var url = "{:url('Goods/changestatus')}";
-        $.post(url,data,function(e){
-            if(e.code==1){
-                if(status==0){
-                    $(".table.table-bordered tr").eq(index).find('td:eq(6) span').html('关闭').attr({class:'label label-default',onclick:'changestatus(this,'+id+',0)'});
-                }else{                                                                  
-                    $(".table.table-bordered tr").eq(index).find('td:eq(6) span').html('开启').attr({class:'label label-success',onclick:'changestatus(this,'+id+',1)'});
-                }
-            }else{
-                $.alert({
-                    title:'是否开启',
-                    content:'切换失败！'
-                })
-            }
-        })
-    }
-
-
-    //编辑商品时将数据传入编辑模态框
-    function editGoods(obj,id){
-        index = $(obj).parents('tr').index();
-        var name = $(".table.table-bordered tr").eq(index).find('td:eq(1)').html();
-        var price = $(".table.table-bordered tr").eq(index).find('td:eq(2)').html();
-        var goods_num = $(".table.table-bordered tr").eq(index).find('td:eq(5)').html();
-        var goods_detail = $(".table.table-bordered tr").eq(index).find('td:eq(4)').html();
-        var goods_img = $(".table.table-bordered tr").eq(index).find('img').attr('src');
-        $('#editId').val(id);
-        $('#editName').val(name);
-        $('#editPrice').val(price);
-        $('#editNum').val(goods_num);
-        $('#editDetail').val(goods_detail);
-        $('#input-2').fileinput('refresh', {
-        initialPreview:'<img src="'+goods_img+'" class="file-preview-image" alt="" title="">',
-        });
-    }
-
     //编辑模态框中的图片上传
     $("#input-2").fileinput({
         language: 'zh', //设置语言
-        uploadUrl: "{:url('Goods/upload')}", //上传的地址
+        uploadUrl: requestUrl.upload, //上传的地址
         allowedFileExtensions : ['jpg', 'png','gif'],//接收的文件后缀,
         maxFileCount: 1,
         enctype: 'multipart/form-data',
@@ -244,97 +339,7 @@
         }
     });
 
-    //编辑商品保存时修改商品信息
-    function changeGoods(){
-        var id = $('#editId').val();
-        var name = $('#editName').val();
-        var price = $('#editPrice').val();
-        var goods_num = $('#editNum').val();
-        var goods_img = $('#editImg').val();
-        var goods_detail = $('#editDetail').val();
-        var data = {id:id,name:name,price:price,goods_num:goods_num,goods_img:goods_img,goods_detail:goods_detail};
-        var url = "{:url('Goods/changeGoods')}";
-        $.post(url,data,function(e){
-            if(e.code==1){
-                $(".table.table-bordered tr").eq(index).find('td:eq(1)').html(name);
-                $(".table.table-bordered tr").eq(index).find('td:eq(2)').html(price);
-                $(".table.table-bordered tr").eq(index).find('img').attr('src',goods_img);
-                $(".table.table-bordered tr").eq(index).find('td:eq(4)').html(goods_detail);
-                $(".table.table-bordered tr").eq(index).find('td:eq(5)').html(goods_num);
-                $('#editModel').modal('hide');
-                $.alert({
-                    title:'修改',
-                    content:'修改成功！'
-                })    
-            }else{
-                $.alert({
-                    title:'修改',
-                    content:'修改失败！'
-                })
-            }
-        })
-    }
 
-    //添加商品
-    function saveGoods(){
-        var goodsName = $("#goodsName").val();
-        var goodsPrice = $("#goodsPrice").val();
-        var goodsNum = $("#goods_num").val();
-        var goodDetail = $("#goods_detail").val();
-        var goodImg = $("#imgUrl").val();
-        var data = {name:goodsName,price:goodsPrice,goods_img:goodImg,goods_num:goodsNum,
-            goods_detail:goodDetail};
-        console.log(data);
-        url = "{:url('Goods/saveGoods')}";
-        $.post(url,data,function(e){
-            if(e.code==1){
-                $('#myModel').modal('hide');
-                $.alert({
-                    title:'保存',
-                    content:e.msg
-                })
-                window.location.reload();
-            }else{
-                $.alert({
-                    title:'保存',
-                    content:e.msg
-                })
-            }
-        })
-    }
-
-    //删除商品
-    function  goodsDelete(obj,id){
-     $.confirm({
-        title : '删除？',
-        content : '确定要删除吗？',
-        animation : 'scaleY',
-        closeAnimation : 'scale',
-        type : 'red',
-        icon: 'fa fa-warning',
-        buttons : {
-                yes : {
-                    text : '确定',
-                    btnClass : 'btn-red',
-                    keys : ['enter'],
-                    action : function(){
-                        var data = {id:id};
-                        var url = "{:url('Goods/deleteGoods')}"; 
-                        $.post(url,data,function(e){
-                            if(e.code==1){
-                               $(obj).parents('tr').remove();
-                            }else{
-                                bayMax.warning('删除失败');
-                            }
-                        })
-                    }
-                },
-                no : {
-                    text : '取消',
-                }
-            },
-        })
-    }
 
 </script>
 

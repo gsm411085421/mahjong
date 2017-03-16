@@ -31,7 +31,7 @@
                                 </div> 
                                 <div style="margin-left: 70%;">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary" onclick="saveActive()" >保存</button>
+                                    <button type="button" class="btn btn-primary" onclick="handle.save()" >保存</button>
                                 </div> 
                             </form>
                         </div>
@@ -53,13 +53,13 @@
                     <td>{$v.content}</td>
                     <td>
                         {eq name="v.status" value="1"}
-                        <span class="label label-success" onclick="changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击关闭">开启</span>
+                        <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击关闭">开启</span>
                         {else/}
-                        <span class="label label-default" onclick="changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击开启">关闭</span>
+                        <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击开启">关闭</span>
                         {/eq}
                     </td>
                     <td>
-                       <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modelActive" data-placement="bottom" data-title="编辑" onclick="editActive(this,{$v.id});">
+                       <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modelActive" data-placement="bottom" data-title="编辑" onclick="handle.edit(this,{$v.id});">
                         <i class="fa fa-edit"></i>
                        </button>
                         <div class="modal fade" id="modelActive" tabindex="-1" role="dialog" aria-labelledby="myModelLabel">
@@ -85,7 +85,7 @@
                                             </div> 
                                             <div style="margin-left: 70%;">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                                <button type="button" class="btn btn-primary" onclick="changeActive()" >保存</button>
+                                                <button type="button" class="btn btn-primary" onclick="handle.change()" >保存</button>
                                             </div> 
                                             <div style="display: none;">
                                                 <input  id="editActiveId" type="" name="">
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                         </div>
-                       <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="deleteActive(this,{$v.id});">
+                       <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this,{$v.id});">
                         <i class="fa fa-trash"></i>
                        </button>
                     </td>
@@ -107,128 +107,131 @@
     </section>
 
  
-    
-
     <script type="text/javascript">
 
     var index;//table中tr的下标
 
-    //改变活动状态
-    function changeStatus(obj,id,status){
-        if(status==1){
-            var status = 0;
-        }else{
-            var status = 1;
-        }
-        index = $(obj).parents('tr').index();
-        var data = {id:id,status:status};
-        var url = "{:url('Notice/changeStatus')}";
-        $.post(url,data,function(e){
-            if(e.code==1){
-                if(status==0){
-                    $(".table.table-bordered tr").eq(index).find('td:eq(3) span').html('关闭').attr({class:'label label-default',onclick:'changeStatus(this,'+id+',0)'});
+    var requestUrl = {
+        changeStatus : "{:url('Notice/changeStatus')}",
+        change : "{:url('Notice/changeNotice')}",
+        save : "{:url('Notice/saveActive')}",
+        delete : "{:url('Notice/deleteNotice')}"
+    };
+
+    var handle = {
+        changeStatus : function(obj,id,status){
+            if(status==1){
+                var status = 0;
+            }else{
+                var status = 1;
+            }
+            index = $(obj).parents('tr').index();
+            var data = {id:id,status:status};
+            $.post(requestUrl.changeStatus,data,function(e){
+                if(e.code==1){
+                    if(status==0){
+                        $(".table.table-bordered tr").eq(index).find('td:eq(3) span').html('关闭').attr({class:'label label-default',onclick:'handle.changeStatus(this,'+id+',0)'});
+                    }else{
+                        $(".table.table-bordered tr").eq(index).find('td:eq(3) span').html('开启').attr({class:'label label-success',onclick:'handle.changeStatus(this,'+id+',1)'});
+                    }
                 }else{
-                    $(".table.table-bordered tr").eq(index).find('td:eq(3) span').html('开启').attr({class:'label label-success',onclick:'changeStatus(this,'+id+',1)'});
+                    $.alert({
+                        title:'是否开启',
+                        content:'切换失败！'
+                    })
                 }
-            }else{
-                $.alert({
-                    title:'是否开启',
-                    content:'切换失败！'
-                })
-            }
-        })
-    }
+            })
+        },
 
-    //编辑时将活动信息传入模态框
-    function editActive(obj,id){
-        index = $(obj).parents('tr').index();
-        var title = $(".table.table-bordered tr").eq(index).find('td:eq(1)').html();
-        var content = $(".table.table-bordered tr").eq(index).find('td:eq(2)').html();
-        $('#editActiveId').val(id);
-        $('#editTitle').val(title);
-        $('#editContent').val(content);
-    }
+        //将编辑的当条数据写入模态框
+        edit : function(obj,id){
+            index = $(obj).parents('tr').index();
+            var title = $(".table.table-bordered tr").eq(index).find('td:eq(1)').html();
+            var content = $(".table.table-bordered tr").eq(index).find('td:eq(2)').html();
+            $('#editActiveId').val(id);
+            $('#editTitle').val(title);
+            $('#editContent').val(content);
+        },
 
-    //将编辑好的活动信息存入数据库
-    function changeActive(){
-        var id = $("#editActiveId").val();
-        var title = $("#editTitle").val();
-        var content = $("#editContent").val();
-        var data = {id:id,title:title,content:content};
-        var url = "{:url('Notice/changeActive')}";
-        $.post(url,data,function(e){
-            if(e.code==1){
-                $(".table.table-bordered tr").eq(index).find('td:eq(1)').html(title);
-                $(".table.table-bordered tr").eq(index).find('td:eq(2)').html(content);
-                $('#modelActive').modal('hide');
-                $.alert({
-                    title:'修改',
-                    content:'修改成功！'
-                }) 
-            }else{
-                $.alert({
-                    title:'修改',
-                    content:'修改失败！'
-                })
-            }
-        })
-    }
+        change : function(){
+            var id = $("#editActiveId").val();
+            var title = $("#editTitle").val();
+            var content = $("#editContent").val();
+            var data = {id:id,title:title,content:content};
+            $.post(requestUrl.change,data,function(e){
+                if(e.code==1){
+                    $(".table.table-bordered tr").eq(index).find('td:eq(1)').html(title);
+                    $(".table.table-bordered tr").eq(index).find('td:eq(2)').html(content);
+                    $('#modelActive').modal('hide');
+                    $.alert({
+                        title:'修改',
+                        content:e.msg
+                    }) 
+                }else{
+                    $.alert({
+                        title:'修改',
+                        content:e.msg
+                    })
+                }
+            })
+        },
 
-    //存入一条活动信息
-    function saveActive(){
-        var title = $("#title").val();
-        var content = $("#content").val();
-        var data = {title:title,content:content};
-        var url = "{:url('Notice/saveActive')}";
-        $.post(url,data,function(e){
-            if(e.code==1){
-                $('#modelActive').modal('hide');
-                $.alert({
-                    title:'保存',
-                    content:'保存成功！'
-                })
-                window.location.reload();
-            }else{
-                $.alert({
-                    title:'保存',
-                    content:'保存失败！'
-                })
-            }
-        })
-    }
+        save : function(){
+            var title = $("#title").val();
+            var content = $("#content").val();
+            var data = {title:title,content:content};
+            $.post(requestUrl.save,data,function(e){
+                if(e.code==1){
+                    $('#modelActive').modal('hide');
+                    $.alert({
+                        title:'保存',
+                        content:e.msg
+                    })
+                    window.location.reload();
+                }else{
+                    $.alert({
+                        title:'保存',
+                        content:e.msg
+                    })
+                }
+            })
+        },
 
-    //删除一条活动信息
-    function deleteActive(obj,id){
-        $.confirm({
-        title : '删除？',
-        content : '确定要删除吗？',
-        animation : 'scaleY',
-        closeAnimation : 'scale',
-        type : 'red',
-        icon: 'fa fa-warning',
-        buttons : {
-                yes : {
-                    text : '确定',
-                    btnClass : 'btn-red',
-                    keys : ['enter'],
-                    action : function(){
-                        var data = {id:id};
-                        var url = "{:url('Notice/deleteActive')}"; 
-                        $.post(url,data,function(e){
-                            if(e.code==1){
-                               $(obj).parents('tr').remove();
-                            }else{
-                                bayMax.warning('删除失败');
-                            }
-                        })
+        delete : function(obj,id){
+            $.confirm({
+            title : '删除？',
+            content : '确定要删除吗？',
+            animation : 'scaleY',
+            closeAnimation : 'scale',
+            type : 'red',
+            icon: 'fa fa-warning',
+            buttons : {
+                    yes : {
+                        text : '确定',
+                        btnClass : 'btn-red',
+                        keys : ['enter'],
+                        action : function(){
+                            var data = {id:id};
+                            $.post(requestUrl.delete,data,function(e){
+                                if(e==1){
+                                   $(obj).parents('tr').remove();
+                                }else{
+                                    bayMax.warning('删除失败');
+                                }
+                            })
+                        }
+                    },
+                    no : {
+                        text : '取消',
                     }
                 },
-                no : {
-                    text : '取消',
-                }
-            },
-        })
-    }
+            })
+        }
+
+
+    };
+
+
     </script>
 
 

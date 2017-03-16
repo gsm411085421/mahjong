@@ -1,8 +1,10 @@
 <?php 
 namespace app\admin\model;
+
 use think\Model;
 
-class Notice extends Model{
+class Notice extends Base
+{
 
     /**
      * 分页显示系统公告
@@ -30,85 +32,57 @@ class Notice extends Model{
      */
     public function saveNotice(array $input){
         $input['type'] = 0 ;
-        $handle = $this->allowField(true)->isUpdate(false)->save($input);
+        $handle = $this->allowField(true)->validate(true)->isUpdate(false)->save($input);
         if ($handle) {
             return ['code'=>1, 'msg'=>'添加成功', 'data'=>['id'=>$this->id]];
         }else{
-            return ['code'=>0, 'msg'=>'添加失败'];
+            return ['code'=>0, 'msg'=>$this->getError()??'添加失败'];
         }
     }
 
     /**
-     * 存入一条活动管理
+     * 存入一条活动公告
      * @param  array  $input [description]
      * @return [type]        [description]
      */
     public function saveActive(array $input){
         $input['type'] = 1 ;
-        $handle = $this->allowField(true)->isUpdate(false)->save($input);
+        $handle = $this->allowField(true)->validate(true)->isUpdate(false)->save($input);
         if ($handle) {
             return ['code'=>1, 'msg'=>'添加成功', 'data'=>['id'=>$this->id]];
         }else{
-            return ['code'=>0, 'msg'=>'添加失败'];
+            return ['code'=>0, 'msg'=>$this->getError()??'添加失败'];
         }
     }
 
     /**
-     * 根据主键删除一条系统公告
+     * 根据主键删除一条公告
      * @param  [type] $id [description]
      * @return [type]     [description]
      */
     public function deleteNotice($id){
-        $res = $this->where('id',$id)->delete();
-        if($res){
-            return ['code'=>1,'msg'=>'删除成功'];
-        }else{
-            return ['code'=>0,'msg'=>'删除失败'];
-        }
+        return parent::deleteOne($id);
     }
 
-     /**
-     * 根据主键删除一条活动管理
-     * @param  [type] $id [description]
-     * @return [type]     [description]
-     */
-    public function deleteActive($id){
-        $res = $this->where('id',$id)->delete();
-        if($res){
-            return ['code'=>1,'msg'=>'删除成功'];
-        }else{
-            return ['code'=>0,'msg'=>'删除失败'];
-        }
-    }
+
 
     /**
-     * 根据主键修改系统公告信息
+     * 根据主键修改公告信息
      * @return [type] [description]
      */
     public function changeNotice(array $data){
-        $res = $this->allowField(true)->isUpdate(true)->save($data);
+        $res = $this->allowField(true)->validate(true)->isUpdate(true)->save($data);
         if($res){
             return ['code'=>1,'msg'=>'修改成功'];
         }else{
-            return ['code'=>0,'msg'=>'修改失败'];
+            return ['code'=>0,'msg'=>$this->getError()??'修改失败'];
         } 
     }
 
-    /**
-     * 根据主键修改活动管理信息
-     * @return [type] [description]
-     */
-    public function changeActive(array $data){
-        $res = $this->allowField(true)->isUpdate(true)->save($data);
-        if($res){
-            return ['code'=>1,'msg'=>'修改成功'];
-        }else{
-            return ['code'=>0,'msg'=>'修改失败'];
-        } 
-    }
+
 
     /**
-     * 根据主键修改状态
+     * 根据主键修改公告状态
      * @param  [type] $id     [description]
      * @param  [type] $status [description]
      * @return [type]         [description]

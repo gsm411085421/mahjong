@@ -124,4 +124,18 @@ class Base extends Model
     {
         return $this->where($this->pk, $id)->where($extra)->delete();
     }
+
+    /**
+     * 更新表的处理时间
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function changeUpdate($id)
+    {   
+        $update = [
+            'update_at' => date('Y-m-d H:i:s')
+        ];
+        return $this->isUpdate(true)->save($update,['id'=>$id]);
+    }
+
 }
