@@ -1,0 +1,72 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+  <div class="margin">
+    <a data-toggle="modal" class="btn btn-primary" href="#modal-message-edit">添加</a>
+  </div>
+  <div class="box">
+  <!-- box-header -->
+    <!-- <div class="box-header">
+      <h3>提现列表</h3>
+    </div> -->
+  <!--end  -->
+  <!-- box-body -->
+    <div class="box-body">
+      <table class="table table-border table-hover">
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>申请人</th>
+            <th>金额</th>
+            <th>申请时间</th>
+            <th>处理时间</th>
+            <th>处理人</th>
+            <th>备注</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        {foreach $data as $k=>$v}
+          <tr>
+            <td>{$k+1}</td>
+            <td>{$v.member_nickname}</td>
+            <td>{$v.money}</td>
+            <td>{$v.create_at}</td>
+            <td>{$v.update_at}</td>
+            <td>{$v.admin_user}</td>
+            <td>{$v.remark}</td>
+            <td>
+              {eq name="v.status" value='1'}
+              <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},0)" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击撤销"> 已充值</span>
+              {else/}
+              <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},1)" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击充值">未充值</span>
+              {/eq}
+            </td>
+            <td>
+              <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" data-title="编辑" onclick="handle.add({$v.id})">
+                <i class="fa fa-edit"></i>
+              </button>
+              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this, {$v.id})">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        {/foreach}
+        </tbody>
+      </table>
+    </div>
+  <!-- end -->
+  <!-- box-footer -->
+    <div class="box-footer clearfix">
+    <ul class="pagination pagination-sm no-margin pull-right">
+        {$data->render()}
+    </ul>
+    </div>
+  <!-- end -->
+  </div>
+</section>
