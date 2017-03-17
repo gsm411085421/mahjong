@@ -84,7 +84,7 @@
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="/static/dist/img/avatar5.png" class="img-circle" alt="User Image">
+                        <img src="/static/admin/dist/img/avatar5.png" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -203,7 +203,7 @@
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="{:url('Login/logout')}" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="{:url('Login/logout')}" class="btn btn-default btn-flat" no-pjax>Sign out</a>
                 </div>
               </li>
             </ul>
@@ -283,13 +283,20 @@
             </span>
           </a>
           <ul class="treeview-menu">
+<<<<<<< HEAD
             <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 会员中心</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> 代理管理</a></li>
             <li><a href="{:url('RechargeRecords/rechargeRecords')}"><i class="fa fa-circle-o"></i> 充值管理</a></li>
             <li><a href="{:url('Cash/recharge')}"><i class="fa fa-circle-o"></i> 提现管理</a></li>
+=======
+            <!-- <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 会员中心</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> 代理管理</a></li> -->
+            <li><a href="{:url('Cash/cashList','type=1')}"><i class="fa fa-circle-o"></i> 充值记录</a></li>
+            <li><a href="{:url('Cash/cashList','type=0')}"><i class="fa fa-circle-o"></i> 提现记录</a></li>
+>>>>>>> ddbfb20ef26c4d9e65402f54d15160f4f128ac3b
           </ul>
         </li>
-        <li class="treeview">
+        <!-- <li class="treeview">
           <a href="#">
             <i class="fa fa-gears"></i> 
             <span>房间管理</span>
@@ -300,8 +307,8 @@
           <ul class="treeview-menu">
             <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 房间管理</a></li>
           </ul>
-        </li>
-        <li class="treeview">
+        </li> -->
+        <!-- <li class="treeview">
           <a href="#">
             <i class="fa fa-pie-chart"></i> 
             <span>结算管理</span>
@@ -313,7 +320,7 @@
             <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 结算记录</a></li>
             <li calss="active"><a href="#"><i class="fa fa-circle-o"></i> 处罚管理</a></li>
           </ul>
-        </li>
+        </li> -->
         <li class="treeview">
           <a href="#">
             <i class="fa fa-edit"></i> 
@@ -323,9 +330,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="{:url('Notice/systemNotice')}"><i class="fa fa-circle-o"></i> 系统公告</a></li>
-            <li><a href="{:url('Notice/active')}"><i class="fa fa-circle-o"></i> 活动公告</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> 平台规则</a></li>
+            <li class="active"><a href="{:url('Notice/noticeList','type=0')}"><i class="fa fa-circle-o"></i> 系统公告</a></li>
+            <li><a href="{:url('Notice/noticeList','type=1')}"><i class="fa fa-circle-o"></i> 活动公告</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -340,6 +346,7 @@
             <li class="active"><a href="{:url('Goods/goodsManage')}"><i class="fa fa-circle-o"></i> 商品管理</a></li>
            <!--  <li><a href="#"><i class="fa fa-circle-o"></i> 商品分类</a></li> -->
             <li><a href="{:url('Order/order')}"><i class="fa fa-circle-o"></i> 订单管理</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> 订单管理</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -354,6 +361,7 @@
             <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 房间配置</a></li>
             <li><a href="{:url('System/index')}"><i class="fa fa-circle-o"></i> 底分配置</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> 业务配置</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> 平台规则</a></li>
           </ul>
         </li>
       </ul>

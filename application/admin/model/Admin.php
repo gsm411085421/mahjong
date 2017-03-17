@@ -149,4 +149,14 @@ class Admin extends Base
         ];
         return $this->save($update, ['id'=>$id]);
     }
+
+    /**
+     * 获取管理员名字
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function getUser($id)
+    {
+        return $this->where('id',$id)->value('user');
+    }
 }

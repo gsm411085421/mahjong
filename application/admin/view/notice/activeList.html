@@ -1,0 +1,192 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+<div class="margin">
+    <a data-toggle="modal" class="btn btn-primary" href="#modal-message-edit">发布活动公告</a>
+</div>
+<div class="box">
+  <div class="box-body">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>活动标题</th>
+          <th>活动内容</th>
+          <th>发布时间</th>
+          <th>发布人</th>
+          <th>是否推送</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      {foreach $data as $k=>$v }
+        <tr>
+          <td>{$k+1}</td>
+          <td>{$v.title}</td>
+          <td>{$v.content}</td>
+          <td>{$v.create_at}</td>
+          <td>{$v.admin_user}</td>
+          <td>
+            {eq name="v.status" value="1"}
+            <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},0)" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击撤销">已推送</span>
+            {else/}
+            <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},1)" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击推送">未推送</span>
+            {/eq}
+          </td>
+          <td>
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" data-title="编辑" onclick="handle.update({$v.id})">
+                <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this, {$v.id})">
+                <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      {/foreach}
+      </tbody>
+    </table>
+  </div>
+  <div class="box-footer clearfix">
+    <ul class="pagination pagination-sm no-margin pull-right">
+        {$data->render()}
+    </ul>
+  </div>
+</div>
+<!-- 发布活动公告 -->
+<div class="modal fade" id="modal-message-edit" no-pjax>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="" method="POST" id="form-activity-edit" class="form-horizontal" role="form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">发布活动公告</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="label-control col-sm-1" for="field-title">标题</label>
+                        <div class="col-sm-11">
+                            <input type="text" name="title" id="field-title" class="form-control" value="">
+                            <input type="hidden" name="id" id="id" value="">
+                            <input type="hidden" name="type" value="1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-control col-sm-1" for="field-content">内容</label>
+                        <div class="col-sm-11">
+                            <textarea id="editor" type="text/plain" style="height:400px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="handle.save()">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</section>
+<script src="/static/admin/plugins/ueditor/ueditor.config.js"></script>
+<script src="/static/admin/plugins/ueditor/ueditor.all.min.js"></script>
+<script src="/static/admin/plugins/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+  //编辑器
+  var ue = new UE.ui.Editor({
+    toolbars:[['fullscreen',  'undo', 'redo', '|',
+        'bold', 'italic',   'formatmatch', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist',  '|', 'fontfamily', 'fontsize', '|',
+        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 
+        'link', 'unlink',  '|',
+        'simpleupload', 'insertimage']],
+        textarea:'content' ,
+        // initialFrameWidth:800 ,//初始化宽
+        initialFrameHeight:600 ,//初始化高
+        wordCount:true,          //是否开启字数统计
+        maximumWords:1000,       //允许的最大字符数
+        utoHeightEnabled:true,//  是否自动长高,默认true
+    });    
+  ue.render('editor');
+  var requestUrl = {
+          save         : "{:url('Notice/saveNotice')}",
+          changeStatus : "{:url('Notice/changeStatus')}",
+          getOne       : "{:url('Notice/getOne')}",
+          del          : "{:url('Notice/deleteNotice')}"
+  }
+  // $("[data-toggle='tooltip']").tooltip();
+ $(function() {
+      $("[data-toggle='tooltip']").tooltip();
+ })
+  var handle = {
+        //保存
+        save : function(){
+            var title = $('#field-title').val();
+            var content = ue.getContent();
+            var data = $('#form-activity-edit').serializeArray();
+            // if(!handle.validate(title,content)) return false;
+            $.post(requestUrl.save,data,function(e){
+                if(e.code) {
+                    bayMax.msg(e.msg,function(){
+                        $("#modal-message-edit").modal('hide')
+                        $.pjax.reload('#pjax-container');
+                    });
+                } else {
+                    bayMax.warning(e.msg);
+                }
+            })
+        },
+        //是否推送
+        changeStatus : function(obj,id,status){
+            $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
+                if(e) {
+                    if(status) {
+                      $(obj).parent().html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击撤销">已推送</span>');
+                    } else {
+                      $(obj).parent().html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" data-title="点击推送">未推送</span>');
+                    }
+                } 
+            })
+        },
+        //更改编辑
+        update : function(id){
+            $.post(requestUrl.getOne,{id:id},function(e){
+                if(e) {
+                    $("#field-title").val(e.title);
+                    $("#id").val(e.id);
+                    ue.setContent(e.content);
+                }
+            })
+            $("#modal-message-edit").modal('show');
+        },
+        //删除
+        delete : function(obj,id){
+            $.post(requestUrl.del,{id:id},function(e){
+                if(e.code) {
+                    bayMax.msg(e.msg,function(){
+                        $(obj).parents('tr').remove();
+                    });
+                } else {
+                    bayMax.warning(e.msg);
+                }
+            })
+        },
+        //验证
+        // validate : function(title, content){
+        //     if(!title || title.length > 30){
+        //         $('#field-title').parent().addClass('has-error');
+        //         bayMax.warning('标题填写有误');
+        //         return false;
+        //     }else{
+        //         if(!content.length){
+        //           $('#field-content').parent().addClass('has-error');
+        //           bayMax.warning('内容不能为空');
+        //           return false;
+        //         }else{
+        //             return true;
+        //         }
+        //     }
+        // }
+  }
+</script>

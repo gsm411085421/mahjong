@@ -34,7 +34,7 @@ class Goods extends Base
         if ($handle) {
             return ['code'=>1, 'msg'=>'添加成功', 'data'=>['id'=>$this->id]];
         }else{
-            return ['code'=>0, 'msg'=>$this->getError()??'添加失败'];
+            return ['code'=>0, 'msg'=>$this->getError()? $this->getError() :'添加失败'];
         }
     }
 
