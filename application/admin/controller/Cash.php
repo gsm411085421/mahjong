@@ -1,23 +1,9 @@
-<<<<<<< HEAD
-<?php  
-namespace app\admin\controller;
-
-=======
 <?php 
 namespace app\admin\controller;
->>>>>>> ddbfb20ef26c4d9e65402f54d15160f4f128ac3b
 use think\Loader;
 
 class Cash extends Base
 {
-<<<<<<< HEAD
-    public function recharge()
-    {   
-        $data = Loader::model('Cash')->showRecharge();
-        return $this->fetch('',[
-            'list'=>$data,
-            ]);
-=======
 
     protected $header = '会员中心';
     /**
@@ -46,6 +32,6 @@ class Cash extends Base
             $input= $this->request->post();
             $res = Loader::model('Cash')->setStatus($input['status'],['id'=>$input['id']]);
         }
->>>>>>> ddbfb20ef26c4d9e65402f54d15160f4f128ac3b
     }
+    
 }

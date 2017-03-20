@@ -57,7 +57,7 @@
   </div>
 </div>
 <!-- 发布活动公告 -->
-<div class="modal fade" id="modal-message-edit" no-pjax>
+<div class="modal fade" id="modal-message-edit">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="" method="POST" id="form-activity-edit" class="form-horizontal" role="form">
@@ -129,8 +129,10 @@
             $.post(requestUrl.save,data,function(e){
                 if(e.code) {
                     bayMax.msg(e.msg,function(){
-                        $("#modal-message-edit").modal('hide')
-                        $.pjax.reload('#pjax-container');
+                        $("#modal-message-edit").modal('hide');
+                        setTimeout(function(){
+                          $.pjax.reload('#pjax-container');
+                        },500);
                     });
                 } else {
                     bayMax.warning(e.msg);

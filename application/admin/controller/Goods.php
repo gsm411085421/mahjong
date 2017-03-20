@@ -7,6 +7,7 @@ class Goods extends Base
 {
 
     protected $header = '商城管理'; 
+
     /**
      * 商品显示页面
      * @return [type] [description]
@@ -17,6 +18,27 @@ class Goods extends Base
         $data = Loader::model('Goods')->showGoods();
         return $this->fetch('', [
             'list' => $data,
+        ]);
+    }
+
+    /**
+     * 添加商品页面
+     */
+    public function addGoods()
+    {   
+        $this->view->desc = '添加商品';
+        return $this->fetch();
+    }
+
+    /**
+     * 编辑商品页面
+     */
+    public function editGoods($id)
+    {   
+        $this->view->desc = '编辑商品';
+        $data = Loader::model('Goods')->findOne($id);
+        return $this->fetch('',[
+            'list'=>$data,
         ]);
     }
 

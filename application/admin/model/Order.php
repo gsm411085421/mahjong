@@ -9,7 +9,7 @@ class Order extends Base
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function showOrder($page = 4)
+    public function showOrder($page=7)
     {
         return  $this->field(true)->paginate($page);
     }
@@ -21,12 +21,7 @@ class Order extends Base
      */
     public function saveOrder(array $input)
     {
-        $handle = $this->allowField(true)->validate(true)->isUpdate(false)->save($input);
-        if($handle){
-            return ['code'=>1,'msg'=>'添加成功','data'=>['id'=>$this->id]];
-        } else {
-            return ['code'=>0,'msg'=>$this->getError()??'添加失败'];
-        }
+        return parent::addOne($input);
     }
 
     /**

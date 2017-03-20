@@ -15,12 +15,22 @@ class Goods extends Base
     }
 
     /**
+     * 查找一条商品信息
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function findOne($id)
+    {
+        return parent::getOne($id);
+    }
+
+    /**
      * 分页显示商品
      * @param  integer $page 页数
      * @return [type]        [description]
      */
     public function showGoods($page = 4){
-       return $this->field(true)->paginate($page);
+        return $this->field(true)->paginate($page);
     }
 
        /**
@@ -30,11 +40,11 @@ class Goods extends Base
      */
     public function saveGoods(array $input)
     {
-        $handle = $this->allowField(true)->validate(true)->isUpdate(false)->save($input);
-        if ($handle) {
-            return ['code'=>1, 'msg'=>'添加成功', 'data'=>['id'=>$this->id]];
+        $res = $this->validate(true)->allowField(true)->isUpdate(false)->save($input);
+        if($res){
+            return ['code'=>1,'msg'=>'添加成功',['data'=>$this->id]];
         }else{
-            return ['code'=>0, 'msg'=>$this->getError()? $this->getError() :'添加失败'];
+            return ['code'=>0,'msg'=>$this->getError()??'添加失败'];
         }
     }
 
@@ -43,13 +53,14 @@ class Goods extends Base
      * @param  array  $data [description]
      * @return [type]       [description]
      */
-    public function changeGoods(array $data){
-        $res = $this->allowField(true)->validate(true)->isUpdate(true)->save($data);
+    public function changeGoods($id)
+    {
+        $res = $this->validate(true)->allowField(true)->isUpdate(true)->save($id);
         if($res){
             return ['code'=>1,'msg'=>'修改成功'];
         }else{
-            return ['code'=>0,'msg'=>$this->getError()??'添加失败'];
-        }   
+            return ['code'=>0,'msg'=>$this->getError()??'修改失败'];
+        }
     }
 
 

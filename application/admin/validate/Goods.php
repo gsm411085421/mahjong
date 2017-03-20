@@ -20,8 +20,7 @@ class Goods extends Validate
                   'goods_num.require' => '商品数量不能为空',
                   'goods_num.number' => '商品数量必须是数字',
                   'goods_detail.require' => '商品详情不能为空',
-                  'goods_img.require' => '请先上传图片',
-                  
+                  'goods_img.require' => '请先上传图片',              
                   
     ];   
 
