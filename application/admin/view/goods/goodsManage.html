@@ -14,7 +14,7 @@
 <section class="content" style="">
     <div class="box-body">
         <a href="{:url('Goods/addGoods')}"><button class="btn btn-primary" style="margin-bottom: 20px;" type="button">添加商品</button></a>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover">
             <tr>
                 <td>序号</td>
                 <td>商品名字</td>
@@ -42,10 +42,11 @@
                 </td>
                 <td>
                     <a href="{:url('Goods/editGoods',['id'=>$v['id']])}">
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editModel" data-placement="bottom" data-title="编辑" onclick="">
-                    <i class="fa fa-edit"></i>
-                    </button></a>
-                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this,{$v.id});">
+                        <button type="button" class="btn btn-default" onclick="">
+                        <i class="fa fa-edit"></i>
+                        </button>
+                    </a>
+                    <button type="button" class="btn btn-warning" onclick="handle.delete(this,{$v.id});">
                     <i class="fa fa-trash"></i>
                     </button>
                 </td>
@@ -97,6 +98,7 @@
             bayMax.deleteConfirm(function(){
                 $.post(requestUrl.delete,{id:id},function(e){
                     if(e==1) {
+                        var e = {msg : '删除成功'};
                         bayMax.msg(e.msg,function(){
                             $(obj).parents('tr').remove();
                         });
