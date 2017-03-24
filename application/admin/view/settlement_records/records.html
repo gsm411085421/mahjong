@@ -1,0 +1,101 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <form action="{:url('SettlementRecords/records',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
+              <div class="form-group">
+                  <select name="status" class="form-control input-sm">
+                      <option value="-1">全部</option>
+                      <option value="1">正常结算</option>
+                      <option value="2">未结算</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入公告标题">
+              </div>
+              <button type="submit" class="btn btn-success btn-sm">查询</button>
+            </form>
+        </div>
+        <div class="box-body">
+            <table class="table table-border table-hover">
+                <thead>
+                    <tr>
+                        <td>序号</td>
+                        <td>此桌用户1ID</td>
+                        <td>此桌用户1所得金币</td>
+                        <td>此桌用户2ID</td>
+                        <td>此桌用户2所得金币</td>
+                        <td>此桌用户3ID</td>
+                        <td>此桌用户3所得金币</td>
+                        <td>此桌用户4ID</td>
+                        <td>此桌用户4所得金币</td>
+                        <td>计算时间</td>
+                        <td>状态</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="list" id="v"}
+                    <tr>
+                        <td>{$i}</td>
+                        <td>{$v.member_id1}</td>
+                        <td>{$v.mi1_money}</td>
+                        <td>{$v.member_id2}</td>
+                        <td>{$v.mi2_money}</td>
+                        <td>{$v.member_id3}</td>
+                        <td>{$v.mi3_money}</td>
+                        <td>{$v.member_id4}</td>
+                        <td>{$v.mi4_money}</td>
+                        <td>{$v.create_at}</td>
+                        <td>
+                        {eq name="v.status" value="1"}
+                        <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" >正常结算</span>
+                        {else/}
+                        <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">未结算</span>
+                        {/eq}
+                        </td>
+                        <td>
+                            <a href=""><button type="button" class="btn btn-primary" ><i class="fa fa-edit"></i>
+                            </button></a>
+                            <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this, {$v.id})"><i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer" style="text-align: right;">
+            {$list->render()}
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    
+    var requestUrl = {
+        delete : "{:url('SettlementRecords/deleteOne')}"
+    };
+
+    var handle = {
+        delete : function(obj,id){
+            bayMax.deleteConfirm(function(){
+                $.post(requestUrl.delete,{id:id},function(e){
+                    if(e.code==1) {
+                        bayMax.msg(e.msg,function(){
+                            $(obj).parents('tr').remove();
+                        });
+                    } else {
+                        bayMax.warning(e.msg);
+                    }
+                });
+            })
+        }
+    };
+
+</script>

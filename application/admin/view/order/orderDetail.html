@@ -1,0 +1,108 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <div style="display: inline;">
+                <h3 class="box-title">订单详情</h3>
+                <div class="pull-right">
+                    <a href="javascript:history.back(-1);"><button class="btn btn-primary">后退</button></a>
+                </div>
+            </div>
+        </div>
+        <div calss="box-body">
+            <table class="table table-border table-hover">
+                <thead>
+                    <tr>
+                        <td>属性</td>
+                        <td>内容</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>商品名字</td>
+                        <td>{$list.goods.name}</td>
+                    </tr>
+                    <tr>
+                        <td>商品状态</td>
+                        <td>
+                          {eq name="$list.goods.status" value="1"}
+                              <span class="label label-success">热卖中</span>
+                              {else/}
+                              <span class="label label-danger">已下架</span>
+                              {/eq}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>价格</td>
+                        <td>{$list.goods.price}</td>
+                    </tr>
+                    <tr>
+                        <td>商品图片</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>商品规格</td>
+                        <td>{$list.goods.goods_standard}</td>
+                    </tr>
+                    <tr>
+                        <td>会员状态</td>
+                        <td>
+                          {eq name="$list.member.status" value="1"}
+                              <span class="label label-success">账号正常</span>
+                              {else/}
+                              <span class="label label-danger">账号禁用</span>
+                              {/eq}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>会员ID</td>
+                        <td>{$list.member.id}</td>
+                    </tr>
+                    <tr>
+                        <td>熊猫麻将ID</td>
+                        <td>{$list.member_profile.panda_id}</td>
+                    </tr>
+                    <tr>
+                        <td>斗地主ID</td>
+                        <td>{$list.member_profile.landlords_id}</td>
+                    </tr>
+                    <tr>
+                        <td>微信号</td>
+                        <td>{$list.member_profile.wechat}</td>
+                    </tr>
+                    <tr>
+                        <td>微信昵称</td>
+                        <td>{$list.member.nickname}</td>
+                    </tr>
+                    <tr>
+                        <td>真实姓名</td>
+                        <td>{$list.member_profile.name}</td>
+                    </tr>
+                    <tr>
+                        <td>手机号</td>
+                        <td>{$list.member_profile.phone}</td>
+                    </tr>
+                    <tr>
+                        <td>QQ号</td>
+                        <td>{$list.member_profile.qq}</td>
+                    </tr>
+                      
+                    <tr>
+                        <td>发布时间</td>
+                        <td>{$list.create_at}</td>
+                    </tr>
+                    <tr>
+                        <td>上/下架时间</td>
+                        <td>{$list.update_at}</td>
+                    </tr>       
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer"></div>
+    </div>
+</section>

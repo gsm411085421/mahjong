@@ -5,5 +5,23 @@
   </h1>
 </section>
 <section class="content">
-
+    <div class="box">
+        <div class="box-header">
+            <form action="{:url('',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
+              <div class="form-group">
+                  <select name="status" class="form-control input-sm">
+                      <option value="-1">全部</option>
+                      <option value="0">已禁用</option>
+                      <option value="1">正常</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入公告标题">
+              </div>
+              <button type="submit" class="btn btn-success btn-sm">查询</button>
+            </form>
+        </div>
+        <div class="box-body"></div>
+        <div class="box-footer"></div>
+    </div>
 </section>

@@ -9,16 +9,26 @@ class Order extends Base
 
     protected $header = '商城管理';
 
+    const PAGE_SIZE = 2 ;
     /**
      * 订单管理页面
      */
     public function Order()
     {
         $this->view->desc = '订单管理';
-        $data = Loader::model('Order')->showOrder();
-        return $this->fetch('',[
-            'list'=>$data,
-            ]);
+        $where = $config = [];
+        if($this->request->isGet() && $this->request->has('query') ){
+            $get = $this->request->get();
+            if(isset($get['status']) && $get['status'] != -1 ){
+                $where['status'] = $config['query']['status'] = $get['status'];
+            }
+            if(isset($get['search']) && $get['search'] ){
+                $where['order_num'] = ['like','%'.$get['search'].'%'];
+                $config['query']['search'] = $get['search'];
+            } 
+        }
+        $data = parent::model()->getPaginate($where,true,self::PAGE_SIZE,$config);
+        return $this->fetch('',['list'=>$data]);
     }
 
 
@@ -69,5 +79,17 @@ class Order extends Base
         }
     }
 
+
+    /**
+     * 获取一条订单详情
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function orderDetail($id)
+    {   
+        $this->view->desc = '订单详情';
+        $data = Loader::model('Order')->getOrderDetail($id);
+        return $this->fetch('',['list'=>$data]);
+    }
 
 }

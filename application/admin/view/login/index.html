@@ -58,7 +58,7 @@
         <!-- /.col -->
         <div class="col-xs-4">
           <input type="hidden" name="__token__" value="{$token}">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+          <button type="submit" id="btn" class="btn btn-primary btn-block btn-flat">登录</button>
         </div>
         <!-- /.col -->
       </div>
@@ -70,10 +70,14 @@
 
 <!-- jQuery 2.2.3 -->
 <script src="/static/admin/plugins/jQuery/jquery-2.2.3.min.js"></script>
+
 <!-- Bootstrap 3.3.6 -->
 <script src="/static/admin/bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="/static/admin/plugins/iCheck/icheck.min.js"></script>
+
+<script src="/static/admin/plugins/layer/layer.js"></script>
+
 <script>
   $(function () {
     $('input').iCheck({
@@ -81,6 +85,9 @@
       radioClass: 'iradio_square-blue',
       increaseArea: '20%' // optional
     });
+    $("#btn").on('click',function(){
+        var index = layer.load(0,{shade: false}); 
+    })
     <?php if (isset($error) && $error) : ?>
       var errorInfo = '<?=$error ?>';
       $("#alert-error").find('span').text(errorInfo).end().removeClass('hide')

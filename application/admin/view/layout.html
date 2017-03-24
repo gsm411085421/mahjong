@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Mahjong</title>
+  <title>Majiang</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -35,6 +35,7 @@
 
 
   <script src="/static/admin/plugins/jQuery/jquery-2.2.3.min.js"></script>
+  <script src="/static/admin/plugins/layer/layer.js"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -283,10 +284,23 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <!-- <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 会员中心</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> 代理管理</a></li> -->
-            <li><a href="{:url('Cash/cashList','type=1')}"><i class="fa fa-circle-o"></i> 充值记录</a></li>
-            <li><a href="{:url('Cash/cashList','type=0')}"><i class="fa fa-circle-o"></i> 提现记录</a></li>
+            <li class="active"><a href="{:url('Member/member')}"><i class="fa fa-circle-o"></i> 会员中心</a></li>
+            <li><a href="{:url('Recharge/recharge')}"><i class="fa fa-circle-o"></i> 充值记录</a></li>
+            <li><a href="{:url('Convert/withdraw')}"><i class="fa fa-circle-o"></i> 兑换记录</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+        <a href="#">
+            <i class="fa fa-th"></i> 
+            <span>代理管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{:url('Member/agency')}"><i class="fa fa-circle-o"></i> 代理管理</a></li>
+            <li><a href="{:url('Recharge/recharge')}"><i class="fa fa-circle-o"></i> 充值记录</a></li>
+            <li><a href="{:url('Convert/withdrawAgency')}"><i class="fa fa-circle-o"></i> 兑换记录</a></li>
           </ul>
         </li>
         <!-- <li class="treeview">
@@ -301,7 +315,7 @@
             <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 房间管理</a></li>
           </ul>
         </li> -->
-        <!-- <li class="treeview">
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-pie-chart"></i> 
             <span>结算管理</span>
@@ -310,10 +324,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 结算记录</a></li>
-            <li calss="active"><a href="#"><i class="fa fa-circle-o"></i> 处罚管理</a></li>
+            <li class="active"><a href="{:url('SettlementRecords/records')}"><i class="fa fa-circle-o"></i> 结算记录</a></li>
+            <li calss="active"><a href="{:url('PunishmentRecords/records')}"><i class="fa fa-circle-o"></i> 处罚管理</a></li>
           </ul>
-        </li> -->
+        </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-edit"></i> 
@@ -323,8 +337,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="{:url('Notice/noticeList','type=0')}"><i class="fa fa-circle-o"></i> 系统公告</a></li>
-            <li><a href="{:url('Notice/noticeList','type=1')}"><i class="fa fa-circle-o"></i> 活动公告</a></li>
+            <li class="active"><a href="{:url('Notice/notice')}"><i class="fa fa-circle-o"></i>公告管理</a></li>
+            <li><a href="{:url('System/rule')}"><i class="fa fa-circle-o"></i> 平台规则</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -337,7 +351,6 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="{:url('Goods/goodsManage')}"><i class="fa fa-circle-o"></i> 商品管理</a></li>
-           <!--  <li><a href="#"><i class="fa fa-circle-o"></i> 商品分类</a></li> -->
             <li><a href="{:url('Order/order')}"><i class="fa fa-circle-o"></i> 订单管理</a></li>
           </ul>
         </li>
@@ -350,10 +363,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 房间配置</a></li>
-            <li><a href="{:url('System/index')}"><i class="fa fa-circle-o"></i> 底分配置</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> 业务配置</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> 平台规则</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> 业务配置</a></li> 
           </ul>
         </li>
       </ul>

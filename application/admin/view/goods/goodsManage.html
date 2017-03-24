@@ -12,47 +12,70 @@
 </section>
     <!-- content -->
 <section class="content" style="">
-    <div class="box-body">
-        <a href="{:url('Goods/addGoods')}"><button class="btn btn-primary" style="margin-bottom: 20px;" type="button">添加商品</button></a>
-        <table class="table table-bordered table-hover">
-            <tr>
-                <td>序号</td>
-                <td>商品名字</td>
-                <td>商品价格(元)</td>
-                <td>商品图片</td>
-                <td>商品详情</td>
-                <td>商品数量(件)</td>
-                <td>是否出售</td>
-                <td>操作</td>
-            </tr>
-            {volist name='list' id='v'}
-            <tr>
-                <td>{$i}</td>
-                <td>{$v.name}</td>
-                <td>{$v.price}</td>
-                <td><img src="{$v.goods_img}"></td>
-                <td>{$v.goods_detail}</td>
-                <td>{$v.goods_num}</td>
-                <td>
-                    {eq name="v.status" value="1"}
-                    <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">是</span>
-                    {else/}
-                    <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">否</span>
-                    {/eq}
-                </td>
-                <td>
-                    <a href="{:url('Goods/editGoods',['id'=>$v['id']])}">
-                        <button type="button" class="btn btn-default" onclick="">
-                        <i class="fa fa-edit"></i>
-                        </button>
-                    </a>
-                    <button type="button" class="btn btn-warning" onclick="handle.delete(this,{$v.id});">
-                    <i class="fa fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-            {/volist}
-        </table>
+    <div class="box">
+        <div class="box-header with-border">
+            <a href="{:url('Goods/addGoods')}"><button class="btn btn-primary"  type="button">添加商品</button></a>
+             <form action="{:url('Goods/goodsManage',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
+                    <div class="form-group">
+                        <select name="status" class="form-control input-sm">
+                            <option value="-1">全部</option>
+                            <option value="0">已禁用</option>
+                            <option value="1">正常</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="商品名字">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm">查询</button>
+            </form>
+        </div>
+        <div class="box-body">
+            <table class="table table-border table-hover">
+                <thead>
+                    <tr>
+                        <td>序号</td>
+                        <td>商品名字</td>
+                        <td>商品规格</td>
+                        <td>商品价格(元)</td>
+                        <td>商品图片</td>
+                        <td>商品详情</td>
+                        <td>商品数量(件)</td>
+                        <td>是否出售</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name='list' id='v'}
+                    <tr>
+                        <td>{$i}</td>
+                        <td>{$v.name}</td>
+                        <td>{$v.goods_standard}</td>
+                        <td>{$v.price}</td>
+                        <td></td>
+                        <td>{$v.goods_detail}</td>
+                        <td>{$v.goods_num}</td>
+                        <td>
+                            {eq name="v.status" value="1"}
+                            <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">是</span>
+                            {else/}
+                            <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">否</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            <a href="{:url('Goods/editGoods',['id'=>$v['id']])}">
+                                <button type="button" class="btn btn-primary" onclick="">
+                                <i class="fa fa-edit"></i>
+                                </button>
+                            </a>
+                            <button type="button" class="btn btn-danger" onclick="handle.delete(this,{$v.id});">
+                            <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+        </div>
         <div style="text-align: right;">{$list->render()}</div>
     </div>
 </section>
@@ -78,14 +101,13 @@
             }else{
                 var status = 1;
             }
-            index = $(obj).parents('tr').index();
             var data = {id:id,status:status};
             $.post(requestUrl.changeStatus,data,function(e){
                 if(e.code==1){
                     if(status==0){
-                        $(".table.table-bordered tr").eq(index).find('td:eq(6) span').html('否').attr({class:'label label-default',onclick:'handle.changeStatus(this,'+id+',0)'});
+                        $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">否</span>');
                     }else{                                                     
-                        $(".table.table-bordered tr").eq(index).find('td:eq(6) span').html('是').attr({class:'label label-success',onclick:'handle.changeStatus(this,'+id+',1)'});
+                        $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">是</span>');
                     }
                 }else{
                     bayMax.warning(e.msg);

@@ -1,0 +1,146 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">代理列表</h3>
+                <form action="{:url('Member/agency',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
+                    <div class="form-group">
+                        <select name="status" class="form-control input-sm">
+                            <option value="-1">全部</option>
+                            <option value="0">已禁用</option>
+                            <option value="1">正常</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入代理ID或微信昵称">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm">查询</button>
+                </form>
+        </div>
+        <div class="box-body">
+            <table class="table table-border table-hover">
+                <thead>
+                    <tr>
+                        <td>代理ID</td>
+                        <td>代理身份</td>
+                        <td>微信昵称</td>
+                        <td>头像</td>
+                        <td>剩余元宝</td>
+                        <td>剩余金币</td>
+                        <td>活跃度</td>
+                        <td>注册时间</td>
+                        <td>上次登录时间</td>
+                        <td>上次登录IP</td>
+                        <td>状态</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name='list' id='v'}
+                    <tr>
+                        <td>{$v.id}</td>
+                        <td>
+                            <span class="label label-warning">代理</span>
+                        </td>
+                        <td>{$v.nickname}</td>
+                        <td><img src="{$v.head_img}"></td>
+                        <td>{$v.sycee_num}</td>
+                        <td>{$v.coin_num}</td>
+                        <td>{$v.count}</td>
+                        <td>{$v.create_at}</td>
+                        <td>{$v.update_at}</td>
+                        <td>{$v.login_ip}</td>
+                        <td>
+                            {eq name="v.status" value="1"}
+                            <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">正常</span>
+                            {else/}
+                            <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">禁用</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            <a href="{:url('Member/agencyInfo',['id'=>$v['id']])}"><button type="button" class="btn btn-primary"><i class="fa fa-pencil"></i></button></a>
+                            <button type="button" onclick="handle.update(this,{$v.id},'add');" class="btn btn-success"><i>$+</i></button>
+                            <button type="button" onclick="handle.update(this,{$v.id},'reduce');" class="btn btn-warning"><i>$-</i></button>
+                            <button type="button" onclick="handle.delete(this,{$v.id})" class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+            <div class="box-footer" style="text-align: right;">{$list->render()}</div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+
+    var requestUrl = {
+        updata : "{:url('Member/updateCoin')}",
+        changestatus : "{:url('Member/changeStatus')}",
+        delete : "{:url('Member/deleteOne')}"
+    };
+        
+    var handle = {
+
+        delete : function(obj,id){
+            bayMax.deleteConfirm(function(){
+                $.post(requestUrl.delete,{id:id},function(e){
+                    if(e==1){
+                        var e = {msg : '删除成功'};
+                            bayMax.msg(e.msg,function(){
+                                $(obj).parents('tr').remove();
+                            });
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                });
+            });
+        },
+
+        changeStatus :function(obj,id,status){
+            if(status==1){
+                var status = 0;
+            }else{
+                var status = 1;
+            }
+            var data = {id:id,status:status} ;
+            $.post(requestUrl.changestatus,data,function(e){
+                if(e.code==1){
+                    if(status==0){
+                        $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">禁用</span>');
+                    }else{
+                        $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">正常</span>');
+                    }
+                }else{
+                    bayMax.warning(e.msg);
+                }
+            });
+        },
+
+        update : function(obj,id,type){
+            var title = (type == 'add') ? '请输入添加金额' : '请输入扣钱金额' ;
+            layer.prompt({title:title},function(num,index){
+                $.post(requestUrl.updata,{id:id,type:type,coin_num:num},function(e){
+                    layer.close(index);
+                    if(e.code==1){
+                        bayMax.msg(e.msg,function(){
+                            $.pjax.reload("#pjax-container");
+                        });
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                });
+                
+            });
+        }
+    }
+
+</script>

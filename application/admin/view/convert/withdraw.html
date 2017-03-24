@@ -1,0 +1,114 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+  <div class="box">
+    <div class="box-header">
+      <form action="{:url('Convert/withdraw',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
+                <div class="form-group">
+                        <select name="status" class="form-control input-sm">
+                            <option value="-1">全部</option>
+                            <option value="0">未处理</option>
+                            <option value="1">已处理</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入申请人">
+                </div>
+                <button type="submit" class="btn btn-success btn-sm">查询</button>
+        </form>
+    </div> 
+    <div class="box-body">
+      <table class="table table-border table-hover">
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>申请人</th>
+            <th>兑换数量</th>
+            <th>申请时间</th>
+            <th>处理时间</th>
+            <th>处理人</th>
+            <th>备注</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        {foreach $data as $k=>$v}
+          <tr>
+            <td>{$k+1}</td>
+            <td>{$v.member_id}</td>
+            <td>{$v.convert_num}</td>
+            <td>{$v.create_at}</td>
+            <td>{$v.update_at}</td>
+            <td>{$v.admin_user}</td>
+            <td><b>{$v.remark}</b></td>
+            <td>
+              {eq name="v.status" value='1'}
+              <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">已处理</span>
+              {else/}
+              <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" >未处理</span>
+              {/eq}
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this, {$v.id})">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        {/foreach}
+        </tbody>
+      </table>
+    </div>
+    <div class="box-footer" style="text-align: right;">
+        {$data->render()}
+    </div>
+  </div>
+
+</section>
+<script type="text/javascript">
+
+    var requestUrl = {
+        changeStatus : "{:url('Convert/setStatus')}",
+        delete : "{:url('Convert/deleteOne')}"
+    };
+
+    var handle = {
+
+    delete : function(obj,id){
+      bayMax.deleteConfirm(function(){
+          $.post(requestUrl.delete,{id:id},function(e){
+              if(e.code==1) {
+                  bayMax.msg(e.msg,function(){
+                      $(obj).parents('tr').remove();
+                  });
+              } else {
+                  bayMax.warning(e.msg);
+              }
+          })
+      })
+    },
+
+    changeStatus : function(obj,id,status){
+      if(status==1){
+        var e = { msg : '已经处理过的业务不能再更改'} ;
+        bayMax.warning(e.msg);
+      }else{
+        var status = 1 ;
+      }
+      $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
+        if(e.code==1) {
+            bayMax.msg(e.msg,function(){
+                $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">已充值</span>');
+            });
+        }
+      });
+    },
+
+  };
+
+
+</script>

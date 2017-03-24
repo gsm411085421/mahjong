@@ -5,71 +5,96 @@ use think\Loader;
 class Notice extends Base
 {
     protected $header = '公告管理';
+
+    const PAGE_SIZE = 2 ;
     /**
      * 公告列表
      * @param  [type] $type [description]
      * @return [type]       [description]
      */
-    public function noticeList($type)
-    {
-        if(!$type) {
-            $file = 'system';
-            $desc = '系统公告列表';
-        } else {
-            $file = 'active';
-            $desc = '活动公告列表';
-        } 
-        $file .= 'List';
-        $this->view->desc = $desc;
-        $data = Loader::model('Notice')->getNotices($type);
-        return $this->fetch($file, ['data' => $data]);
+    public function notice()
+    {   
+        $this->view->desc = '公告管理' ;
+        $where = $config = [];
+        if($this->request->isGet() && $this->request->has('query') ){
+            $get = $this->request->get();
+            if(isset($get['type']) && $get['type'] != -1 ){
+                $where['type'] = $config['query']['type'] = $get['type'];
+            }
+            if(isset($get['status']) && $get['status'] != -1 ){
+                $where['status'] = $config['query']['status'] = $get['status'];
+            }
+            if(isset($get['search']) && $get['search'] ){
+                $where['title'] = ['like','%'.$get['search'].'%'];
+                $config['query']['search'] = $get['search'];
+            }
+        }
+        $data = parent::model()->getPaginate($where,true,self::PAGE_SIZE,$config);
+        return $this->fetch('',['data'=>$data]);
     }
+
+
     /**
-     * 新增或修改公告
+     * 添加公告页面
      * @return [type] [description]
      */
     public function saveNotice()
+    {   
+        $this->view->desc = '添加公告';
+        return $this->fetch();
+    }
+
+
+    /**
+     * 添加或跟新公告
+     */
+    public function addNotice()
     {
-        if($this->request->isPost()) {
+        if($this->request->isPost()){
+            $input = $this->request->post();
+            return Loader::model('Notice')->saveNotice($input);
+        }
+    }
+ 
+    /**
+     * 编辑公告页面
+     * @return [type] [description]
+     */
+    public function editNotice($id)
+    {
+        $this->view->desc = '编辑公告';
+        $data = parent::model()->getOne($id);
+        return $this->fetch('',['list'=>$data]);
+    }
+
+
+    /**
+     * 删除一条公告
+     * @return [type] [description]
+     */
+    public function deleteOne()
+    {
+        if($this->request->isPost()){
             $data = $this->request->post();
-            $data['admin_user'] = Loader::model('Admin')->getUser($this->uid);
-            $res = Loader::model('Notice')->saveNotice($data);
-            return $res;
+            return Loader::model('Notice')->delOne($data['id']);
         }
     }
+
     /**
-     * 获取一条数据
-     * @return [type] [description]
+     * 设置公告状态
      */
-    public function getOne()
+    public function setStatus()
     {
-        $id = $this->request->post('id');
-        return Loader::model('Notice')->getOne($id);
-    }
-    /**
-     * 删除公告
-     * @return [type] [description]
-     */
-    public function deleteNotice()
-    {
-        if($this->request->isPost()) {
-            $id = $this->request->post('id');
-            $res = Loader::model('Notice')->delOne($id);
-            return $res;
+        if($this->request->isPost()){
+            $input = $this->request->post();
+            $res = parent::model()->setStatus($input['status'],['id'=>$input['id']]);
+            if ($res) {
+                $handle = ['code'=>1,'msg'=>'修改成功'];
+            } else {
+                $handle = ['code'=>0,'msg'=>'修改失败'];
+            }
+            return $handle;
         }
     }
-    /**
-     * 更改状态
-     * @return [type] [description]
-     */
-    public function changeStatus()
-    {
-        if($this->request->isPost()) {
-          $input = $this->request->post();
-          $res = Loader::model('Notice')->setStatus($input['status'],['id'=>$input['id']]);
-          return $res;
-        }
-    }
-   
 
 }

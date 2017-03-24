@@ -8,9 +8,6 @@ class Index extends Base
               
         return $this->fetch();
     }
-    // public function table()
-    // {
-    //   return $this->fetch();
-    // }
+  
 
 }

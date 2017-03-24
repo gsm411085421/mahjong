@@ -15,10 +15,19 @@ class Goods extends Base
     public function goodsManage()
     {
         $this->view->desc = '商品管理';
-        $data = Loader::model('Goods')->showGoods();
-        return $this->fetch('', [
-            'list' => $data,
-        ]);
+        $where = $config = [];
+        if($this->request->isGet() && $this->request->has('query')){
+            $get = $this->request->get();
+            if(isset($get['status']) && $get['status'] != -1 ){
+               $config['query']['status'] = $where['status'] = $get['status'];
+            }
+            if(isset($get['search']) && $get['search'] ){
+                $where['name'] = ['like','%'.$get['search'].'%'];
+                $config['query']['search'] = $get['search'];
+            }
+        }
+        $data = parent::model()->getPaginate($where,true,$pageSize=2,$config);
+        return $this->fetch('', ['list' => $data]);
     }
 
     /**
@@ -37,9 +46,7 @@ class Goods extends Base
     {   
         $this->view->desc = '编辑商品';
         $data = Loader::model('Goods')->findOne($id);
-        return $this->fetch('',[
-            'list'=>$data,
-        ]);
+        return $this->fetch('',['list'=>$data]);
     }
 
     /**

@@ -22,6 +22,14 @@ class SystemConfig
         $this->_read();
         if ($file) $this->file = $file;
     }
+
+    /*更新文件*/
+    public function saveUpdate(array $input)
+    {
+        $this->_data = $input;
+        return $this->_write();
+    }
+
 /**
  * 更新文件
  * @param  array  $input 配置项

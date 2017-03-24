@@ -137,5 +137,20 @@ class Base extends Model
         ];
         return $this->isUpdate(true)->save($update,['id'=>$id]);
     }
+    
+
+    /**
+ * 分页查询
+ * @param  array   $where    条件
+ * @param  boolean $field    字段
+ * @param  int  $pageSize 分页大小 默认20
+ * @param  array $config   分页查询配置
+ * @return
+ */
+    public function getPaginate(array $where=[], $field=true, $pageSize=null, array $config=[])
+    {
+        $pageSize = $pageSize ?: $this->pageSize;
+        return $this->where($where)->field($field)->paginate($pageSize, false, $config);
+    }
 
 }

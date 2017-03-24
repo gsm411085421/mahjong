@@ -1,0 +1,131 @@
+<section class="content-header">
+    <h1>
+      {$header}
+      <small>{$desc}</small>
+    </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <a href="{:url('Notice/saveNotice')}"><button class="btn btn-primary"  type="button">添加公告</button></a>
+            <form action="{:url('Notice/notice',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
+              <div class="form-group">
+                  <select name="type" class="form-control input-sm">
+                      <option value="-1">全部</option>
+                      <option value="0">系统公告</option>
+                      <option value="1">活动公告</option>
+                      <option value="2">即时公告</option>
+                  </select>
+                  <select name="status" class="form-control input-sm">
+                      <option value="-1">全部</option>
+                      <option value="0">已禁用</option>
+                      <option value="1">正常</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入公告标题">
+              </div>
+              <button type="submit" class="btn btn-success btn-sm">查询</button>
+            </form>
+        </div>
+        <div class="box-body">
+            <table class="table table-border table-hover">
+                <thead>
+                  <tr>
+                    <th>序号</th>
+                    <th>公告类型</th>
+                    <th>公告标题</th>
+                    <th>公告内容</th>
+                    <th>发布时间</th>
+                    <th>发布人</th>
+                    <th>是否推送</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {foreach $data as $k=>$v }
+                    <tr>
+                        <td>{$k+1}</td>
+                        <td>
+                        {switch name="$v.type"}
+                        {case value="0"}<span class="label label-warning">系统公告</span>{/case}
+                        {case value="1"}<span class="label label-primary">活动公告</span>{/case}
+                        {case value="2"}<span class="label label-success">即时公告</span>{/case}
+                        {/switch}
+                        </td>
+                        <td>{$v.title}</td>
+                        <td>{$v.content}</td>
+                        <td>{$v.create_at}</td>
+                        <td>{$v.admin_user}</td>
+                        <td>
+                        {eq name="v.status" value="1"}
+                        <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" >已推送</span>
+                        {else/}
+                        <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">未推送</span>
+                        {/eq}
+                        </td>
+                        <td>
+                        <a href="{:url('Notice/editNotice',['id'=>$v['id']])}"><button type="button" class="btn btn-primary" >
+                            <i class="fa fa-edit"></i>
+                        </button></a>
+                        <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this, {$v.id})">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        </td>
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+            <div class="box-footer">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                    {$data->render()}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    var requestUrl = {
+      delete : "{:url('Notice/deleteOne')}",
+      changeStatus : "{:url('Notice/setStatus')}"
+    };
+
+    var handle = {
+
+      delete : function(obj,id){
+          bayMax.deleteConfirm(function(){
+              $.post(requestUrl.delete,{id:id},function(e){
+                  if(e.code==1) {
+                      bayMax.msg(e.msg,function(){
+                          $(obj).parents('tr').remove();
+                      });
+                  } else {
+                      bayMax.warning(e.msg);
+                  }
+              });
+          })
+      },
+
+      changeStatus : function(obj,id,status){
+          if(status==1){
+              var status = 0 ;
+          }else{
+              var status = 1 ;
+          }
+          $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
+              if(e.code==1){
+                  if(status==0){
+                      $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">未推送</span>');
+                  }else{                                                     
+                      $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">已推送</span>');
+                  }
+              }else{
+                  bayMax.warning(e.msg);
+              }
+          });
+      }
+
+    };
+
+</script>

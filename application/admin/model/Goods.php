@@ -24,15 +24,6 @@ class Goods extends Base
         return parent::getOne($id);
     }
 
-    /**
-     * 分页显示商品
-     * @param  integer $page 页数
-     * @return [type]        [description]
-     */
-    public function showGoods($page = 4){
-        return $this->field(true)->paginate($page);
-    }
-
        /**
      * 存入一条商品信息
      * @param  array  $input [description]
