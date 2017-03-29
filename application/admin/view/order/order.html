@@ -52,7 +52,7 @@
                     <td>{$v.update_at}</td>
                     <td>
                         {eq name="v.status" value="1"}
-                        <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" >已处理</span>
+                        <span class="label label-success">已处理</span>
                         {else/}
                         <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" >未处理</span>
                         {/eq}
@@ -84,19 +84,18 @@
     var handle = {
         /*将未处理的状态改变为处理*/
         changeStatus : function(obj,id,status){
-            if(status==1){
-                var e = { msg : '已经处理过的业务不能再更改'} ;
-                bayMax.warning(e.msg);
-            }else{
-                var status = 1;
-            }
+            var status = 1;
             index = $(obj).parents('tr').index();
             var data = {id:id,status:status};
-            $.post(requestUrl.changeStatus,data,function(e){
-                if(e.code==1){
-                    $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer" >已处理</span>')
-                    $(".table.table-bordered tr").eq(index).find('td:eq(5)').html(getNowTime());
-                }
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.changeStatus,data,function(e){
+                    if(e.code==1){
+                        $(obj).parent('td').html('<span class="label label-success">已处理</span>')
+                        $(".table.table-bordered tr").eq(index).find('td:eq(5)').html(getNowTime());
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                })
             })
         },
         /*删除一条订单*/

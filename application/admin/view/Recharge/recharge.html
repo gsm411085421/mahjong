@@ -27,8 +27,10 @@
           <tr>
             <th>序号</th>
             <th>申请人ID</th>
+            <th>用户昵称</th>
+            <th>用户头像</th>
             <th>充值数量</th>
-            <th>申请时间</th>
+            <th>充值时间</th>
             <th>操作人</th>
             <th>状态</th>
           </tr>
@@ -38,12 +40,14 @@
           <tr>
             <td>{$k+1}</td>
             <td>{$v.member_id}</td>
+            <td>{$v.member.nickname}</td>
+            <td></td>
             <td>{$v.recharge_num}</td>
             <td>{$v.create_at}</td>
             <td>{$v.admin_user}</td>
             <td>
               {eq name="v.status" value='1'}
-              <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">已充值</span>
+              <span class="label label-success">已充值</span>
               {else/}
               <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" >未充值</span>
               {/eq}
@@ -87,19 +91,18 @@
     },
 
     changeStatus : function(obj,id,status){
-      if(status==1){
-        var e = { msg : '已经处理过的业务不能再更改'} ;
-        bayMax.warning(e.msg);
-      }else{
-        var status = 1 ;
-      }
-      $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
-        if(e.code==1) {
-            bayMax.msg(e.msg,function(){
-                $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">已充值</span>');
-            });
-        }
-      });
+      var status = 1 ;
+      bayMax.infoConfirm(function(){
+        $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
+          if(e.code==1) {
+              bayMax.msg(e.msg,function(){
+                  $(obj).parent('td').html('<span class="label label-success">已充值</span>');
+              });
+          }else{
+            bayMax.warning(e.msg);
+          }
+        });
+      })
     },
 
   };

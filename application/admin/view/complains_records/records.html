@@ -1,0 +1,107 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <form action="{:url('ComplainsRecords/records',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
+              <div class="form-group">
+                  <select name="status" class="form-control input-sm">
+                      <option value="-1">全部</option>
+                      <option value="0">已禁用</option>
+                      <option value="1">正常</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入会员ID">
+              </div>
+              <button type="submit" class="btn btn-success btn-sm">查询</button>
+            </form>
+        </div>
+        <div class="box-body">
+            <table class="table table-border table-hover">
+                <thead>
+                    <tr>
+                        <td>序号</td>
+                        <td>会员ID</td>
+                        <td>投诉对象ID</td>
+                        <td>游戏类型内容</td>
+                        <td>申请时间</td>
+                        <td>处罚时间</td>
+                        <td>状态</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="list" id="v"}
+                    <tr>
+                        <td>{$i}</td>
+                        <td>{$v.member_id}</td>
+                        <td>{$v.complain_object_id}</td>
+                        <td>{$v.game_type_content}</td>
+                        <td>{$v.create_at}</td>
+                        <td>{$v.update_at}</td>
+                        <td>
+                            {eq name="v.status" value="1"}
+                            <span class="label label-success">已处理</span>
+                            {else/}
+                            <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">未处理</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this, {$v.id})"><i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer" style="text-align: right;">
+            {$list->render()}
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    var requestUrl = {
+        delete : "{:url('ComplainsRecords/deleteOne')}",
+        changeStatus : "{:url('ComplainsRecords/setStauts')}"
+    };
+
+    var handle = {
+
+        changeStatus : function(obj,id,status){
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.changeStatus,{id:id},function(e){
+                    if(e.code==1){
+                        bayMax.msg(e.msg,function(){
+                            $(obj).parent('td').html('<span class="label label-success">已处理</span>');
+                        })
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                });
+            })
+        },
+
+        delete : function(obj,id){
+            bayMax.deleteConfirm(function(){
+                $.post(requestUrl.delete,{id:id},function(e){
+                    if(e.code==1) {
+                        bayMax.msg(e.msg,function(){
+                            $(obj).parents('tr').remove();
+                        });
+                    } else {
+                        bayMax.warning(e.msg);
+                    }
+                });
+            })
+        }
+    };
+
+
+</script>

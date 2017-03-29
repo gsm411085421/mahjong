@@ -1,0 +1,94 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <form action="{:url('MemberGameRecords/records',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
+                <div class="form-group">
+                    <select name="status" class="form-control input-sm">
+                        <option value="-1">全部</option>
+                        <option value="1">游戏消耗</option>
+                        <option value="2">游戏结算</option>
+                        <option value="3">兑换</option>
+                        <option value="4">管理员操作</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入用户ID">
+                </div>
+                <button type="submit" class="btn btn-success btn-sm">查询</button>
+            </form>
+        </div>
+        <div class="box-body">
+            <table class="table table-border table-hover">
+                <thead>
+                    <tr>
+                        <td>序号</td>
+                        <td>会员ID</td>
+                        <td>类型</td>
+                        <td>游戏类型内容</td>
+                        <td>得分</td>
+                        <td>剩余金币</td>
+                        <td>创建时间</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="list" id="v"}
+                    <tr>
+                        <td>{$i}</td>
+                        <td>{$v.member_id}</td>
+                        <td>
+                            {switch name="v.type"}
+                              {case value="1"}<span class="label label-warning">游戏消耗</span>{/case}
+                              {case value="2"}<span class="label label-warning">游戏结算</span>{/case}
+                              {case value="3"}<span class="label label-warning">兑换</span>{/case}
+                              {case value="4"}<span class="label label-warning">管理员操作</span>{/case}
+                            {/switch}
+                        </td>
+                        <td>{$v.game_type_content}</td>
+                        <td>{$v.money}</td>
+                        <td>{$v.coin_num}</td>
+                        <td>{$v.create_at}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this, {$v.id})"><i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer" style="text-align: right;">
+            {$list->render()}
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    var requestUrl = {
+        delete : "{:url('MemberGameRecords/deleteOne')}"
+    };
+
+    var handle = {
+        delete : function(obj,id){
+            bayMax.deleteConfirm(function(){
+                $.post(requestUrl.delete,{id:id},function(e){
+                    if(e.code==1) {
+                        bayMax.msg(e.msg,function(){
+                            $(obj).parents('tr').remove();
+                        });
+                    } else {
+                        bayMax.warning(e.msg);
+                    }
+                });
+            })
+        }
+    };
+
+
+</script>

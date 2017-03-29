@@ -1,12 +1,11 @@
 <?php 
 namespace app\admin\controller;
-use think\Loader;
 
 class Notice extends Base
 {
     protected $header = '公告管理';
 
-    const PAGE_SIZE = 2 ;
+    const PAGE_SIZE = 4 ;
     /**
      * 公告列表
      * @param  [type] $type [description]
@@ -29,7 +28,7 @@ class Notice extends Base
                 $config['query']['search'] = $get['search'];
             }
         }
-        $data = parent::model()->getPaginate($where,true,self::PAGE_SIZE,$config);
+        $data = parent::model()->getPaginateByTime($where,self::PAGE_SIZE,$config);
         return $this->fetch('',['data'=>$data]);
     }
 
@@ -52,7 +51,7 @@ class Notice extends Base
     {
         if($this->request->isPost()){
             $input = $this->request->post();
-            return Loader::model('Notice')->saveNotice($input);
+            return parent::model()->saveNotice($input);
         }
     }
  
@@ -76,7 +75,7 @@ class Notice extends Base
     {
         if($this->request->isPost()){
             $data = $this->request->post();
-            return Loader::model('Notice')->delOne($data['id']);
+            return parent::model()->delOne($data['id']);
         }
     }
 

@@ -4,6 +4,7 @@ namespace app\admin\model;
 class Goods extends Base
 {
 
+
     /**
      * 根据主键删除一条商品信息
      * @param  [type] $id [description]

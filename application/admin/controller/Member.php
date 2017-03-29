@@ -1,8 +1,6 @@
 <?php  
 namespace app\admin\controller;
 
-use think\Loader;
-
 class Member extends Base
 {   
     const PAGE_SIZE = 2;
@@ -16,8 +14,7 @@ class Member extends Base
     public function member()
     {
         $this->view->desc = '会员中心';
-        $where = ['is_rank'=>0];
-        $config = [];
+        $where = $config = [];
         if($this->request->isGet() && $this->request->has('query')){
             $get = $this->request->get();
             if(isset($get['status']) && $get['status'] != -1){
@@ -62,7 +59,7 @@ class Member extends Base
     {
         if($this->request->isPost()){
             $input = $this->request->post();
-            return Loader::model('Member')->updateCoin($input);
+            return parent::model()->updateCoin($input);
         }
     }
 
@@ -74,8 +71,10 @@ class Member extends Base
     public function memberInfo($id)
     {   
         $this->view->desc = '个人信息' ;
-        $data = Loader::model('Member')->showInfo($id);
-        return $this->fetch('',['list'=>$data]);
+        $data = parent::model()->showInfo($id);
+        $member = parent::model()->getOne($id);
+        $parent = parent::model()->showParent($member['pid']);
+        return $this->fetch('',['list'=>$data,'parentInfo'=>$parent]);
     }
 
     /**代理详细信息页面
@@ -86,26 +85,20 @@ class Member extends Base
     public function agencyInfo($id)
     {
         $this->view->desc = '代理信息' ;
-        $data = Loader::model('Member')->showInfo($id);
-        $childs = Loader::model('Member')->showChild($id);
+        $data = parent::model()->showInfo($id);
+        $childs = parent::model()->showChild($id);
         return $this->fetch('',['list'=>$data,'childs'=>$childs]);
     }
 
     /**
-     * 改变会员状态
+     * 改变会员状态并写入对应记录表
      * @return [type] [description]
      */
     public function changeStatus()
     {
         if($this->request->isPost()){
             $data = $this->request->post();
-            $res = parent::model()->setStatus($data['status'], ['id'=>$data['id']]);
-            if ($res) {
-                $handle = ['code'=>1,'msg'=>'修改成功'];
-            } else {
-                $handle = ['code'=>0,'msg'=>'修改失败'];
-            }
-            return $handle;
+            return parent::model()->changeStatus($data);       
         }
     }
 
@@ -120,4 +113,6 @@ class Member extends Base
             return parent::model()->deleteOne($data['id']);
         }   
     }
+
+    
 }

@@ -40,6 +40,8 @@
                         <td>商品图片</td>
                         <td>商品详情</td>
                         <td>商品数量(件)</td>
+                        <td>发布时间</td>
+                        <td>上下架时间</td>
                         <td>是否出售</td>
                         <td>操作</td>
                     </tr>
@@ -54,6 +56,8 @@
                         <td></td>
                         <td>{$v.goods_detail}</td>
                         <td>{$v.goods_num}</td>
+                        <td>{$v.create_at}</td>
+                        <td>{$v.update_at}</td>
                         <td>
                             {eq name="v.status" value="1"}
                             <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">是</span>
@@ -102,16 +106,18 @@
                 var status = 1;
             }
             var data = {id:id,status:status};
-            $.post(requestUrl.changeStatus,data,function(e){
-                if(e.code==1){
-                    if(status==0){
-                        $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">否</span>');
-                    }else{                                                     
-                        $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">是</span>');
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.changeStatus,data,function(e){
+                    if(e.code==1){
+                        if(status==0){
+                            $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">否</span>');
+                        }else{                                                     
+                            $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">是</span>');
+                        }
+                    }else{
+                        bayMax.warning(e.msg);
                     }
-                }else{
-                    bayMax.warning(e.msg);
-                }
+                })
             })
         },
 

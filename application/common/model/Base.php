@@ -3,6 +3,7 @@ namespace app\common\model;
 
 use think\Model;
 use think\Request;
+use think\Validate;
 /**
  * @method Model getOne($id) 查询一条
  * @method Collection getAll(array $where=[]) 查询全部
@@ -15,6 +16,8 @@ use think\Request;
  */
 class Base extends Model
 {
+    const PAGE_SIZE = 20;
+
     protected $table = false;
     /**
      * 数据表主键字段
@@ -27,6 +30,13 @@ class Base extends Model
      * @var Object
      */
     protected $request;
+    /**
+     * 验证规则
+     * @var array
+     */
+    protected $rule;
+
+    protected $message = [];
 
     protected function initialize()
     {
@@ -34,14 +44,31 @@ class Base extends Model
         
         $this->request = Request::instance();
     }
+
+/**
+ * post 请求中的数据
+ * @return array
+ */
+    protected function requestPost($name = '')
+    {
+        return $this->request->post($name);
+    }
+/**
+ * get 请求中的数据
+ * @return array
+ */
+    protected function requestGet($name = '')
+    {
+        return $this->request->get($name);
+    }
 /**
  * 根据主键查询一条
  * @param  string $id 主键值
  * @return Model     数据库对象
  */
-    public function getOne($id)
+    public function getOne($id, $field=true)
     {
-        return $this->field(true)->where($this->pk, $id)->find();
+        return $this->field($field)->where($this->pk, $id)->find();
     }
 /**
  * 全表查询
@@ -66,15 +93,23 @@ class Base extends Model
  * @param  array  $input 表单数据
  * @return array        std
  */
-    public function edit(array $input)
+    public function edit(array $input = [])
     {
-        $isUpdate = isset($input)&&$input[$this->pk] ? true : false;
-        $handle = $this->allowField(true)->isUpdate($isUpdate)->save($input);
-        if ($handle) {
-            return ['code'=>1, 'msg'=>'操作成功', 'data'=>['id'=>$this->id]];
-        }else{
-            return ['code'=>0, 'msg'=>'操作失败'];
+        $input = $input ? : $this->requestPost();
+        $check = 0;
+        if ($this->rule) {
+            $check = Validate::make($this->rule, $this->message)->check($input);
+
+            if (false === $check) {
+                return ['code'=>0, 'msg'=>Validate::make()->getError()];
+            }
         }
+        if (($this->rule && $check) || ! $this->rule) {
+            $isUpdate = isset($input)&&$input[$this->pk] ? true : false;
+            $handle = $this->allowField(true)->isUpdate($isUpdate)->save($input);
+            $res = $handle ? ['code'=>1, 'msg'=>'操作成功', 'data'=>['id'=>$this->id]] : ['code'=>0, 'msg'=>'操作失败'];
+        }
+        return $res;
     }
 /**
  * 新增一条数据 
@@ -84,11 +119,7 @@ class Base extends Model
     public function addOne(array $input)
     {
         $handle = $this->allowField(true)->isUpdate(false)->save($input);
-        if ($handle) {
-            return ['code'=>1, 'msg'=>'添加成功', 'data'=>['id'=>$this->id]];
-        }else{
-            return ['code'=>0, 'msg'=>'添加失败'];
-        }
+        return $handle? ['code'=>1, 'msg'=>'添加成功', 'data'=>['id'=>$this->id]] : ['code'=>0, 'msg'=>'添加失败'];
     }
 /**
  * 更新一条数据 
@@ -98,11 +129,7 @@ class Base extends Model
     public function updateOne(array $input)
     {
         $handle = $this->allowField(true)->isUpdate(true)->save($input);
-        if ($handle) {
-            return ['code'=>1, 'msg'=>'修改成功', 'data'=>['id'=>$this->id]];
-        }else{
-            return ['code'=>0, 'msg'=>'修改失败'];
-        }
+        return $handle? ['code'=>1, 'msg'=>'添加成功', 'data'=>['id'=>$this->id]] : ['code'=>0, 'msg'=>'添加失败'];
     }
 /**
  * 设置状态
@@ -122,24 +149,11 @@ class Base extends Model
  */
     public function deleteOne($id, array $extra=[])
     {
-        return $this->where($this->pk, $id)->where($extra)->delete();
+        $handle = $this->where($this->pk, $id)->where($extra)->delete();
+        return $handle? ['code'=>1, 'msg'=>'删除成功'] : ['code'=>0, 'msg'=>'删除失败'];
     }
 
-    /**
-     * 更新表的处理时间
-     * @param  [type] $id [description]
-     * @return [type]     [description]
-     */
-    public function changeUpdate($id)
-    {   
-        $update = [
-            'update_at' => date('Y-m-d H:i:s')
-        ];
-        return $this->isUpdate(true)->save($update,['id'=>$id]);
-    }
-    
-
-    /**
+/**
  * 分页查询
  * @param  array   $where    条件
  * @param  boolean $field    字段
@@ -152,5 +166,46 @@ class Base extends Model
         $pageSize = $pageSize ?: $this->pageSize;
         return $this->where($where)->field($field)->paginate($pageSize, false, $config);
     }
+    
+/**
+ * paginate 分页查询
+ * @param  array   $where
+ * @param  boolean $field
+ * @param  int  $pageSize 
+ * @return Collection
+ */
+    public function getLists($where=[], $field=true, $pageSize=null)
+    {
+        $pageSize === null and $pageSize = self::PAGE_SIZE;
+        return $this->where($where)->field(true)->paginate($pageSize);
+    }
+
+/**
+ * limit 分页查询
+ * @param  integer $page     页码
+ * @param  array   $where
+ * @param  boolean $field
+ * @param  int  $pageSize
+ * @return array
+ */
+    public function getListsByLimit($page=1, $where=[], $field=true, $pageSize=null)
+    {
+        $pageSize === null and $pageSize = self::PAGE_SIZE;
+        return $this->where($where)->field($field)->limit($pageSize)->page($page)->select();
+    }
+
+    /**
+     * 分页并且根据时间排序
+     * @param  array  $where    [description]
+     * @param  [type] $pageSize [description]
+     * @param  array  $config   [description]
+     * @return [type]           [description]
+     */
+    public function getPaginateByTime(array $where , $pageSize ,array $config)
+    {
+        return $this->where($where)->order('create_at desc')->paginate($pageSize,false,$config);
+    }
 
 }
+    
+

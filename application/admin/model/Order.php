@@ -5,16 +5,6 @@ class Order extends Base
 {
 
     /**
-     * 分页显示订单
-     * @param  integer $page [description]
-     * @return [type]        [description]
-     */
-    public function showOrder($page=7)
-    {
-        return  $this->field(true)->paginate($page);
-    }
-
-    /**
      * 存入一条订单
      * @param  array  $input [description]
      * @return [type]        [description]

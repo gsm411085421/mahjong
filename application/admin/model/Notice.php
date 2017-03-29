@@ -3,15 +3,7 @@ namespace app\admin\model;
 
 class Notice extends Base
 {
-    /**
-     * 公告数据
-     * @param  [type] $type [description]
-     * @return [type]       [description]
-     */
-    public function getNotices($type)
-    {
-        return self::getLists(['type'=>$type],true,$pageSize = 8);
-    }
+
     /**
      * 新增或更改公告
      * @param  array  $input [description]
@@ -46,6 +38,7 @@ class Notice extends Base
         }
         return $res;
     }
+        // return $handle ? success() : error()
   
 
 }

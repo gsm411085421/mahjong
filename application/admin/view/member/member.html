@@ -45,7 +45,11 @@
                     <tr>
                         <td>{$v.id}</td>
                         <td>
+                            {eq name="v.is_rank" value="0" }
                             <span class="label label-warning">普通会员</span>
+                            {else}
+                            <span class="label label-danger">代理商</span>
+                            {/eq}
                         </td>
                         <td>{$v.nickname}</td>
                         <td><img src="{$v.head_img}"></td>
@@ -112,17 +116,19 @@
                 var status = 1;
             }
             var data = {id:id,status:status} ;
-            $.post(requestUrl.changestatus,data,function(e){
-                if(e.code==1){
-                    if(status==0){
-                        $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">禁用</span>');
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.changestatus,data,function(e){
+                    if(e.code==1){
+                        if(status==0){
+                            $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">禁用</span>');
+                        }else{
+                            $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">正常</span>');
+                        }
                     }else{
-                        $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">正常</span>');
+                        bayMax.warning(e.msg);
                     }
-                }else{
-                    bayMax.warning(e.msg);
-                }
-            });
+                });
+            })
         },
 
         update : function(obj,id,type){

@@ -1,12 +1,13 @@
 <?php  
 namespace app\admin\controller;
 
-use think\Loader;
 
 class Goods extends Base
 {
 
     protected $header = '商城管理'; 
+
+    const PAGE_SIZE = 4 ;
 
     /**
      * 商品显示页面
@@ -26,7 +27,7 @@ class Goods extends Base
                 $config['query']['search'] = $get['search'];
             }
         }
-        $data = parent::model()->getPaginate($where,true,$pageSize=2,$config);
+        $data = parent::model()->getPaginateByTime($where,self::PAGE_SIZE,$config);
         return $this->fetch('', ['list' => $data]);
     }
 
@@ -45,7 +46,7 @@ class Goods extends Base
     public function editGoods($id)
     {   
         $this->view->desc = '编辑商品';
-        $data = Loader::model('Goods')->findOne($id);
+        $data = parent::model()->findOne($id);
         return $this->fetch('',['list'=>$data]);
     }
 
@@ -57,7 +58,7 @@ class Goods extends Base
     {
         if($this->request->isPost()){
             $input = $this->request->post();
-            return Loader::model('Goods')->saveGoods($input);
+            return parent::model()->saveGoods($input);
         }  
     }
 
@@ -69,7 +70,7 @@ class Goods extends Base
     {
         if($this->request->isPost()){
             $data = $this->request->Post();
-            return Loader::model('Goods')->deleteGoods($data['id']);        
+            return parent::model()->deleteGoods($data['id']);        
         }
     }
 
@@ -81,7 +82,7 @@ class Goods extends Base
     {
         if($this->request->isPost()){
             $data = $this->request->Post();
-            return Loader::model('Goods')->changeGoods($data);    
+            return parent::model()->changeGoods($data);    
         }
     }
     

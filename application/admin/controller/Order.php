@@ -1,15 +1,13 @@
 <?php  
 namespace app\admin\controller;
 
-use think\Loader;
-
 
 class Order extends Base
 {   
 
     protected $header = '商城管理';
 
-    const PAGE_SIZE = 2 ;
+    const PAGE_SIZE = 4 ;
     /**
      * 订单管理页面
      */
@@ -27,7 +25,7 @@ class Order extends Base
                 $config['query']['search'] = $get['search'];
             } 
         }
-        $data = parent::model()->getPaginate($where,true,self::PAGE_SIZE,$config);
+        $data = parent::model()->getPaginateByTime($where,self::PAGE_SIZE,$config);
         return $this->fetch('',['list'=>$data]);
     }
 
@@ -40,7 +38,7 @@ class Order extends Base
     {
         if($this->request->isPost()){
             $input = $this->request->post();
-            return Loader::model('Order')->saveOrder($input);
+            return parent::model()->saveOrder($input);
         }
     }
 
@@ -52,7 +50,7 @@ class Order extends Base
     {
         if($this->request->isPost()){
             $data = $this->request->Post();
-            return Loader::model('Order')->deleteOrder($data['id']);
+            return parent::model()->deleteOrder($data['id']);
         }
     }
 
@@ -66,7 +64,7 @@ class Order extends Base
             $data = $this->request->Post();
             $res = parent::model()->setStatus($data['status'],['id'=>$data['id']]);
             if($res){
-                $res = Loader::model('Order')->changeUpdate($data['id']);
+                $res = parent::model()->changeUpdate($data['id']);
                 if($res){
                     $handle = ['code'=>1,'msg'=>'修改成功'];
                 }else{
@@ -88,7 +86,7 @@ class Order extends Base
     public function orderDetail($id)
     {   
         $this->view->desc = '订单详情';
-        $data = Loader::model('Order')->getOrderDetail($id);
+        $data = parent::model()->getOrderDetail($id);
         return $this->fetch('',['list'=>$data]);
     }
 

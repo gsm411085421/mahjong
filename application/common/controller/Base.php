@@ -3,12 +3,17 @@ namespace app\common\controller;
 
 use think\Request;
 use think\View;
-use think\Loader;
 use think\Config;
 use think\Controller;
 
 class Base
 {
+    protected $table = false;
+    /**
+     * 当前模块名
+     * @var string
+     */
+    protected $module;
     /**
      * @var \think\View 视图类实例
      */
@@ -38,9 +43,13 @@ class Base
  * 请求控制器名对应的数据模型类实例
  * @return Model
  */
-    protected function model()
+    protected function model($table='')
     {
-        return Loader::model($this->request->controller());
+        $table = $table ? : ($this->table ? : $this->request->controller());
+        $module = $this->module ? : $this->request->module();
+
+        $class = 'app\\'.$module.'\model\\'.$table;
+        return new $class;
     }
 
 /**
@@ -55,5 +64,38 @@ class Base
     protected function fetch($template = '', $vars = [], $replace = [], $config = [])
     {
         return $this->view->fetch($template, $vars, $replace, $config);
+    }
+/**
+ * 获取一条数据
+ * @return [type] [description]
+ */
+    public function getOne()
+    {
+        $id = $this->request->get('id');
+        if ($id) {
+            return $this->model()->getOne($id);
+        }
+    }
+/**
+ * 删除一条数据
+ * @return [type] [description]
+ */
+    public function deleteOne()
+    {
+        $id = $this->request->post('id');
+        if ($id) {
+            return $this->model()->deleteOne($id);
+        }
+    }
+/**
+ * 更改状态
+ * @return [type] [description]
+ */
+    public function changeStatus()
+    {
+        $input = $this->request->post();
+        if($input) {
+            return $this->model()->setStatus($input['status'],['id'=>$input['id']]);
+        }
     }
 }

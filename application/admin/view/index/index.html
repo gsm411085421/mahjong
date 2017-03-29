@@ -5,53 +5,42 @@
   </h1>
 </section>
 <section class="content">
-    <h4>工具提示（Tooltip）插件 - 锚</h4>
-这是一个 <a href="#" class="tooltip-test" data-toggle="tooltip" 
-   title="默认的 Tooltip">
-   默认的 Tooltip
-</a>.
-这是一个 <a href="#" class="tooltip-test" data-toggle="tooltip" 
-   data-placement="left" title="左侧的 Tooltip">
-   左侧的 Tooltip
-</a>.
-这是一个 <a href="#" data-toggle="tooltip" data-placement="top" 
-   title="顶部的 Tooltip">
-   顶部的 Tooltip
-</a>.
-这是一个 <a href="#" data-toggle="tooltip" data-placement="bottom" 
-   title="底部的 Tooltip">
-   底部的 Tooltip
-</a>.
-这是一个 <a href="#" data-toggle="tooltip" data-placement="right" 
-   title="右侧的 Tooltip">
-   右侧的 Tooltip
-</a>
-
-<br>
-
-<h4>工具提示（Tooltip）插件 - 按钮</h4>
-<button type="button" class="btn btn-default" data-toggle="tooltip" 
-   title="默认的 Tooltip">
-   默认的 Tooltip
-</button>
-<button type="button" class="btn btn-default" data-toggle="tooltip" 
-   data-placement="left" title="左侧的 Tooltip">
-   左侧的 Tooltip
-</button>
-<button type="button" class="btn btn-default" data-toggle="tooltip" 
-   data-placement="top" title="顶部的 Tooltip">
-   顶部的 Tooltip
-</button>
-<button type="button" class="btn btn-default" data-toggle="tooltip" 
-   data-placement="bottom" title="底部的 Tooltip">
-   底部的 Tooltip
-</button>
-<button type="button" class="btn btn-default" data-toggle="tooltip" 
-   data-placement="right" title="右侧的 Tooltip">
-   右侧的 Tooltip
-</button>
-
+    <div class="box">
+        <div class="box-header"><span style="font-size: 30px;">欢迎你，</span><span style="font-size: 20px;" >{$list.user}</span></div>
+        <div class="box-body">
+        <table class="table table-border">
+          <tr>
+            <td>级别</td>
+            <td>{$list.name}</td>
+          </tr>
+          <tr>
+            <td>登录IP</td>
+            <td>{$list.last_login_ip}</td>
+          </tr>
+          <tr>
+            <td>登录次数</td>
+            <td>{$list.login_times}</td>
+          </tr>
+          <tr>
+            <td>最后一次登录时间</td>
+            <td>{$list.last_login_time}</td>
+          </tr>
+          <tr>
+            <td>创建时间</td>
+            <td>{$list.create_at}</td>
+          </tr>
+          <tr>
+            <td>状态</td>
+            <td>
+              {eq name="list.status" value="1"}
+              <span class="label label-success">正常</span>
+              {else/}
+              <span class="label label-default">禁用</span>
+              {/eq}
+            </td>
+          </tr>
+          </table>
+        </div>
+        <div class="box-footer"></div>
+    </div>
 </section>
-<script>
-   $(function () { $("[data-toggle='tooltip']").tooltip(); });
-</script>

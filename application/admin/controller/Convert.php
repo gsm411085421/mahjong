@@ -1,6 +1,6 @@
 <?php 
 namespace app\admin\controller;
-use think\Loader;
+
 
 class Convert extends Base
 {
@@ -15,8 +15,7 @@ class Convert extends Base
     { 
       $this->view->header = '会员中心';
       $this->view->desc = '兑换记录' ; 
-      $where = ['is_agency'=>0]; 
-      $config = [];
+      $where = $config = [];
       if($this->request->isGet() && $this->request->has('query') ){
         $get = $this->request->get();
         if(isset($get['status']) && $get['status'] != -1){
@@ -27,7 +26,7 @@ class Convert extends Base
           $config['search'] = $get['search'];
         }
       }
-      $data = parent::model()->getPaginate($where,true,self::PAGE_SIZE,$config);
+      $data = parent::model()->getConvertList($where,true,self::PAGE_SIZE,$config);
       return $this->fetch('',['data'=>$data]);
     }
 
@@ -52,7 +51,7 @@ class Convert extends Base
           $config['search'] = $get['search'];
         }
       }
-      $data = parent::model()->getPaginate($where,true,self::PAGE_SIZE,$config);
+      $data = parent::model()->getConvertList($where,true,self::PAGE_SIZE,$config);
       return $this->fetch('',['data'=>$data]);
     }
 

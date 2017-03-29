@@ -299,11 +299,11 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{:url('Member/agency')}"><i class="fa fa-circle-o"></i> 代理管理</a></li>
-            <li><a href="{:url('Recharge/recharge')}"><i class="fa fa-circle-o"></i> 充值记录</a></li>
             <li><a href="{:url('Convert/withdrawAgency')}"><i class="fa fa-circle-o"></i> 兑换记录</a></li>
+            <li><a href="{:url('System/agencyDetail')}"><i class="fa fa-circle-o"></i> 代理说明</a></li>
           </ul>
         </li>
-        <!-- <li class="treeview">
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-gears"></i> 
             <span>房间管理</span>
@@ -312,9 +312,22 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> 房间管理</a></li>
+            <li class="active"><a href="{:url('PandaRooms/roomList')}"><i class="fa fa-circle-o"></i> 熊猫麻将</a></li>
+            <li class="active"><a href="{:url('LandlordsRooms/roomList')}"><i class="fa fa-circle-o"></i> 斗地主</a></li>
           </ul>
-        </li> -->
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-link"></i> 
+            <span>统计管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="{:url('Statis/statisList')}"><i class="fa fa-circle-o"></i> 同座统计</a></li>
+          </ul>
+        </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-pie-chart"></i> 
@@ -325,7 +338,10 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="{:url('SettlementRecords/records')}"><i class="fa fa-circle-o"></i> 结算记录</a></li>
-            <li calss="active"><a href="{:url('PunishmentRecords/records')}"><i class="fa fa-circle-o"></i> 处罚管理</a></li>
+            <li calss="active"><a href="{:url('PunishCoin/punishList')}"><i class="fa fa-circle-o"></i> 处罚记录</a></li>
+            <li calss="active"><a href="{:url('DisableMember/disableMemberList')}"><i class="fa fa-circle-o"></i> 封号记录</a></li>
+            <li calss="active"><a href="{:url('ComplainsRecords/records')}"><i class="fa fa-circle-o"></i> 投诉记录</a></li>
+            <li calss="active"><a href="{:url('MemberGameRecords/records')}"><i class="fa fa-circle-o"></i> 得分记录</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -363,7 +379,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> 业务配置</a></li> 
+            <li><a href="{:url('System/system')}"><i class="fa fa-circle-o"></i> 业务配置</a></li> 
           </ul>
         </li>
       </ul>

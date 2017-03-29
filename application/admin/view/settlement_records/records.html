@@ -16,7 +16,7 @@
                   </select>
               </div>
               <div class="form-group">
-                  <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入公告标题">
+                  <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入用户ID">
               </div>
               <button type="submit" class="btn btn-success btn-sm">查询</button>
             </form>
@@ -54,14 +54,12 @@
                         <td>{$v.create_at}</td>
                         <td>
                         {eq name="v.status" value="1"}
-                        <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" >正常结算</span>
+                        <span class="label label-success">正常结算</span>
                         {else/}
-                        <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">未结算</span>
+                        <span class="label label-default" onclick="handle.settlement(this,{$v.id},{$v.member_id1},{$v.member_id2},{$v.member_id3},{$v.member_id4},{$v.mi1_money},{$v.mi2_money},{$v.mi3_money},{$v.mi4_money},{$v.status});"  style="cursor:pointer">未结算</span>
                         {/eq}
                         </td>
                         <td>
-                            <a href=""><button type="button" class="btn btn-primary" ><i class="fa fa-edit"></i>
-                            </button></a>
                             <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this, {$v.id})"><i class="fa fa-trash"></i>
                             </button>
                         </td>
@@ -79,10 +77,27 @@
 <script type="text/javascript">
     
     var requestUrl = {
-        delete : "{:url('SettlementRecords/deleteOne')}"
+        delete : "{:url('SettlementRecords/deleteOne')}",
+        settlement : "{:url('SettlementRecords/settlement')}"
     };
 
     var handle = {
+
+        settlement :function(obj,id,id1,id2,id3,id4,mi1,mi2,mi3,mi4,status){
+            var data = {id:id,member_id1:id1,member_id2:id2,member_id3:id3,member_id4:id4,mi1_money:mi1,mi2_money:mi2,mi3_money:mi3,mi4_money:mi4,status:1};
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.settlement,data,function(e){
+                    if(e.code==1){
+                        bayMax.msg(e.msg,function(){
+                            $(obj).parent('td').html('<span class="label label-success">正常结算</span>');
+                        });
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                })
+            })
+        },
+
         delete : function(obj,id){
             bayMax.deleteConfirm(function(){
                 $.post(requestUrl.delete,{id:id},function(e){
@@ -93,7 +108,7 @@
                     } else {
                         bayMax.warning(e.msg);
                     }
-                });
+                })
             })
         }
     };

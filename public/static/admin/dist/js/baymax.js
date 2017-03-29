@@ -176,6 +176,7 @@ var bayMax = {
    * 模态框
    * 基于 jQuery confirm 插件
    */
+  
   /** 确定删除 询问 */
   deleteConfirm : function(callback){
     $.confirm({
@@ -219,6 +220,30 @@ var bayMax = {
       }
     })
   },
+
+  infoConfirm : function(callback){
+    $.confirm({
+        title : '修改？',
+        content : '确定要修改吗？',
+        type : 'dark',
+        icon: 'fa fa-warning',
+        buttons : {
+            yes : {
+                text : '确定',
+                btnClass : 'btn-primary',
+                keys : ['enter'],
+                action : function(){
+                    if(typeof callback == 'function')
+                        callback.call();
+                }
+            },
+            no : {
+                text : '取消',
+            }
+        },
+    })
+  },
+
 /** 警告框 */
   warning : function(info, wait){
     wait = wait || 2000;

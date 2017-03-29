@@ -1,12 +1,13 @@
 <?php  
 namespace app\admin\controller;
 
+
 class Recharge extends Base
 {
 
     protected $header = '充值记录';
 
-    const PAGE_SIZE = 2 ;
+    const PAGE_SIZE = 7 ;
 
     /**
      * 会员充值记录页面
@@ -22,11 +23,11 @@ class Recharge extends Base
           $where['status'] = $config['query']['status'] = $get['status'];
         }
         if(isset($get['search']) && $get['search'] ){
-          $where['member_nickname'] = ['like','%'.$get['search'].'%'];
+          $where['member_id'] = ['like','%'.$get['search'].'%'];
           $config['query']['search'] = $get['search'];
         }
       }
-      $data = parent::model()->getPaginate($where,true,self::PAGE_SIZE,$config);
+      $data = parent::model()->getRechargeList($where,true,self::PAGE_SIZE,$config);
       return $this->fetch('',['data'=>$data]);
     }
 

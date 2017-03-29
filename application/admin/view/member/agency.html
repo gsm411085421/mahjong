@@ -112,17 +112,19 @@
                 var status = 1;
             }
             var data = {id:id,status:status} ;
-            $.post(requestUrl.changestatus,data,function(e){
-                if(e.code==1){
-                    if(status==0){
-                        $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">禁用</span>');
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.changestatus,data,function(e){
+                    if(e.code==1){
+                        if(status==0){
+                            $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">禁用</span>');
+                        }else{
+                            $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">正常</span>');
+                        }
                     }else{
-                        $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">正常</span>');
+                        bayMax.warning(e.msg);
                     }
-                }else{
-                    bayMax.warning(e.msg);
-                }
-            });
+                });
+            })
         },
 
         update : function(obj,id,type){

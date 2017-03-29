@@ -26,7 +26,10 @@
         <thead>
           <tr>
             <th>序号</th>
-            <th>申请人</th>
+            <th>申请人身份</th>
+            <th>申请人ID</th>
+            <th>昵称</th>
+            <th>头像</th>
             <th>兑换数量</th>
             <th>申请时间</th>
             <th>处理时间</th>
@@ -40,7 +43,16 @@
         {foreach $data as $k=>$v}
           <tr>
             <td>{$k+1}</td>
+            <td>
+                {eq name="v.is_agency" value="0" }
+                <span class="label label-warning">普通会员</span>
+                {else}
+                <span class="label label-danger">代理商</span>
+                {/eq}
+            </td>
             <td>{$v.member_id}</td>
+            <td>{$v.member.nickname}</td>
+            <td></td>
             <td>{$v.convert_num}</td>
             <td>{$v.create_at}</td>
             <td>{$v.update_at}</td>
@@ -48,7 +60,7 @@
             <td><b>{$v.remark}</b></td>
             <td>
               {eq name="v.status" value='1'}
-              <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">已处理</span>
+              <span class="label label-success">已处理</span>
               {else/}
               <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer" >未处理</span>
               {/eq}
@@ -93,19 +105,18 @@
     },
 
     changeStatus : function(obj,id,status){
-      if(status==1){
-        var e = { msg : '已经处理过的业务不能再更改'} ;
-        bayMax.warning(e.msg);
-      }else{
-        var status = 1 ;
-      }
-      $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
-        if(e.code==1) {
-            bayMax.msg(e.msg,function(){
-                $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">已充值</span>');
-            });
-        }
-      });
+      var status = 1 ;
+      bayMax.infoConfirm(function(){
+        $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
+          if(e.code==1) {
+              bayMax.msg(e.msg,function(){
+                  $(obj).parent('td').html('<span class="label label-success">已充值</span>');
+              });
+          }else{
+              bayMax.warning(e.msg);
+          }
+        });
+      })
     },
 
   };

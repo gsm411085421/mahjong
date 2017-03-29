@@ -23,12 +23,6 @@ class SystemConfig
         if ($file) $this->file = $file;
     }
 
-    /*更新文件*/
-    public function saveUpdate(array $input)
-    {
-        $this->_data = $input;
-        return $this->_write();
-    }
 
 /**
  * 更新文件

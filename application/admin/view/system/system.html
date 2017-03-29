@@ -1,0 +1,330 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+
+        </div>
+        <div class="box-body">
+            <div role="tabpanel" class="nav-tabs-custom">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">底分配置</a></li>
+                    <li role="presentation" ><a href="#home"  aria-controls="home" data-toggle="tab">游戏配置</a></li>
+                    <li role="presentation" ><a href="#convert"  aria-controls="convert" data-toggle="tab">兑换配置</a></li>
+                    <li role="presentation" ><a href="#agency"  aria-controls="agency" data-toggle="tab">代理配置</a></li>
+                    <li role="presentation" ><a href="#system"  aria-controls="system" data-toggle="tab">代理配置</a></li>
+                    <li role="presentation" ><a href="#weixin"  aria-controls="system" data-toggle="tab">微信配置</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="settings">
+                        <form class="form-horizontal">
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">1金币底:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="score1" type="number" value={$list.score1} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">2金币底:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="score2" type="number" value={$list.score2} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">5金币底:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="score3" type="number" value={$list.score3} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">10金币底:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="score4" type="number" value={$list.score4} >
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <button type="button" style="margin-left: 74%;" onclick="handle.score();"  class="btn btn-primary">保存</button>
+                            </div>  
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane " id="home">
+                        <form class="form-horizontal">
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">开房赠送元宝数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="openRoom" type="number" value={$list.openRoom} >
+                                </div>
+                            </div> 
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">匹配成功扣金币数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="match" type="number" value={$list.match} >
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <button type="button" style="margin-left: 74%;" onclick="handle.room()"  class="btn btn-primary">保存</button>
+                            </div> 
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane " id="convert">
+                        <form class="form-horizontal">
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">每日兑换次数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="convert1" type="number" value={$list.convert1} >
+                                </div>
+                            </div> 
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">每日兑换上限:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="convert2" type="number" value={$list.convert2} >
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <button type="button" style="margin-left: 74%;" onclick="handle.convert()"  class="btn btn-primary">保存</button>
+                            </div> 
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane " id="agency">
+                        <form class="form-horizontal">
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">1级代理门槛:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="agency1" type="number" value={$list.agency1} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">1级代理活跃人数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="agency2" type="number" value={$list.agency2} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">1级代理提成:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="agency3" type="text" value={$list.agency3} >
+                                </div>
+                            </div>  
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">2级代理门槛:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="agency4" type="number" value={$list.agency4} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">2级代理活跃人数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="agency5" type="number" value={$list.agency5} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">2级代理提成:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="agency6" type="text" value={$list.agency6} >
+                                </div>
+                            </div>  
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">3级代理门槛:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="agency7" type="number" value={$list.agency7} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">3级代理活跃人数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="agency8" type="number" value={$list.agency8} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">3级代理提成:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="agency9" type="text" value={$list.agency9} >
+                                </div>
+                            </div>  
+                            <div class="form-group">
+                                <button type="button" style="margin-left: 74%;" onclick="handle.agency()"  class="btn btn-primary">保存</button>
+                            </div> 
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane " id="system">
+                        <form class="form-horizontal">
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">注册会员基数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="system1" type="number" value={$list.system1} >
+                                </div>
+                            </div> 
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">熊猫麻将空闲房间数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="system2" type="number" value={$list.system2} >
+                                </div>
+                            </div> 
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">熊猫麻将游戏中房间数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="system3" type="number" value={$list.system3} >
+                                </div>
+                            </div> 
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">熊猫麻将起始桌数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="system4" type="number" value={$list.system4} >
+                                </div>
+                            </div> 
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">斗地主空闲房间数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="system5" type="number" value={$list.system5} >
+                                </div>
+                            </div>
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">斗地主游戏中房间数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="system6" type="number" value={$list.system6} >
+                                </div>
+                            </div> 
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">斗地主起始桌数:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="system7" type="number" value={$list.system7} >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" style="margin-left: 74%;" onclick="handle.system()"  class="btn btn-primary">保存</button>
+                            </div>   
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane " id="weixin">
+                        <form class="form-horizontal">
+                            <div class="form-group"> 
+                            <label for="inputNum" class="col-sm-2 control-label">客服微信号:</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="wechart" type="text" value={$list.wechart} >
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <button type="button" style="margin-left: 74%;" onclick="handle.weixin()"  class="btn btn-primary">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    
+    var requestUrl = {
+        update : "{:url('System/updateSystem')}"
+    }
+
+    var handle = {
+
+        weixin :function(){
+            var wechart = $("#wechart").val();
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.update,{wechart:wechart},function(e){
+                    if(e.code==1){
+                        bayMax.msg(e.msg);
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                })
+            })
+        },
+
+        system : function(){
+            var system1 = $("#system1").val();
+            var system2 = $("#system2").val();
+            var system3 = $("#system3").val();
+            var system4 = $("#system4").val();
+            var system5 = $("#system5").val();
+            var system6 = $("#system6").val();
+            var system7 = $("#system7").val();
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.update,{system1:system1,system2:system2,system3:system3,system4:system4,system5:system5,system6:system6,system7:system7},function(e){
+                    if(e.code==1){
+                        bayMax.msg(e.msg);
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                })
+            })
+        },
+
+        agency : function(){
+            var agency1 = $("#agency1").val();
+            var agency2 = $("#agency2").val();
+            var agency3 = $("#agency3").val();
+            var agency4 = $("#agency4").val();
+            var agency5 = $("#agency5").val();
+            var agency6 = $("#agency6").val();
+            var agency7 = $("#agency7").val();
+            var agency8 = $("#agency8").val();
+            var agency9 = $("#agency9").val();
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.update,{agency1:agency1,agency2:agency2,agency3:agency3,agency4:agency4,agency5:agency5,agency6:agency6},function(e){
+                    if(e.code==1){
+                        bayMax.msg(e.msg);
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                })
+            })
+        },
+
+        convert : function(){
+            var convert1 = $("#convert1").val();
+            var convert2 = $("#convert2").val();
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.update,{convert1:convert1,convert2:convert2},function(e){
+                    if(e.code==1){
+                        bayMax.msg(e.msg);
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                })
+            })
+        },
+
+        room : function(){
+            var openRoom = $("#openRoom").val();
+            var match = $("#match").val();
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.update,{openRoom:openRoom,match:match},function(e){
+                    if(e.code==1){
+                        bayMax.msg(e.msg);
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                })
+            })
+        },
+
+        score : function(){
+            var score1 = $("#score1").val();
+            var score2 = $("#score2").val();
+            var score3 = $("#score3").val();
+            var score4 = $("#score4").val();
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.update,{score1:score1,score2:score2,score3:score3,score4:score4},function(e){
+                    if(e.code==1){
+                        bayMax.msg(e.msg);
+                    }else{
+                        bayMax.warning(e.msg);
+                    }
+                })
+            })
+        },
+
+    }
+
+</script>

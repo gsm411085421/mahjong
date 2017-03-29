@@ -113,17 +113,19 @@
           }else{
               var status = 1 ;
           }
-          $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
-              if(e.code==1){
-                  if(status==0){
-                      $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">未推送</span>');
-                  }else{                                                     
-                      $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">已推送</span>');
+          bayMax.infoConfirm(function(){
+              $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
+                  if(e.code==1){
+                      if(status==0){
+                          $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">未推送</span>');
+                      }else{                                                     
+                          $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">已推送</span>');
+                      }
+                  }else{
+                      bayMax.warning(e.msg);
                   }
-              }else{
-                  bayMax.warning(e.msg);
-              }
-          });
+              });
+          })
       }
 
     };
