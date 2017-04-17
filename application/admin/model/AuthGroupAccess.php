@@ -3,6 +3,9 @@ namespace app\admin\model;
 
 class AuthGroupAccess extends Base
 {
+
+    //超级管理员权限
+    const ADMIN_RULE = "2,4,5,6,7,8,9,10,11";
 /**
  * 用户组分配
  * @param  string $uid    用户ID
@@ -28,4 +31,28 @@ class AuthGroupAccess extends Base
         }
         return $this->saveAll($save);
     }
+
+    /**
+     * 关联用户分组表
+     * @return [type] [description]
+     */
+    public function authGroup(){
+        return $this->belongsTo('AuthGroup','group_id','id')->field('id,rules');
+    }
+
+    /**
+     * 查询自己的权限
+     * @param  [type] $uid [description]
+     * @return [type]      [description]
+     */
+    public function rules($uid)
+    {   
+        if($uid==1){
+            $data['auth_group']['rules']=self::ADMIN_RULE;
+        }else{
+            $data = self::with('authGroup')->where('uid',$uid)->find()->toArray();
+        }
+        return explode(',',$data['auth_group']['rules']);  
+    }
+
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>商城</title>
+	</head>
+	<body>
+		<div class="mall-box bg-img-lg fixed clear">
+			{volist name="list" id="v"}
+			<div class="commodity-list bg-img-lg pull-left relative">
+				<img class="absolute" src="{$v.goods_img}">
+				<div class="commodity-detail absolute-zero">
+					<p class="text-center size-13">{$v.name}<span class="fix">1</span>张</p>
+					<p class="text-center size-18"><span class="chief">{$v.price}</span>元宝</p>
+					{if condition =" $G_user['sycee_num'] >= $v.price " }
+					<span class="bg-img-lg" onclick="handle.checkMember(this,{$v.id})"></span>
+					{else/}
+					<span class="bg-img-lg disabled"></span>
+					{/if}
+				</div>
+			</div>
+			{/volist}
+		</div>
+		<div style="display: none;">
+			<input id="goodsId" type="text" name=""  value="">
+		</div>
+		<!--完善资料-->
+		<div class="mate-case fixed perfect-data">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">完善资料</h4>
+				<p class="size-13 text-center">请先在“个人资料”中填写<br />真实姓名和手机号</p>
+				<div>
+					<span class="pull-left bg-img-lg" onclick="playerCancel(this)"></span>
+					<span class="pull-right bg-img-lg" onclick="location.href='{:url('Center/profile')}'"></span>
+				</div>
+			</div>
+		</div>
+		<!--确认购买-->
+		<div class="mate-case fixed purchase">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">购买确认</h4>
+				<p class="size-13 text-center" style="line-height:.25rem;">所购商品：熊猫房间<span class="fix-su"></span>张<br />商品价格：<span></span>元宝</p>
+				<div>
+					<span class="pull-left bg-img-lg" onclick="playerCancel(this)"></span>
+					<span class="pull-right bg-img-lg" onclick="handle.save(this)"></span>
+				</div>
+			</div>
+		</div>
+		<!--购买成功弹窗-->
+		<div class="mate-case fixed recharge">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">购买成功</h4>
+				<p class="size-13 text-center" style="line-height:.25rem;">您购买的<span></span>张熊猫房卡，<br /> 稍后将充到您的熊猫四川麻将账号</p>
+				<div>
+					<span class="bg-img-lg" onclick="playerCancel(this)"></span>
+				</div>
+			</div>
+		</div>
+		<!--购买失败弹窗 -->
+		<div class="mate-case fixed failed">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">购买失败</h4>
+				<p class="size-13 text-center" style="line-height:.25rem;">您购买的<span></span>张熊猫房卡，<br /> 失败</p>
+				<div>
+					<span class="bg-img-lg" onclick="playerCancel(this)"  style="margin-left: 26%;"></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+</html>
+
+<script type="text/javascript">
+ 	var requestUrl = {
+ 		save : "{:url('Goods/makeOrder')}",
+ 		checkMember : "{:url('MemberProfile/findOne')}"
+ 	}; 
+
+	var handle = {
+
+		checkMember : function(obj,goodsId){
+			$.post(requestUrl.checkMember,function(e){
+				if(e.code==1){
+					purchaseBtn(obj,goodsId);
+				}else{
+					xchange();
+				}
+			})
+		},
+
+		save : function(obj){
+			var goodsId = $("#goodsId").val();
+			$.post(requestUrl.save,{goods_id:goodsId},function(e){
+				if(e.code==1){
+					purchaseSuccess(obj);
+				}else{
+					purchaseFailed(obj);
+				}
+			})
+			
+		}
+	};
+</script>

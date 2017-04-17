@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>个人资料</title>
+		<style>
+			::-webkit-scrollbar{
+				width:0;
+			}
+		</style>
+	</head>
+	<body>
+		<form action="" method="">
+			<div class="datum-box bg-img-lg fixed">			
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">真实姓名</span>
+					<input class="pull-right" type="text" name="name" value="">
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">手机号</span>
+					<input class="pull-right" type="number" name="cellphone" value="">
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">身份证号</span>
+					<input class="pull-right" type="text" name="identitycard" value="" maxlength="18">
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">微信号</span>
+					<input class="pull-right" type="text" name="wechat" value="">
+				</div>			
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">开户银行</span>
+					<input class="pull-right" type="text" name="bankname" value="">
+					<img class="absolute" src="/static/index/images/icon_arrow_right.png">
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">银行账号</span>
+					<input class="pull-right" type="number" name="accountnumber" value="">
+				</div>
+				<div class="bg-img-lg relative" style="margin-bottom:.1rem;">
+					<p class="absolute">*</p>
+					<span class="pull-left">确认银行账号</span>
+					<input class="pull-right" type="number" name="qaccountnumber" value="">
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">QQ</span>
+					<input class="pull-right" type="number" value="">
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">邮箱</span>
+					<input class="pull-right" type="text" value="">
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">支付宝</span>
+					<input class="pull-right" type="text" value="">
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">自我简介</span>
+					<input class="pull-right" type="text" value="">
+				</div>		
+				<p class="proving-hint red text-center">信息错误</p><!--添加reveal显示-->
+				<span class="bg-img-lg" onclick="validate()"></span>
+			</div>	
+		</form>
+		<!--选择银行弹窗-->
+		<div class="mate-case fixed bank_box">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg absolute bank-list">
+				<div>
+					<ul class="text-center">
+						<li>建设银行</li>
+						<li>农业银行</li>
+						<li>工商银行</li>
+						<li>中国银行</li>
+						<li>农村信用社</li>
+						<li>邮政储蓄</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+	<script>
+		var prompt={
+			name:"姓名不能为空",
+			cellphone:{
+				one:"手机号不能为空",
+				two:"手机号格式不对"
+			},
+			identitycard:{
+				one:"身份证号码不能为空",
+				two:"身份证号码格式不对"
+			},
+			wechat:"微信号不能为空",
+			bankname:"开户行不能为空",
+			accountnumber:{
+				one:"银行账户不能为空",
+				two:"银行账户格式不对"
+			},
+			qaccountnumber:"两次输入不符"
+		}
+		function validate() {
+			var res = [true, true];
+			if ($("input[name='name']").val() == ''){
+				res = [false, prompt.name]
+			} else if ($("input[name='cellphone']").val() == ''&& res[0] == true) {
+				res = [false, prompt.cellphone.one];
+			} else if (! /^1[3|4|5|8][0-9]\d{4,8}$/.test($("input[name='cellphone']").val()) && res[0] == true) {
+				res = [false, prompt.cellphone.two];
+			}else if($("input[name='identitycard']").val()=='' && res[0] == true){
+				res = [false, prompt.identitycard.one];
+			}else if($("input[name='identitycard']").val().length!==18 && res[0] == true){
+				res = [false, prompt.identitycard.two];
+			}else if($("input[name='wechat']").val()=='' && res[0] == true){
+				res = [false, prompt.wechat];
+			}else if($("input[name='bankname']").val()!=='' && res[0] == true){
+				res = [false, prompt.bankname];
+			}else if($("input[name='accountnumber']").val()!=='' && res[0] == true){
+				res = [false, prompt.accountnumber.one];
+			}else if($("input[name='accountnumber']").val().length!==19 && res[0] == true ){
+				res = [false, prompt.accountnumber.two];
+			}else if($("input[name='qaccountnumber']").val()!==$("input[name='accountnumber']").val() && res[0] == true){
+				res = [false, prompt.qaccountnumber];
+			}
+			$(".proving-hint").html(res[1]);
+			$(".proving-hint").addClass("reveal");
+			return res;
+		}
+		$(".bank-list").on("click","li",function(){
+			var bank = $(this).html();
+			$(this).css("color","#f8c605");
+			$("input[name='bankname']").val(bank);
+			$(".bank_box").hide();			
+		})
+		$(".bank-list .blac-bg").click(function(){
+			$(".bank_box").hide();
+		})
+		$("input[name='bankname']").focus(function(){
+			$(".bank_box").show();
+		})
+	</script>
+</html>

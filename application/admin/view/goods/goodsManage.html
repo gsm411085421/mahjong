@@ -53,7 +53,7 @@
                         <td>{$v.name}</td>
                         <td>{$v.goods_standard}</td>
                         <td>{$v.price}</td>
-                        <td></td>
+                        <td><img src="{$v.goods_img}" style="width: 70px;height: 70px;"></td>
                         <td>{$v.goods_detail}</td>
                         <td>{$v.goods_num}</td>
                         <td>{$v.create_at}</td>
@@ -125,7 +125,7 @@
         delete : function(obj,id){
             bayMax.deleteConfirm(function(){
                 $.post(requestUrl.delete,{id:id},function(e){
-                    if(e==1) {
+                    if(e.code==1) {
                         var e = {msg : '删除成功'};
                         bayMax.msg(e.msg,function(){
                             $(obj).parents('tr').remove();

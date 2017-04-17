@@ -37,6 +37,10 @@ class Goods extends Base
     public function addGoods()
     {   
         $this->view->desc = '添加商品';
+        if($this->request->isPost()){
+            $input = $this->request->post();
+            return parent::model()->edit($input);
+        }  
         return $this->fetch();
     }
 
@@ -46,20 +50,12 @@ class Goods extends Base
     public function editGoods($id)
     {   
         $this->view->desc = '编辑商品';
-        $data = parent::model()->findOne($id);
-        return $this->fetch('',['list'=>$data]);
-    }
-
-    /**
-     * 存入一条商品信息
-     * @return [type] [description]
-     */
-    public function saveGoods()
-    {
+        $data = parent::model()->getOne($id);
         if($this->request->isPost()){
-            $input = $this->request->post();
-            return parent::model()->saveGoods($input);
-        }  
+            $data = $this->request->Post();
+            return parent::model()->edit($data);    
+        }
+        return $this->fetch('',['list'=>$data]);
     }
 
     /**
@@ -70,21 +66,10 @@ class Goods extends Base
     {
         if($this->request->isPost()){
             $data = $this->request->Post();
-            return parent::model()->deleteGoods($data['id']);        
+            return parent::model()->deleteOne($data['id']);        
         }
     }
 
-    /**
-     * 修改商品信息
-     * @return [type] [description]
-     */
-    public function changeGoods()
-    {
-        if($this->request->isPost()){
-            $data = $this->request->Post();
-            return parent::model()->changeGoods($data);    
-        }
-    }
     
     /**
      * 切换商品状态
@@ -103,16 +88,6 @@ class Goods extends Base
             return $handle;
         }
     }
-
-    /**
-     * 商品图片上传
-     * @return [type] [description]
-     */
-    public function upload()
-    {
-        return parent::uploadImg();
-    }
-
 
 
 }

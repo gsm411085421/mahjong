@@ -5,164 +5,133 @@
   </h1>
 </section>
 <section class="content">
-    <div class="box">
-      
+    <div class="box" style="text-align: center;">
         <div class="box-header">
             <form action="{:url('PandaRooms/roomList',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
               <div class="form-group">
-                  <select name="status" class="form-control input-sm">
-                      <option value="-1">全部</option>
-                      <option value="0">已禁用</option>
-                      <option value="1">正常</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                  <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入创建者ID">
+                  <input type="text" name="search" id="" class="form-control input-sm" value="" placeholder="请输入房间号或创始人ID">
               </div>
               <button type="submit" class="btn btn-success btn-sm">查询</button>
             </form>
         </div>
         <div class="box-body">
-          <table class="table table-border table-hover">
-            <thead>
-              <th>序号</th>
-              <th>房间创建者ID</th>
-              <th>类型1</th>
-              <th>类型2</th>
-              <th>类型3</th>
-              <th>带幺九、将对</th>
-              <th>换三张</th>
-              <th>门清中张</th>
-              <th>天地糊</th>
-              <th>房间号</th>
-              <th>低分倍数</th>
-              <th>创建时间</th>
-              <th>状态</th>
-              <th>操作</th>
-          </thead>
-          <tbody>
-          {volist name="list" id="v"}
-            <tr>
-              <td>{$i}</td>
-              <td>{$v.room_member_id}</td>
-              <td>
-                {eq name="v.type1" value="0" }
-                <span class="label label-warning">血战到底</span>
-                {else}
-                <span class="label label-danger">三人两房</span>
-                {/eq}
-              </td>
-              <td>
-                {eq name="v.type2" value="0" }
-                <span class="label label-warning">自摸加底</span>
-                {else}
-                <span class="label label-danger">自摸加翻</span>
-                {/eq}
-              </td>
-              <td>
-                {eq name="v.type3" value="0" }
-                <span class="label label-warning">点杠花（自摸）</span>
-                {else}
-                <span class="label label-danger">点杠花（点炮）</span>
-                {/eq}
-              </td>
-              <td>
-                {eq name="v.type4" value="0" }
-                <span class="label label-default">未开启</span>
-                {else}
-                <span class="label label-success">开启</span>
-                {/eq}
-              </td>
-              <td>
-                {eq name="v.type5" value="0" }
-                <span class="label label-default">未开启</span>
-                {else}
-                <span class="label label-success">开启</span>
-                {/eq}
-              </td>
-              <td>
-                {eq name="v.type6" value="0" }
-                <span class="label label-default">未开启</span>
-                {else}
-                <span class="label label-success">开启</span>
-                {/eq}
-              </td>
-              <td>
-                {eq name="v.type7" value="0" }
-                <span class="label label-default">未开启</span>
-                {else}
-                <span class="label label-success">开启</span>
-                {/eq}
-              </td>
-              <td>{$v.room_num}</td>
-              <td>{$v.low_times}</td>
-              <td>{$v.create_at}</td>
-              <td>
-                {eq name="v.status" value="0" }
-                <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status});" style="cursor:pointer">未开启</span>
-                {else}
-                <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status});" style="cursor:pointer">开启</span>
-                {/eq}
-              </td>
-              <td>
-                <button type="button" onclick="handle.delete(this,{$v.id});" class="btn btn-danger">
-                <i class="fa fa-trash"></i></button>
-              </td>
-            </tr>
-          {/volist}
-          </tbody>
-          </table>
+            <table class="table table-border table-hover">
+                <thead>
+                    <tr>
+                        <td>序号</td>
+                        <td>房间创建人ID</td>
+                        <td>房间号</td>
+                        <td>底分倍数</td>
+                        <td>创建时间</td>
+                        <td>玩法一</td>
+                        <td>玩法二</td>
+                        <td>玩法三</td>
+                        <td>带幺九、将对</td>
+                        <td>换三张</td>
+                        <td>门清中张</td>
+                        <td>天地糊</td>
+                        <td>会员1ID</td>
+                        <td>会员2ID</td>
+                        <td>会员3ID</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="list" id="v"}
+                    <tr>
+                        <td>{$i}</td>
+                        <td>{$v.room_member_id}</td>
+                        <td>{$v.room_num}</td>
+                        <td>{$v.low_times}</td>
+                        <td>{$v.update_at}</td>
+                        <td>
+                            {eq name="v.type1" value='1'}
+                            <span class="label label-success">血战到底</span>
+                            {else/}
+                            <span class="label label-danger">三人两房</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            {eq name="v.type2" value='1'}
+                            <span class="label label-success">自摸加底</span>
+                            {else/}
+                            <span class="label label-danger">自摸加翻</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            {eq name="v.type3" value='1'}
+                            <span class="label label-success">点炮</span>
+                            {else/}
+                            <span class="label label-danger">自摸</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            {eq name="v.type4" value='0'}
+                            <span class="label label-danger">否</span>
+                            {else/}
+                            <span class="label label-success">是</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            {eq name="v.type5" value='0'}
+                            <span class="label label-danger">否</span>
+                            {else/}
+                            <span class="label label-success">是</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            {eq name="v.type6" value='0'}
+                            <span class="label label-danger">否</span>
+                            {else/}
+                            <span class="label label-success">是</span>
+                            {/eq}
+                        </td>
+                        <td>
+                            {eq name="v.type7" value='0'}
+                            <span class="label label-danger">否</span>
+                            {else/}
+                            <span class="label label-success">是</span>
+                            {/eq}
+                        </td>
+                        <td>{$v.member_id1}</td>
+                        <td>{$v.member_id2}</td>
+                        <td>{$v.member_id3}</td>
+                        <td>
+                            <button type="button" onclick="handle.changeStatus(this,{$v.id})" class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
         </div>
-        <div class="box-footer"></div>
-      
+        <div class="box-footer" style="text-align: right;">
+            {$list->render()}
+        </div>
     </div>
 </section>
 
 <script type="text/javascript">
-  
-  var requestUrl = {
-    changeStatus : "{:url('PandaRooms/setStatus')}",
-    delete : "{:url('PandaRooms/deleteOne')}"
-  };
 
-  var handle = {
+    var requestUrl = {
+        changeStatus : "{:url('PandaRooms/setStatus')}"
+    };
 
-    delete : function(obj,id){
-      bayMax.deleteConfirm(function(){
-          $.post(requestUrl.delete,{id:id},function(e){
-              if(e==1){
-                  var e = {msg : '删除成功'};
-                      bayMax.msg(e.msg,function(){
-                          $(obj).parents('tr').remove();
-                      });
-              }else{
-                  bayMax.warning(e.msg);
-              }
-          });
-      });
-  },
-
-    changeStatus : function(obj,id,status){
-       if(status==1){
-          var status = 0;
-      }else{
-          var status = 1;
-      }
-      var data = {id:id,status:status} ;
-      bayMax.infoConfirm(function(){
-          $.post(requestUrl.changeStatus,data,function(e){
-              if(e.code==1){
-                  if(status==0){
-                      $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">未开启</span>');
-                  }else{
-                      $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">开启</span>');
-                  }
-              }else{
-                  bayMax.warning(e.msg);
-              }
-          });
-      })
-    }
-  };
+    var handle = {
+        changeStatus : function(obj,id){
+            bayMax.infoConfirm(function(){
+                $.post(requestUrl.changeStatus,{id:id},function(e){
+                    if(e.code==1){
+                        bayMax.msg('删除成功',function(){
+                            $(obj).parents('tr').remove();
+                        });
+                    }else{
+                        bayMax.warning('删除失败');
+                    }
+                })
+            })
+        },
+    };
 
 </script>

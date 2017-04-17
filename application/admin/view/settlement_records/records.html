@@ -26,14 +26,14 @@
                 <thead>
                     <tr>
                         <td>序号</td>
-                        <td>此桌用户1ID</td>
-                        <td>此桌用户1所得金币</td>
-                        <td>此桌用户2ID</td>
-                        <td>此桌用户2所得金币</td>
-                        <td>此桌用户3ID</td>
-                        <td>此桌用户3所得金币</td>
-                        <td>此桌用户4ID</td>
-                        <td>此桌用户4所得金币</td>
+                        <td>用户1ID</td>
+                        <td>用户1得金币</td>
+                        <td>用户2ID</td>
+                        <td>用户2得金币</td>
+                        <td>用户3ID</td>
+                        <td>用户3得金币</td>
+                        <td>用户4ID</td>
+                        <td>用户4得金币</td>
                         <td>计算时间</td>
                         <td>状态</td>
                         <td>操作</td>
@@ -60,7 +60,9 @@
                         {/eq}
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="handle.delete(this, {$v.id})"><i class="fa fa-trash"></i>
+                            <a href="{:url('SettlementRecords/recordsDetail',['member_id1'=>$v['member_id1'],'member_id2'=>$v['member_id2'],'member_id3'=>$v['member_id3'],'member_id4'=>$v['member_id4']])}"><button type="button" class="btn btn-primary" >
+                            详情</button></a>
+                            <button type="button" class="btn btn-danger" data-toggle="tooltip"  onclick="handle.delete(this, {$v.id})"><i class="fa fa-trash"></i>
                             </button>
                         </td>
                     </tr>

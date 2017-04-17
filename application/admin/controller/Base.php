@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use app\common\controller\Base as Controller;
 use think\Config;
 use think\Session;
+use think\Loader;
 use think\response\Redirect;
 
 class Base extends Controller
@@ -16,7 +17,6 @@ class Base extends Controller
     {
         Session::init();
         $this->_checkLogin(); // 登录检查
-
         $this->view->config('tpl_cache', false); // 关闭模板缓存
         if ($this->request->isPjax()) {
             Config::set('default_ajax_return', 'html');
@@ -24,7 +24,12 @@ class Base extends Controller
         }
         $this->view->header = $this->header;
         $this->view->desc   = $this->desc;
+        //菜单数据、用户个人信息注入全局
+        $this->_assignGlobalInfo();
+
     }
+
+
 /**
  * 登录检查
  */
@@ -41,25 +46,22 @@ class Base extends Controller
     }
 
     /**
-     * 图片上传
-     * @return [type] string 图片保存路径
+     * 菜单信息、用户个人信息注入全局
+     * @return
      */
-    protected function uploadImg($name="image"){
-        //验证图片 
-        $file = $this->request->file($name);
-        if(!$file->check(config('upload_img_rule'))){ 
-            return ['code'=>0, 'msg'=>$file->getError()];
-        }
-        $info = $file->move(config('img_save_root'));
-        if($info){
-            $result = ['code'=>1, 'data'=>config('img_save_url').str_replace('\\', '/', $info->getSaveName())];
-        }
-        else{
-            $result = ['code'=>0, 'msg'=>$info->getError()];
-        }      
-        return $result;
+    private function _assignGlobalInfo()
+    {   
+        //获取session中的用户id
+        $uid = Session::get(Config::get('session_name.uid'));
+        //根据用户id查询自己的权限
+        $ids = Loader::model('AuthGroupAccess')->rules($uid);
+        //返回权限菜单
+        $data = Loader::model('AuthRule')->menu($ids);
+        //根据id查询个人信息
+        $admin = Loader::model('Admin')->getAdminDetail($uid);
+        $this->view->assign('menu', $data);
+        $this->view->assign('admin', $admin);
     }
-
 
 
 }

@@ -7,7 +7,7 @@ class PunishCoin extends Base
 
     protected $header = '结算管理';
 
-    const PAGE_SIZE = 7 ;
+    const PAGE_SIZE = 4 ;
 
     public function punishList()
     {   

@@ -1,10 +1,7 @@
 <?php  
 namespace app\admin\model;
 
-class PandaRooms extends Base
-{
-    public function saveRoom($input)
-    {
+class PandaRooms extends Base{
+    
 
-    }
 }

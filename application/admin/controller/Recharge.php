@@ -7,7 +7,7 @@ class Recharge extends Base
 
     protected $header = '充值记录';
 
-    const PAGE_SIZE = 7 ;
+    const PAGE_SIZE = 4 ;
 
     /**
      * 会员充值记录页面

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>兑换</title>
+	</head>
+	<body>
+		<div class="exchange-box bg-img-lg fixed">
+			<header class="clear">
+				<a class="pull-right" href="{:url('Center/exchangeDetail')}">明细<img class="pull-right" src="/static/index/images/arrowhead.png"></a>
+			</header>
+			<div class="exchange-main">
+				<p>金币余额：<span class="balance"><?=$G_user['coin_num'] ?></span></p>
+				<div class="exchange-import">
+					<form action="" method="post" class="clear">
+						<div class="relative bg-img-lg pull-left">
+							<input id="coin_num" class="absolute-zero" type="number" name="money"/>
+							<span class="absolute-zero">请输入要兑换的金币数</span>
+						</div>
+						<span class="bg-img-lg pull-right" onclick="handle.exchange(this)"></span>
+					</form>
+					<h4 class="size-13">说明： </h4>
+					<p class="size-13">1、提现申请之后平台会以红包的方式在公众号内返给用户；</p>
+					<p class="size-13"> 2、每日兑换次数<span>{$list.convert1}</span>次，兑换上限<span class="toplimit">{$list.convert2}</span>。</p>
+				</div>				
+			</div>
+		</div>
+		<!--兑换成功弹窗-->
+		<div class="mate-case fixed recharge">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">兑换成功</h4>
+				<p class="size-13 text-center" style="line-height:.2rem;">您的申请已民提交成功，<br />请留意微信红包</p>
+				<div>
+					<span class="bg-img-lg" onclick="playerCancel(this)"></span>
+				</div>
+			</div>
+		</div>
+		<!--兑换提醒-->
+		<div class="mate-case fixed exchange-warn">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">提示</h4>
+				<p class="size-18 text-center" style="line-height:.4rem;"></p>
+				<div>
+					<span class="bg-img-lg" onclick="playerCancel(this)"></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+	<script>
+
+	var requestUrl = {
+		exchange : "{:url('Convert/exchange')}"
+	};
+
+	var handle = {
+		exchange : function(obj){
+			var coin_num = $("#coin_num").val();
+			recharge();
+			$.post(requestUrl.exchange,{coin_num:coin_num},function(e){
+				if(e.code==1){
+					purchaseSuccess(obj);
+					setInterval("window.location.reload()",2000);			
+				}else{
+					$(".exchange-warn p").html(e.msg);
+					$(".exchange-warn").show();
+				}
+			})
+		},
+	};
+
+	var prompt={
+		one:"请输入兑换金额",
+		two:"超过兑换上限",
+		three:"超过余额"
+	}
+	//充值弹窗
+	function recharge(){
+		var balance = parseInt($(".balance").html())
+		var toplimit = parseInt($(".toplimit").html());
+		var value = $(".exchange-import input").val();
+		if(value==''){
+			$(".exchange-warn p").html(prompt.one);
+			$(".exchange-warn").show();
+		}else if(value>toplimit){
+			$(".exchange-warn p").html(prompt.two);
+			$(".exchange-warn").show();
+		}else if(value>balance){
+			$(".exchange-warn p").html(prompt.three);
+			$(".exchange-warn").show();
+		}
+	}
+	</script>
+</html>

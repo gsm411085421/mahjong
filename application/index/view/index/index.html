@@ -1,9 +1,586 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" >
+    <link rel="stylesheet" href="/static/index/css/public.css"/>
+    <title>首页</title>
+    <script>
+    	window.USERINFO = <?=json_encode($G_user, 320) ?>;
+    </script>
 </head>
+
 <body>
-   
+	<div class="home-box bg-img-lg fixed">
+		<header class="bg-repeat-x">
+			<div class="head-text pull-left bg-img-lg relative">
+				<div class="head-portrait absolute">
+					<img src="<?=$G_user['head_img'] ?>"><!--头像-->
+					<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+				</div>
+				<span class="pull-left"><?=$G_user['nickname'] ?></span>
+				<p class="pull-left size-11"><?=$G_user['id'] ?></p>
+				<div class="deposit-list size-11">
+					<p class="pull-left"><img src="/static/index/images/icon_coin_home.png"><span><?=$G_user['coin_num'] ?></span></p>
+					<p class="pull-left"><img src="/static/index/images/icon_ingot_home.png"><span><?=$G_user['sycee_num'] ?></span></p>
+				</div>
+			</div>
+			<div class="head-right pull-right">
+				<p class="size-11">注册用户<span><?=$registerCount ?></span></p>
+				<div class="btn-glup">
+					<a href="{:url('Index/announcement')}">
+						<img src="/static/index/images/icon_notice_home.png">
+						公告
+					</a>
+					<a href="{:url('Index/rule')}">
+						<img src="/static/index/images/icon_rule_home.png">
+						规则
+					</a>
+					<a href="{:url('Index/seniority')}">
+						<img src="/static/index/images/icon_chart_home.png">
+						排行
+					</a>
+				</div>
+			</div>
+		</header>
+		<main>
+			<div class="banner relative">
+				<div class="banner-bg"></div>
+				<div class="banner-box absolute">
+					<div class="clear">
+					<?php foreach ($realTimeNotice as $v): ?>
+						<a class="size-12" href="javascript:void(0);"><?=$v ?></a>
+					<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+			<div class="game-select clear">
+				<div class="game-list bg-img-lg pull-left relative">
+					<a href="javascript:void(0);" onclick="mahjonMate()">
+						<img src="/static/index/images/btn_mate_home.png">
+					</a>
+					<div class="room-count">
+						<div class="shade-tier"></div>
+						<div>
+							<p>空闲房间数：<span><?=$roomCount['m']['free'] ?></span></p>
+							<p>游戏中房间数：<span><?=$roomCount['m']['playing'] ?></span></p>
+						</div>
+					</div>
+				</div>
+				<div class="game-list bg-img-lg pull-right relative">
+					<a href="javascript:void(0);" onclick="landlordnMate()">
+						<img src="/static/index/images/btn_mate_home.png">
+					</a>
+					<div class="room-count">
+						<div class="shade-tier"></div>
+						<div>
+							<p>空闲房间数：<span><?=$roomCount['d']['free'] ?></span></p>
+							<p>游戏中房间数：<span><?=$roomCount['d']['playing'] ?></span></p>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="create-btn clear"><!--添加active显示回到房间按钮-->
+				<a class="pull-left" href="javascript:void(0);" onclick="establish()">
+					<img src="/static/index/images/btn_create_home.png">
+				</a>
+				<a class="pull-right" href="javascript:void(0);" onclick="addRoom()">
+					<img src="/static/index/images/btn_join_home.png">
+				</a>
+				<a href="javascript:void(0);">
+					<img src="/static/index/images/btn_back_home.png">
+				</a>
+			</div>
+			<div class="line bg-img-lg"></div>			
+		</main>
+		<div class="talk relative">
+			<div class="btn-down-up" onclick="downUp(this)">
+				<img class="absolute-zero" src="/static/index/images/icon_down_home.png">
+				<img class="absolute-zero" src="/static/index/images/icon_up_home.png">
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<p class="text-center talk-time relative"><span class="absolute">17-03-24   12:00</span><i></i></p>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<p class="text-center talk-time relative"><span class="absolute">17-03-24   12:00</span><i></i></p>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+			<div class="talk-list relative clear">
+				<div class="head-portrait-four absolute"><img src="/static/index/images/pulick-head_02.png"></div>
+				<span class="size-12 pull-left">快乐八爪鱼</span>
+				<p class="bg-img-lg pull-left text-overflow">熊猫麻将，血战到底，自摸加底，有人吗？</p>
+			</div>
+		</div>
+	</div>
+	<!--输入框-->
+	<div class="input-field">
+		<span>点此输入聊天内容</span>
+		<form class="clear">
+			<input type="text" name="talk"/>
+			<span class="pull-right"><img src="/static/index/images/btn_send_home.png"></span>
+		</form>		
+	</div>	
+	<!--底部步导航-->
+	<nav id="nav" class="bg-repeat-x clear">
+		<a class="pull-left" href="javascript:void(0);" onclick="handle.oper('convert');"><img src="/static/index/images/icon_exchange_home.png"><p class="text-center">兑换</p></a>
+		<a class="pull-left" href="javascript:void(0);" onclick="handle.oper('recharge');"><img src="/static/index/images/icon_charge_home.png"><p class="text-center">充值</p></a>
+		<a class="pull-left" href="javascript:void(0);" onclick="handle.oper('mall');"><img src="/static/index/images/icon_mall_home.png"><p class="text-center">商城</p></a>
+		<a class="pull-left" href="javascript:void(0);" onclick="handle.oper('center');"><img src="/static/index/images/icon_mine_home.png"><p class="text-center">个人</p></a>
+	</nav>
+	<!--快速匹配-麻将-->
+	<div class="mate-case fixed mahjong">
+		<div class="blac-bg fixed"></div>
+		<div class="mate-theme absolute">
+			<div class="mate-title clear">
+				<span class="pull-left" onclick="returnPage(this)"><img src="/static/index/images/icon_back_mate.png"></span>
+				<img class="pull-right" src="/static/index/images/title_xiongmao_mate.png">
+			</div>
+			<div class="mate-select relative">
+				<span class="bg-img-lg text-center size-12" onclick="matchingIn1(this)">1金币（空闲1）</span>
+				<span class="bg-img-lg text-center size-12" onclick="matchingIn1(this)">2金币（空闲1）</span>
+				<span class="bg-img-lg text-center size-12" onclick="matchingIn1(this)">5金币（空闲1）</span>
+				<span class="bg-img-lg text-center size-12" onclick="matchingIn1(this)">10金币（空闲1）</span>
+				<p class="absolute house-one active" onclick="houseSelect(this)">
+					<img class="absolute" src="/static/index/images/btn_xuezhan_default_mate.png">
+					<img class="absolute" src="/static/index/images/btn_xuezhan_selected_mate.png">
+				</p>
+				<p class="absolute house-two" onclick="houseSelect(this)">
+					<img class="absolute" src="/static/index/images/btn_liangrensanfang_default_mate.png">
+					<img class="absolute" src="/static/index/images/btn_liangrensanfang_selected_mate.png">
+				</p>
+			</div>
+		</div>
+	</div>
+	<!--快速匹配-斗地主-->
+	<div class="mate-case fixed landlord">
+		<div class="blac-bg fixed"></div>
+		<div class="mate-theme absolute">
+			<div class="mate-title clear">
+				<span class="pull-left" onclick="returnPage(this)"><img src="/static/index/images/icon_back_mate.png"></span>
+				<img style="margin-right:.45rem;" class="pull-right" src="/static/index/images/title_xianlai_mate.png">
+			</div>
+			<div class="mate-select relative">
+				<span class="bg-img-lg text-center size-12" onclick="matchingIn2(this)">1金币（空闲1）</span>
+				<span class="bg-img-lg text-center size-12" onclick="matchingIn2(this)">2金币（空闲1）</span>
+				<span class="bg-img-lg text-center size-12" onclick="matchingIn2(this)">5金币（空闲1）</span>
+				<span class="bg-img-lg text-center size-12" onclick="matchingIn2(this)">10金币（空闲1）</span>
+				<p class="absolute house-one active" onclick="houseSelect(this)">
+					<img class="absolute" src="/static/index/images/btn_laizidizhu_default_mate.png">
+					<img class="absolute" src="/static/index/images/btn_laizidizhu_pressed_mate.png">
+				</p>
+				<p class="absolute house-two" onclick="houseSelect(this)">
+					<img class="absolute" src="/static/index/images/btn_sanrendizhu_default_mate.png">
+					<img class="absolute" src="/static/index/images/btn_sanrendizhu_pressed_mate.png">
+				</p>
+				<p class="absolute house-three" onclick="houseSelect(this)">
+					<img class="absolute" src="/static/index/images/btn_sirendizhu_default_mate.png">
+					<img class="absolute" src="/static/index/images/btn_sirendizhu_pressed_mate.png">
+				</p>
+			</div>
+		</div>
+	</div>
+	<!--麻将匹配中-->
+	<div class="mate-case fixed matchings">
+		<div class="blac-bg fixed"></div>
+		<div class="matching-in absolute">
+			<div class="matching-gif relative">
+				<img src="/static/index/images/gif_xiongmao_mate.gif">
+				<img src="/static/index/images/hig-hlight.png">
+			</div>
+			<div class="count-down text-center size-18">
+				<span>匹配中</span>
+				<span>03:00:00</span>
+			</div>
+			<span class="bg-img-lg"  onclick="returnPage(this)"></span>
+			<h4 class="text-center">重要提示</h4>
+			<p>１、结算输入的是游戏结算图中的比分。  </p>
+			<p>２、创房时，请先在熊猫游戏中创建，在平台办理入正确已建好的房间号。</p>
+			<p>３、匹配房间玩家与游戏玩家必须一致，不一致可以不认输赢。</p>
+			<p>４、正常等待时间为3分钟，超过则离线玩家负责游戏的输赢。（手机没电，请提前告知客服）</p>
+			<p>５、出牌过慢可提出解散房间，结算分数按结算图+当时已胡牌的分数＝结算比分。</p>
+			<p>６、恶意每张牌几分钟出一次，玩家可以解散房间，恶意玩家负责输赢。</p>
+		</div>
+	</div>
+	<!--斗地主匹配中-->
+	<div class="mate-case fixed landlords">
+		<div class="blac-bg fixed"></div>
+		<div class="matching-in absolute">
+			<div class="matching-gif relative">
+				<img src="/static/index/images/gif_xianlai_mate.gif">
+				<img src="/static/index/images/hig-hlight.png">
+			</div>
+			<div class="count-down text-center size-18">
+				<span>匹配中</span>
+				<span>03:00:00</span>
+			</div>
+			<span class="bg-img-lg"  onclick="returnPage(this)"></span>
+			<h4 class="text-center">重要提示</h4>
+			<p>１、结算输入的是游戏结算图中的比分。  </p>
+			<p>２、创房时，请先在熊猫游戏中创建，在平台办理入正确已建好的房间号。</p>
+			<p>３、匹配房间玩家与游戏玩家必须一致，不一致可以不认输赢。</p>
+			<p>４、正常等待时间为3分钟，超过则离线玩家负责游戏的输赢。（手机没电，请提前告知客服）</p>
+			<p>５、出牌过慢可提出解散房间，结算分数按结算图+当时已胡牌的分数＝结算比分。</p>
+			<p>６、恶意每张牌几分钟出一次，玩家可以解散房间，恶意玩家负责输赢。</p>
+		</div>
+	</div>
+	<!--创建房间第一步-->
+	<div class="mate-case fixed establish-one">
+		<div class="blac-bg fixed"></div>
+		<div class="found-one absolute">
+			<div class="bg-img-lg establish-one relative">
+				<img class="absolute" src="/static/index/images/title_createRoom_room.png">
+				<div class="found-glup clear">
+					<div  class="pull-left bg-img-lg active" onclick="houseSelect(this)"></div>
+					<div class="pull-right bg-img-lg" onclick="houseSelect(this)"></div>	
+				</div>
+				<div class="room-detail">
+					<div class="detail-list clear">
+						<div class="pull-left clear active" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room(20).png"><img src="/static/index/images/btn_unchecked_room(19).png"></p>		
+						</div>	
+						<div class="pull-right clear" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room (14).png"><img src="/static/index/images/btn_unchecked_room (13).png"></p>		
+						</div>
+					</div>
+					<div class="detail-list clear">
+						<div class="pull-left clear active" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room (10).png"><img src="/static/index/images/btn_unchecked_room (9).png"></p>		
+						</div>	
+						<div class="pull-right clear" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room (12).png"><img src="/static/index/images/btn_unchecked_room (11).png"></p>		
+						</div>
+					</div>
+					<div class="detail-list clear much-line">
+						<div class="pull-left clear active" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room (6).png"><img src="/static/index/images/btn_unchecked_room (5).png"></p>		
+						</div>	
+						<div class="pull-right clear" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room (22).png"><img src="/static/index/images/btn_unchecked_room (21).png"></p>		
+						</div>
+					</div>
+					<div class="detail-list clear">
+						<div class="pull-left clear" onclick="multiselect(this)" style="margin-bottom:.05rem;">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room (4).png"><img src="/static/index/images/btn_unchecked_room (3).png"></p>		
+						</div>	
+						<div class="pull-right clear" onclick="multiselect(this)" style="margin-bottom:.05rem;">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room (8).png"><img src="/static/index/images/btn_unchecked_room (7).png"></p>		
+						</div>
+						<div class="pull-left clear" onclick="multiselect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room (16).png"><img src="/static/index/images/btn_unchecked_room (15).png"></p>		
+						</div>	
+						<div class="pull-right clear" onclick="multiselect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/btn_unchecked_room (18).png"><img src="/static/index/images/btn_unchecked_room (17).png"></p>		
+						</div>
+					</div>
+				</div>
+				<div class="room-detail hide">
+					<div class="detail-list clear">
+						<div class="pull-left clear active" onclick="houseSelect(this)" style="margin-bottom:.05rem;">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/laizidizhu_unchecked_room.png"><img src="/static/index/images/laizidizhu_checked_room.png"></p>		
+						</div>	
+						<div class="pull-right clear" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/sanrendizhu_unchecked_room.png"><img src="/static/index/images/sanrendizhu_checked_room.png"></p>		
+						</div>
+						<div class="pull-left clear" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/sirendizhu_unchecked_room.png"><img src="/static/index/images/sirendizhu_checked_room.png"></p>		
+						</div>
+					</div>
+					<div class="detail-list clear">
+						<div class="pull-left clear active" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/daipizi_unchecked_room.png"><img src="/static/index/images/daipizi_checked_room.png"></p>		
+						</div>	
+						<div class="pull-right clear" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/budaipizi_unchecked_room.png"><img src="/static/index/images/budaipizi_checked_room.png"></p>		
+						</div>
+					</div>
+					<div class="detail-list clear">
+						<div class="pull-left clear active" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/jiadi_unchecked_room.png"><img src="/static/index/images/jiadi_checked_room.png"></p>		
+						</div>	
+						<div class="pull-right clear" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/jiafan_unchecked_room.png"><img src="/static/index/images/jiafan_checked_room.png"></p>		
+						</div>
+					</div>
+					<div class="detail-list clear">
+						<div class="pull-left clear active" onclick="houseSelect(this)" style="margin-bottom:.05rem;">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/3bomb_unchecked_room.png"><img src="/static/index/images/3bomb_checked_room.png"></p>		
+						</div>	
+						<div class="pull-right clear" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/4bomb_unchecked_room.png"><img src="/static/index/images/4bomb_checked_room.png"></p>		
+						</div>
+						<div class="pull-left clear" onclick="houseSelect(this)">
+							<span class="bg-img-lg pull-left"></span>
+							<p class="pull-left"><img src="/static/index/images/5bomb_unchecked_room.png"><img src="/static/index/images/5bomb_checkde_room-min.png"></p>		
+						</div>	
+					</div>
+				</div>
+			</div>
+			<p class="clear">
+				<span class="pull-left bg-img-lg" onclick="returnPage(this)"></span>
+				<span class="pull-right bg-img-lg" id="select-play-method" data-source="1" onclick="nextbtn(this)"></span>
+			</p>
+		</div>
+	</div>
+	<!--创建房间下一步-->
+	<div class="mate-case fixed mahjong-next-step">
+		<div class="blac-bg fixed"></div>
+		<div class="found-two absolute">
+			<div class="bg-img-lg establish-two relative" data-species="">
+				<img class="absolute" src="/static/index/images/title_createRoom_room.png">
+				<form action="" method="">
+					<div class="room-number bg-img-lg relative">
+						<span class="text-center absolute">请输入您的房号</span>
+						<input type="text" />
+					</div>
+				</form>
+				<p class="size-13">提示：请先在#<span>熊猫四川麻将</span>#开房， 并将房间号输入此处</p>
+				<div class="species-list relative" onclick="selectSpecies(this)" data-money="1">
+					<img class="absolute-zero" src="/static/index/images/1coin_default_room.png">
+					<img class="absolute-zero" src="/static/index/images/1coin_selected_room.png">
+				</div>
+				<div class="species-list relative" onclick="selectSpecies(this)" data-money="2">
+					<img class="absolute-zero" src="/static/index/images/2coin_default_room.png">
+					<img class="absolute-zero" src="/static/index/images/2coin_selected_room.png">
+				</div>
+				<div class="species-list relative" onclick="selectSpecies(this)" data-money="5">
+					<img class="absolute-zero" src="/static/index/images/5coin_default_room.png">
+					<img class="absolute-zero" src="/static/index/images/5coin_selected_room.png">
+				</div>
+				<div class="species-list relative" onclick="selectSpecies(this)" data-money="10">
+					<img class="absolute-zero" src="/static/index/images/10coin_default_room.png">
+					<img class="absolute-zero" src="/static/index/images/10coin_selceted_room.png">
+				</div>
+			</div>
+			<p class="clear">
+				<span class="pull-left bg-img-lg" onclick="returnbtn(this)"></span>
+				<span class="pull-right bg-img-lg" onclick=location.href="foundSuccess.html"></span>
+			</p>
+		</div>
+	</div>
+	<!--加入房间第二步-->
+	<div class="mate-case fixed select-bottom">
+		<div class="blac-bg fixed"></div>
+		<div class="found-two absolute">
+			<div class="bg-img-lg establish-two relative" data-species="">
+				<img class="absolute" src="/static/index/images/Ribbon.png">
+				<div class="size-18-f text-center" style="margin:.5rem 0 .3rem">选择金币底</div>
+				<div class="species-list relative active" onclick="selectSpecies(this)" data-money="1">
+					<img class="absolute-zero" src="/static/index/images/1coin_default_room.png">
+					<img class="absolute-zero" src="/static/index/images/1coin_selected_room.png">
+				</div>
+				<div class="species-list relative" onclick="selectSpecies(this)" data-money="2">
+					<img class="absolute-zero" src="/static/index/images/2coin_default_room.png">
+					<img class="absolute-zero" src="/static/index/images/2coin_selected_room.png">
+				</div>
+				<div class="species-list relative" onclick="selectSpecies(this)" data-money="5">
+					<img class="absolute-zero" src="/static/index/images/5coin_default_room.png">
+					<img class="absolute-zero" src="/static/index/images/5coin_selected_room.png">
+				</div>
+				<div class="species-list relative" onclick="selectSpecies(this)" data-money="10">
+					<img class="absolute-zero" src="/static/index/images/10coin_default_room.png">
+					<img class="absolute-zero" src="/static/index/images/10coin_selceted_room.png">
+				</div>
+			</div>
+			<p class="clear">
+				<span class="pull-left bg-img-lg" onclick="returnbtn(this)"></span>
+				<span class="pull-right bg-img-lg" onclick=location.href="foundSuccess.html"></span>
+			</p>
+		</div>
+	</div>
+	<!--金币不足-->
+	<div class="mate-case fixed gold-deficiency">
+		<div class="blac-bg fixed"></div>
+		<div class="bg-img-lg deficiency-box absolute">
+			<h4 class="size-18 text-center">金币不足</h4>
+			<p class="size-13 text-center">当前金币数：<span>80</span></p>
+			<p class="size-13 text-center">最少需要金币数：<span>160</span></p>
+			<div>
+				<span class="pull-left bg-img-lg" onclick="rulebtn(this)"></span>
+				<span class="pull-right bg-img-lg"></span>
+			</div>
+		</div>
+	</div>
+	<!--兑换弹窗-->
+	<div class="mate-case fixed perfect-data">
+		<div class="blac-bg fixed"></div>
+		<div class="bg-img-lg deficiency-box player-man absolute">
+			<h4 class="size-18 text-center">完善资料</h4>
+			<p class="size-13 text-center">请先在“个人资料”中填写<br />真实姓名和手机号</p>
+			<div>
+				<span class="pull-left bg-img-lg" onclick="playerCancel(this)"></span>
+				<span class="pull-right bg-img-lg" onclick="location.href='{:url('Center/profile')}'"></span>
+			</div>
+		</div>
+	</div>
+	<!--充值弹窗-->
+	<div class="mate-case fixed recharge">
+		<div class="blac-bg fixed"></div>
+		<div class="bg-img-lg deficiency-box player-man absolute">
+			<h4 class="size-18 text-center">充值</h4>
+			<p class="size-13 text-center">系统升级，暂由人工充值，<br />请联系微信号：<span class="size-18-f">{$weChart}</span></p>
+			<div>
+				<span class="bg-img-lg" onclick="playerCancel(this)"></span>
+			</div>
+		</div>
+	</div>
+	<div class="mate-case fixed operationed">
+		<div class="blac-bg fixed"></div>
+		<div class="bg-img-lg deficiency-box absolute">
+			<h4 class="size-18 text-center">操作提示</h4>
+			<p class="size-13 text-center" style="line-height:.2rem;"></p>
+			<div>
+				<span class="bg-img-lg" style="margin-left: 26%;" onclick="playerCancel(this)"></span>
+			</div>
+		</div>
+	</div>
 </body>
+<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+<script src="/static/common/js/web_socket.js"></script>
+<script src="/static/index/js/mahjong.js"></script>
+<script src="/static/index/js/public.js"></script>
+<script>
+
+    var requestUrl = {
+    	checkMember: "{:url('MemberProfile/findOne')}"
+    };
+
+	var handle = {
+
+		//下一步操作
+		oper : function(type){
+				if(window.USERINFO.clear_status) {
+						if('convert' === type) {
+								handle.checkMember();
+						} else if('recharge' === type) {
+								$(".recharge").show();
+						} else if('mall' === type) {
+								location.href = "{:url('Goods/mall')}" ;
+						} else if('center' === type){
+								location.href = "{:url('Center/index')}" ;
+						} else if('chat' === type) {
+								dialogue();
+						} else if('mahjonMate' === type) {
+								mahjonMate();
+						} else if ('landlordnMate' === type) {
+								landlordnMate();
+						} else if ('establish' === type) {
+								establish();
+						} else if ('addRoom' === type) {
+								addRoom();
+						}
+				} else {
+						$(".operationed p").html('您有未结算的游戏！请先结算哦！');
+						$(".operationed").show();
+				}
+		},
+
+		checkMember : function(){
+			$.post(requestUrl.checkMember,function(e){
+				if(e.code==1){
+					window.location="{:url('Center/exchange')}";
+				}else{
+					xchange();
+				}
+			})
+		},
+	};
+
+	$(".room-detail").hide().eq(0).show();
+	function countdown(select){
+		var n=60;
+		var m=60;
+		var f=2;
+		var timer=null;
+		timer=setInterval(function(){
+			n--;
+			if(n==0){
+				m--;				
+			}else if(m==0){
+				f--;
+			}else if(f==0){
+				clearInterval(timer);
+			}			
+		},1000/60)
+		$(select).html(f+':'+m+':'+n);
+	}
+
+	// ws = new WebSocket("ws://127.0.0.1:2346");
+	// ws.onopen = function(){
+	// 	ws.send(JSON.stringify('Tom'));
+	// }
+	// ws.onmessage = function(e){
+	// 	alert(e);
+	// }
+
+</script>
 </html>

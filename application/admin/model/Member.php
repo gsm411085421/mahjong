@@ -13,27 +13,33 @@ class Member extends Base
      */
     public function updateCoin(array $input)
     {   
-        $user = Db::name('admin')->where('id',Session::get('uid'))->find(); 
-        $input['user'] = $user['user'];
-        $coin = $this->where('id',$input['id'])->value('coin_num');
-        if( $input['type'] == 'add' ){
-            $data = ['member_id'=>$input['id'],'recharge_num'=>$input['coin_num'],'admin_user'=>$input['user']];
-            Db::name('Recharge')->insert($data);
-            $coin =  $coin + $input['coin_num'];
-        }else{
-            if($coin<$input['coin_num']){
-                 return ['code'=>0,'msg'=>'余额不足'];
+        $this->startTrans();
+        try{
+            $user = Db::name('admin')->where('id',Session::get('uid'))->value('user'); 
+            $input['user'] = $user;
+            $coin = $this->where('id',$input['id'])->value('coin_num');
+            if( $input['type'] == 'add' ){
+                $data = ['member_id'=>$input['id'],'recharge_num'=>$input['coin_num'],'admin_user'=>$input['user']];
+                Db::name('Recharge')->insert($data);
+                $coin =  $coin + $input['coin_num'];
+            }else{
+                if($coin<$input['coin_num']){
+                     return ['code'=>0,'msg'=>'余额不足'];
+                }
+                $data = ['member_id'=>$input['id'],'punish_coin'=>$input['coin_num'],'admin_user'=>$input['user']];
+                Db::name('PunishCoin')->insert($data);
+                $coin =  $coin - $input['coin_num'];
             }
-            $data = ['member_id'=>$input['id'],'punish_coin'=>$input['coin_num'],'admin_user'=>$input['user']];
-            Db::name('PunishCoin')->insert($data);
-            $coin =  $coin - $input['coin_num'];
+            $res = $this->save(['coin_num'=>$coin],['id'=>$input['id']]);
+            if($res){
+                $this->commit();
+                return ['code'=>1,'msg'=>'修改成功'];
+            }
+        }catch(\Exception $e){
+            $this->rollback();
+            return ['code'=>0 , 'msg'=>$e->getMessage()];
         }
-        $res = $this->save(['coin_num'=>$coin],['id'=>$input['id']]);
-        if($res){
-            return ['code'=>1,'msg'=>'修改成功'];
-        }else{
-            return ['code'=>0,'msg'=>'修改失败'];
-        }
+        
     }
 
     /**
@@ -76,7 +82,10 @@ class Member extends Base
             $res = $this->isUpdate(true)->save($data);
             if($res){
                 $user = Db::name('admin')->where('id',Session::get('uid'))->find();
-                $input = ['member_id'=>$data['id'],'seal_user'=>$user['user']];
+                $input = [
+                    'member_id'=>$data['id'],
+                    'seal_user'=>$user['user']
+                ];
                 $res = Db::name('DisableMember')->insert($input);
                 if($res){
                     $handle = ['code'=>1,'msg'=>'修改成功'];
@@ -95,6 +104,16 @@ class Member extends Base
             }
         }
         return $handle;
+    }
+
+    /**
+     * 代理IP转换
+     * @param  [type] $value [description]
+     * @return [type]        [description]
+     */
+    public function getLoginIpAttr($value)
+    {
+        return long2ip($value);
     }
 
 }

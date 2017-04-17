@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>房间创建成功</title>
+	</head>
+	<body>
+		<div class="foundsuccess-box bg-img-lg fixed">
+			<header class="bg-img-lg relative">
+				<img class="absolute" src="/static/index/images/img_xiongmao_room.png">
+				<h4 class="size-18-f">熊猫四川麻将</h4>
+				<p>血战到底｜自摸加番｜杠上花（点炮）｜ 换三张｜门清中张</p>
+			</header>
+			<div class="mate-box">
+				<p class="size-13 mate-news" >场次：<span>2</span>金币>><span>2</span>平台房间号：<span>512475</span>>>ID：<span>21571</span></p>
+				<div class="mate-in relative">
+					<p class="absolute-zero"></p>
+					<div class="absolute-zero size-18-f text-center">匹配中……</div>
+				</div>
+				<div class="prepare-prompt bg-img-lg" style="display:none;">
+					<span>绿色</span>：请尽快准备
+				</div>
+				<div class="mate-people clear">
+					<div class="people-list bg-img-lg pull-left">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span class="nickname">绿色</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<p class="clear">
+							<span class="bg-img-lg pull-left btn-one" onclick="remindIntend(this)"></span><!--准备按钮-->
+							<span class="bg-img-lg pull-right btn-two" onclick="playerBtn(this)"></span><!--踢人按钮-->
+						</p>						
+					</div>
+					<div class="people-list bg-img-lg pull-left">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span>绿色</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<p class="clear">
+							<span class="prepare text-center">已准备</span>
+						</p>						
+					</div>
+					<div class="people-list bg-img-lg pull-left">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span>绿色</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<p class="clear">
+							<span class="bg-img-lg btn-three" onclick="cancelPrepare(this)"></span><!--准备按钮-添加active显示取消按钮-->
+						</p>						
+					</div>
+					<div class="people-list bg-img-lg pull-left">
+						<img src="/static/index/images/img_headPortrait_default_room.png">		
+						<img src="/static/index/images/img_unknown_room.png">	
+					</div>					
+				</div>
+				<p class="clear btn-fou">
+					<span class="bg-img-lg pull-left" onclick=location.href='homePage.html'></span><!--大厅按钮-->
+					<span class="bg-img-lg pull-right" onclick="dismiss()"></span><!--解散按钮-->
+				</p>
+			</div>
+		</div>
+		<!--踢人弹窗-->
+		<div class="mate-case fixed player-box">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">踢人</h4>
+				<p class="size-13 text-center">确定将#<span>绿色</span>#踢出房间吗？</p>
+				<div>
+					<span class="pull-left bg-img-lg" onclick="playerCancel(this)"></span>
+					<span class="pull-right bg-img-lg"></span>
+				</div>
+			</div>
+		</div>
+		<!--解散弹窗-->
+		<div class="mate-case fixed dismiss">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">解散</h4>
+				<p class="size-13 text-center">确定要解散房间吗？</p>
+				<div>
+					<span class="pull-left bg-img-lg" onclick="playerCancel(this)"></span>
+					<span class="pull-right bg-img-lg" onclick=location.href='homePage.html'></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+</html>

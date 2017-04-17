@@ -1,44 +1,40 @@
-<?php  
+<?php
 namespace app\index\model;
+use app\common\api\SystemConfig;
 
 class Notice extends Base
-{   
-    /**
-     * 查询可用状态的公告
-     * @return [type] [description]
-     */
-    public function showNotice()
-    {
-        return $this->where('status',1)->select();
-    }
+{
+    public static $fieldType = [0=>'系统公告', 1=>'活动公告', 2=>'即时公告'];
 
     /**
-     * 查询系统公告
+     * 获取即时公告
      * @return [type] [description]
      */
-    public function showSystem()
+    public function getRealTimeNotice()
     {
-        return $this->where('type',0)->select();
+        $where = ['status'=>1, 'type'=>2];
+        return $this->where($where)->column('content');
     }
 
-     /**
-     * 查询活动公告
+    /**
+     * 获取系统公告
+     */
+    public function getAnnouncement()
+    {
+        $where = ['status'=>1,'type'=>0];
+        return $this->where($where)->column('content');
+    }
+
+    /**
+     * 获取平台规则
      * @return [type] [description]
      */
-    public function showActive()
+     public function getRule()
     {
-        return $this->where('type',1)->select();
+        $systemConfig = new SystemConfig(); 
+        $data = $systemConfig->data();
+        return $data['rule'];
     }
-
-     /**
-     * 查询即时公告
-     * @return [type] [description]
-     */
-    public function showNow()
-    {
-        return $this->where('type',2)->select();
-    }
-
-
+    
 
 }

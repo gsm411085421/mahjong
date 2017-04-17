@@ -23,22 +23,6 @@ class Notice extends Base
             return ['code'=>0, 'msg'=>$this->getError() ? $this->getError() : '操作失败'];
         }
     }
-    /**
-     * 删除一条数据
-     * @param  [type] $id [description]
-     * @return [type]     [description]
-     */
-    public function delOne($id)
-    {
-        $handle = $this->where('id',$id)->delete();
-        if($handle) {
-            $res = ['code'=>1, 'msg'=>'删除成功'];
-        } else {
-            $res = ['code'=>0, 'msg'=>'删除失败'];
-        }
-        return $res;
-    }
-        // return $handle ? success() : error()
   
 
 }

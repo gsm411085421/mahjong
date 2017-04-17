@@ -29,8 +29,10 @@ class Upload
     {
         $file = Request::instance()->file($fieldName);
         return $file->validate($this->validateRule['image'])
-                ->move(ROOT_PATH. 'public'. DS. 'uploads');
+                ->move(ROOT_PATH. 'public'. DS. 'uploads' .DS.'images');
     }
 
-    protected function file($fieldName='file'){}
+    protected function file($fieldName='file'){
+
+    }
 }

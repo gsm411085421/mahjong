@@ -48,7 +48,7 @@ class AuthRule
      */
     public static function all()
     {
-        return Db::table(self::TABLE)->field(true)->select();
+        return Db::table(self::TABLE)->field(true)->where('pid',0)->select();
     }
 
 }

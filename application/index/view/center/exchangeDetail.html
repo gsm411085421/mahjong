@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>兑换明细</title>
+	</head>
+	<body>
+		<div class="balance-detail fixed e-detail">
+			<table>
+				<thead>
+					<tr>
+						<th>时间</th>
+						<th>金额</th>
+					</tr>
+				</thead>
+				<tbody>
+					{volist name="list" id="v"}
+					<tr>
+						<td>{$v.create_at}</td>
+						<td>{$v.convert_num}</td>
+					</tr>
+					{/volist}					
+				</tbody>				
+			</table>
+		</div>		
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+</html>

@@ -1,9 +1,9 @@
-<?php  
+<?php 
 namespace app\index\model;
 
-use app\common\model\Base as Model;
+use app\common\model\Base as BaseModel;
 
-class Base extends Model
+class Base extends BaseModel
 {
-
+    
 }

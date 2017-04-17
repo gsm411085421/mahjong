@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>个人资料</title>
+	</head>
+	<body>
+		<?php if ($G_user['is_rank'] == 0): ?>
+		<!-- 普通会员 form -->
+		<form action="<?=url('MemberProfile/update') ?>" method="post" id="member">
+			<div class="datum-box bg-img-lg fixed">
+				<div class="bg-img-lg relative">
+					<span class="pull-left">熊猫麻将ID</span>
+					<input class="pull-right" type="number"  name="panda_id" value="{$detail.panda_id}"/>
+				</div>
+				<div class="bg-img-lg relative" style="margin-bottom:.1rem;">
+					<span class="pull-left">闲来斗地主ID</span>
+					<input class="pull-right" type="number"  name="landlords_id" value="{$detail.landlords_id}"/>
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">真实姓名</span>
+					<input class="pull-right" type="text"  name="name" value="{$detail.name}"/>
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">电话号码</span>
+					<input class="pull-right" type="number"  name="phone" value="{$detail.phone}"/>
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">身份证号</span>
+					<input class="pull-right" type="text"  name="id_cards" value="{$detail.id_cards}"/>
+				</div>
+				<div class="bg-img-lg relative" style="margin-bottom:.1rem;">
+					<span class="pull-left">微信号</span>
+					<input class="pull-right" type="text"  name="wechat" value="{$detail.wechat}"/>
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">QQ</span>
+					<input class="pull-right" type="number"  name="qq" value="{$detail.qq}"/>
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">邮箱</span>
+					<input class="pull-right" type="text"  name="email" value="{$detail.email}"/>
+				</div>
+				<p class="proving-hint red text-center">信息错误</p><!--添加reveal显示-->
+				<span class="bg-img-lg" onclick="handle.update('member',this)"></span>
+			</div>	
+		</form>
+		<!-- ./end 普通会员 form -->
+		<?php endif; ?>
+		
+		<?php if ($G_user['is_rank'] == 1): ?>
+		<!-- 代理 form -->
+		<form action="<?=url('MemberProfile/update') ?>" method="POST" id="agency">
+			<div class="datum-box bg-img-lg fixed">			
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">真实姓名</span>
+					<input class="pull-right" type="text" name="name" value="{$detail.name}">
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">手机号</span>
+					<input class="pull-right" type="number" name="phone" value="{$detail.phone}">
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">身份证号</span>
+					<input class="pull-right" type="text" name="id_cards" value="{$detail.id_cards}" maxlength="18">
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">微信号</span>
+					<input class="pull-right" type="text" name="wechat" value="{$detail.wechat}">
+				</div>			
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">开户银行</span>
+					<input class="pull-right" type="text" name="bank_name" value="{$detail.bank_name}">
+					<img class="absolute" src="/static/index/images/icon_arrow_right.png">
+				</div>
+				<div class="bg-img-lg relative">
+					<p class="absolute">*</p>
+					<span class="pull-left">银行账号</span>
+					<input class="pull-right" type="number" name="bank_account" value="{$detail.bank_account}">
+				</div>
+				<div class="bg-img-lg relative" style="margin-bottom:.1rem;">
+					<p class="absolute">*</p>
+					<span class="pull-left">确认银行账号</span>
+					<input class="pull-right" type="number" name="bank_account_two" value="">
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">QQ</span>
+					<input class="pull-right" type="number" name="qq" value="{$detail.qq}">
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">邮箱</span>
+					<input class="pull-right" type="text" name="email" value="{$detail.email}">
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">支付宝</span>
+					<input class="pull-right" type="text" name="alipay" value="{$detail.alipay}">
+				</div>
+				<div class="bg-img-lg relative">
+					<span class="pull-left">自我简介</span>
+					<input class="pull-right" type="text" name="self_intro" value="{$detail.self_intro}">
+				</div>		
+				<p class="proving-hint red text-center">信息错误</p><!--添加reveal显示-->
+				<span class="bg-img-lg" onclick="handle.update('agency',this);"></span>
+			</div>	
+		</form>
+		<!-- ./end 代理 form -->
+		<?php endif; ?>
+
+		<!--选择银行弹窗-->
+		<div class="mate-case fixed bank_box">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg absolute bank-list">
+				<div>
+					<ul class="text-center">
+						<li>建设银行</li>
+						<li>农业银行</li>
+						<li>工商银行</li>
+						<li>中国银行</li>
+						<li>农村信用社</li>
+						<li>邮政储蓄</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<!--修改弹窗 -->
+		<div class="mate-case fixed recharge">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">信息提示</h4>
+				<div>
+					<span class="bg-img-lg" onclick="handle.cancel(this)"  style="margin-left: 26%;"></span>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+	<script>
+
+		var requestUrl = {
+			update : "{:url('MemberProfile/update')}"
+		};
+
+		var handle = {
+
+			update : function(type,obj){
+				var data = ('member'===type) ? $('#member').serializeArray() : $('#agency').serializeArray() ;
+				// var suffix = ('member'===type) ? 'member' : 'agency' ;
+				var res = ('member'===type) ? handle.validateGeneral() : handle.validateAgent();
+				if(!res)return false;
+				$.post(requestUrl.update,data,function(e){
+					$(".recharge p").html(e.msg);		
+					$(".recharge").show();
+				})		
+			},
+
+
+			//代理信息验证
+			validateAgent : function(){
+				var res = [true, true];
+				if ($("input[name='name']").val() == ''){
+					res = [false, prompt.name]
+				} else if ($("input[name='phone']").val() == ''&& res[0] == true) {
+					res = [false, prompt.phone.one];
+				} else if (! /^1[3|4|5|8][0-9]\d{4,8}$/.test($("input[name='phone']").val()) && res[0] == true) {
+					res = [false, prompt.phone.two];
+				}else if($("input[name='id_cards']").val()=='' && res[0] == true){
+					res = [false, prompt.id_cards.one];
+				}else if($("input[name='id_cards']").val().length!==18 && res[0] == true){
+					res = [false, prompt.id_cards.two];
+				}else if($("input[name='wechat']").val()=='' && res[0] == true){
+					res = [false, prompt.wechat];
+				}else if($("input[name='bank_name']").val()=='' && res[0] == true){
+					res = [false, prompt.bank_name];
+				}else if($("input[name='bank_account']").val()=='' && res[0] == true){
+					res = [false, prompt.bank_account.one];
+				}else if($("input[name='bank_account']").val().length!==19 && res[0] == true ){
+					res = [false, prompt.bank_account.two];
+				}else if($("input[name='bank_account']").val()!==$("input[name='bank_account_two']").val() && res[0] == true){
+					res = [false, prompt.bank_account_two];
+				}
+				$(".proving-hint").html(res[1]);
+				$(".proving-hint").addClass("reveal");
+				return res[0];		
+					},
+
+				//普通会员信息验证
+			validateGeneral : function(){
+					var res = [true, true];
+					if ($("input[name='name']").val() == ''){
+						res = [false, prompt.name]
+					} else if ($("input[name='phone']").val() == ''&& res[0] == true) {
+						res = [false, prompt.phone.one];
+					} else if (! /^1[3|4|5|8][0-9]\d{4,8}$/.test($("input[name='phone']").val()) && res[0] == true) {
+						res = [false, prompt.phone.two];
+					}else if($("input[name='id_cards']").val()=='' && res[0] == true){
+						res = [false, prompt.id_cards.one];
+					}else if($("input[name='id_cards']").val().length!==18 && res[0] == true){
+						res = [false, prompt.id_cards.two];
+					}
+					$(".proving-hint").html(res[1]);
+					$(".proving-hint").addClass("reveal");
+					return res[0];		
+			},
+
+
+			cancel :function(){
+				location.reload();
+			}
+
+		}
+
+		var prompt={
+			name:"姓名不能为空",
+			phone:{
+				one:"手机号不能为空",
+				two:"手机号格式不对"
+			},
+			id_cards:{
+				one:"身份证号码不能为空",
+				two:"身份证号码格式不对"
+			},
+			wechat:"微信号不能为空",
+			bank_name:"开户行不能为空",
+			bank_account:{
+				one:"银行账户不能为空",
+				two:"银行账户格式不对"
+			},
+			bank_account_two:"两次输入不符"
+		}
+		
+
+	
+
+		$(".bank-list").on("click","li",function(){
+			var bank = $(this).text();
+			$(this).css("color","#f8c605");
+			$("input[name='bank_name']").val(bank);
+			$(".bank_box").hide();			
+		})
+		$(".bank-list .blac-bg").click(function(){
+			$(".bank_box").hide();
+		})
+		$("input[name='bank_name']").focus(function(){
+			$(".bank_box").show();
+		})
+	</script>
+</html>
+

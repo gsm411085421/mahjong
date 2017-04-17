@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>代理</title>
+	</head>
+	<body>
+		<div class="agent-box bg-img-lg fixed clear">		
+			<header class="bg-img-lg relative"><!--添加active显示代理界面-->
+				<a class="pull-right absolute" href="{:url('Center/agentExplain')}">说明</a>
+				<div class="head-portrait relative">
+					<img src="<?=$G_user['head_img'] ?>"><!--头像-->
+					<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+				</div>
+				<div class="brisk-number absolute text-center">
+					<img src="/static/index/images/icon_activities.png">
+					<p class="size-13"><span>2</span>人</p>
+				</div>
+				<div class="overall-number absolute text-center">
+					<img src="/static/index/images/icon_total.png">
+					<p class="size-13"><span>{$count}</span>人</p>
+				</div>
+				<div class="member text-center">
+					<img src="/static/index/images/icon_identify.png">
+					<img src="/static/index/images/text_agent.png"><!--代理-->
+				</div>
+				<div class="agen-money text-center">
+					<img src="/static/index/images/icon_banlance.png">
+					<span><?=$G_user['coin_num'] ?></span>
+				</div>
+				<p class="bg-img-lg hide"></p>
+			</header>
+			<div class="individual-main">
+				<a class="bg-img-lg size-13" href="{:url('Center/profile')}">个人资料<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>	
+				<a class="bg-img-lg size-13" href="<?=url('qrCode') ?>">二维码<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>	
+				<a class="bg-img-lg size-13" href="{:url('Center/playerList')}">玩家列表<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>	
+				<a class="bg-img-lg size-13" href="deductDetail.html">提成明细<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>	
+				<a class="bg-img-lg size-13" href="{:url('Center/exchangeDetail')}">兑换明细<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>
+				<a class="bg-img-lg size-13" href="{:url('Center/balanceDetail')}">结算明细<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>	
+			</div>
+		</div>	
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+	<script>
+		if($(".agent-box>header").hasClass("active")){
+			$(".agent-box>header>p").removeClass("hide");
+		}
+	</script>
+</html>

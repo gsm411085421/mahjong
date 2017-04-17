@@ -22,7 +22,7 @@ class Admin extends Base
  */
     public function setPasswordAttr($value)
     {
-        return Hash::make($value);
+        return Hash::make($value,'md5');
     }
 /**
  * ip 转换
@@ -159,4 +159,14 @@ class Admin extends Base
     {
         return $this->where('id',$id)->value('user');
     }
+
+    /**
+     * 根据id获取管理员详情
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function getAdminDetail($id)
+    {
+        return $this->where('id',$id)->find()->toArray();
+    }   
 }

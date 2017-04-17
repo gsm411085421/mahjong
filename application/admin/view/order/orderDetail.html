@@ -44,12 +44,20 @@
                     </tr>
                     <tr>
                         <td>商品图片</td>
-                        <td></td>
+                        <td><img src="{$list.goods.goods_img}" style="width: 70px;height: 70px;"></td>
                     </tr>
                     <tr>
                         <td>商品规格</td>
                         <td>{$list.goods.goods_standard}</td>
                     </tr>
+                     <tr>
+                        <td>发布时间</td>
+                        <td>{$list.create_at}</td>
+                    </tr>
+                    <tr>
+                        <td>上/下架时间</td>
+                        <td>{$list.update_at}</td>
+                    </tr> 
                 </tbody>
             </table>
 
@@ -105,14 +113,7 @@
                         <td>{$list.member_profile.qq}</td>
                     </tr>
                       
-                    <tr>
-                        <td>发布时间</td>
-                        <td>{$list.create_at}</td>
-                    </tr>
-                    <tr>
-                        <td>上/下架时间</td>
-                        <td>{$list.update_at}</td>
-                    </tr>       
+                         
                 </tbody>
             </table>
         </div>

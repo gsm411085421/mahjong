@@ -1,0 +1,50 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+          <button class="btn btn-primary pull-right" onclick="javascript:history.back(-1);">返回</button>
+        </div>
+        <div class="box-body">
+            <table class="table table-border table-hover">
+              <thead>
+                <th>ID</th>
+                <th>昵称</th>
+                <th>头像</th>
+                <th>剩余金币数</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{$member1.id}</td>
+                  <td>{$member1.nickname}</td>
+                  <td><img src="{$member1.head_img}" style="width: 70px;height: 70px;"></td>
+                  <td>{$member1.coin_num}</td>
+                </tr>
+                <tr>
+                  <td>{$member2.id}</td>
+                  <td>{$member2.nickname}</td>
+                  <td><img src="{$member2.head_img}" style="width: 70px;height: 70px;"></td>
+                  <td>{$member2.coin_num}</td>
+                </tr>
+                <tr>
+                  <td>{$member3.id}</td>
+                  <td>{$member3.nickname}</td>
+                  <td><img src="{$member3.head_img}" style="width: 70px;height: 70px;"></td>
+                  <td>{$member3.coin_num}</td>
+                </tr>
+                <tr>
+                  <td>{$member4.id}</td>
+                  <td>{$member4.nickname}</td>
+                  <td><img src="{$member4.head_img}" style="width: 70px;height: 70px;"></td>
+                  <td>{$member4.coin_num}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div class="box-footer"></div>
+    </div>
+</section>

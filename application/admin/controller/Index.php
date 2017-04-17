@@ -1,8 +1,8 @@
 <?php
 namespace app\admin\controller;
 
+use think\Loader;
 use think\Session;
-use think\Db;
 
 class Index extends Base
 {   
@@ -12,9 +12,7 @@ class Index extends Base
     public function index()
     {   
         $this->view->desc = '后台首页';
-        $id = Session::get('uid'); 
-        $data = Db::name('admin')->where('id',$id)->find(); 
-        $data['last_login_ip'] = long2ip($data['last_login_ip']);
+        $data = Loader::model('Admin')->getOne(Session::get('uid'));
         return $this->fetch('',['list'=>$data]);
     }
   

@@ -16,34 +16,34 @@
                     <li role="presentation" ><a href="#home"  aria-controls="home" data-toggle="tab">游戏配置</a></li>
                     <li role="presentation" ><a href="#convert"  aria-controls="convert" data-toggle="tab">兑换配置</a></li>
                     <li role="presentation" ><a href="#agency"  aria-controls="agency" data-toggle="tab">代理配置</a></li>
-                    <li role="presentation" ><a href="#system"  aria-controls="system" data-toggle="tab">代理配置</a></li>
+                    <li role="presentation" ><a href="#system"  aria-controls="system" data-toggle="tab">房间配置</a></li>
                     <li role="presentation" ><a href="#weixin"  aria-controls="system" data-toggle="tab">微信配置</a></li>
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="settings">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" id="score">
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">1金币底:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="score1" type="number" value={$list.score1} >
+                                    <input class="form-control" name="score1" type="number" value={$list.score1} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">2金币底:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="score2" type="number" value={$list.score2} >
+                                    <input class="form-control" name="score2" type="number" value={$list.score2} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">5金币底:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="score3" type="number" value={$list.score3} >
+                                    <input class="form-control" name="score3" type="number" value={$list.score3} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">10金币底:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="score4" type="number" value={$list.score4} >
+                                    <input class="form-control" name="score4" type="number" value={$list.score4} >
                                 </div>
                             </div> 
                             <div class="form-group">
@@ -90,59 +90,59 @@
                         </form>
                     </div>
                     <div role="tabpanel" class="tab-pane " id="agency">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" id="agencyDetail">
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">1级代理门槛:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="agency1" type="number" value={$list.agency1} >
+                                    <input class="form-control" name="agency1" type="number" value={$list.agency1} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">1级代理活跃人数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="agency2" type="number" value={$list.agency2} >
+                                    <input class="form-control" name="agency2" type="number" value={$list.agency2} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">1级代理提成:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="agency3" type="text" value={$list.agency3} >
+                                    <input class="form-control" name="agency3" type="text" value={$list.agency3} >
                                 </div>
                             </div>  
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">2级代理门槛:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="agency4" type="number" value={$list.agency4} >
+                                    <input class="form-control" name="agency4" type="number" value={$list.agency4} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">2级代理活跃人数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="agency5" type="number" value={$list.agency5} >
+                                    <input class="form-control" name="agency5" type="number" value={$list.agency5} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">2级代理提成:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="agency6" type="text" value={$list.agency6} >
+                                    <input class="form-control" name="agency6" type="text" value={$list.agency6} >
                                 </div>
                             </div>  
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">3级代理门槛:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="agency7" type="number" value={$list.agency7} >
+                                    <input class="form-control" name="agency7" type="number" value={$list.agency7} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">3级代理活跃人数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="agency8" type="number" value={$list.agency8} >
+                                    <input class="form-control" name="agency8" type="number" value={$list.agency8} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">3级代理提成:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="agency9" type="text" value={$list.agency9} >
+                                    <input class="form-control" name="agency9" type="text" value={$list.agency9} >
                                 </div>
                             </div>  
                             <div class="form-group">
@@ -151,47 +151,47 @@
                         </form>
                     </div>
                     <div role="tabpanel" class="tab-pane " id="system">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" id="systemDetail">
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">注册会员基数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="system1" type="number" value={$list.system1} >
+                                    <input class="form-control" name="system1" type="number" value={$list.system1} >
                                 </div>
                             </div> 
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">熊猫麻将空闲房间数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="system2" type="number" value={$list.system2} >
+                                    <input class="form-control" name="system2" type="number" value={$list.system2} >
                                 </div>
                             </div> 
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">熊猫麻将游戏中房间数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="system3" type="number" value={$list.system3} >
+                                    <input class="form-control" name="system3" type="number" value={$list.system3} >
                                 </div>
                             </div> 
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">熊猫麻将起始桌数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="system4" type="number" value={$list.system4} >
+                                    <input class="form-control" name="system4" type="number" value={$list.system4} >
                                 </div>
                             </div> 
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">斗地主空闲房间数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="system5" type="number" value={$list.system5} >
+                                    <input class="form-control" name="system5" type="number" value={$list.system5} >
                                 </div>
                             </div>
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">斗地主游戏中房间数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="system6" type="number" value={$list.system6} >
+                                    <input class="form-control" name="system6" type="number" value={$list.system6} >
                                 </div>
                             </div> 
                             <div class="form-group"> 
                             <label for="inputNum" class="col-sm-2 control-label">斗地主起始桌数:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" id="system7" type="number" value={$list.system7} >
+                                    <input class="form-control" name="system7" type="number" value={$list.system7} >
                                 </div>
                             </div>
                             <div class="form-group">
@@ -242,15 +242,9 @@
         },
 
         system : function(){
-            var system1 = $("#system1").val();
-            var system2 = $("#system2").val();
-            var system3 = $("#system3").val();
-            var system4 = $("#system4").val();
-            var system5 = $("#system5").val();
-            var system6 = $("#system6").val();
-            var system7 = $("#system7").val();
+            var data = $('#systemDetail').serializeArray();
             bayMax.infoConfirm(function(){
-                $.post(requestUrl.update,{system1:system1,system2:system2,system3:system3,system4:system4,system5:system5,system6:system6,system7:system7},function(e){
+                $.post(requestUrl.update,data,function(e){
                     if(e.code==1){
                         bayMax.msg(e.msg);
                     }else{
@@ -261,17 +255,9 @@
         },
 
         agency : function(){
-            var agency1 = $("#agency1").val();
-            var agency2 = $("#agency2").val();
-            var agency3 = $("#agency3").val();
-            var agency4 = $("#agency4").val();
-            var agency5 = $("#agency5").val();
-            var agency6 = $("#agency6").val();
-            var agency7 = $("#agency7").val();
-            var agency8 = $("#agency8").val();
-            var agency9 = $("#agency9").val();
+            var data = $('#agencyDetail').serializeArray();
             bayMax.infoConfirm(function(){
-                $.post(requestUrl.update,{agency1:agency1,agency2:agency2,agency3:agency3,agency4:agency4,agency5:agency5,agency6:agency6},function(e){
+                $.post(requestUrl.update,data,function(e){
                     if(e.code==1){
                         bayMax.msg(e.msg);
                     }else{
@@ -310,12 +296,9 @@
         },
 
         score : function(){
-            var score1 = $("#score1").val();
-            var score2 = $("#score2").val();
-            var score3 = $("#score3").val();
-            var score4 = $("#score4").val();
+            var data = $('#score').serializeArray();
             bayMax.infoConfirm(function(){
-                $.post(requestUrl.update,{score1:score1,score2:score2,score3:score3,score4:score4},function(e){
+                $.post(requestUrl.update,data,function(e){
                     if(e.code==1){
                         bayMax.msg(e.msg);
                     }else{

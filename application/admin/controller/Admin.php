@@ -2,11 +2,14 @@
 namespace app\admin\controller;
 use think\Loader;
 use think\Db;
+use think\Session;
 use app\admin\modeldata\AuthRule;
 
 class Admin extends Base
 {
     protected $header = '权限管理';
+
+ 
     /**
      * 管理员列表 
      * @return view
@@ -185,4 +188,18 @@ class Admin extends Base
     {
         return Db::name('AuthGroup')->field($field)->order('id')->select();
     }
+
+    /**
+     * 个人信息页面
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function profile($id)
+    {   
+        $this->view->desc = '个人信息';
+        $data = parent::model()->getOne($id);
+        return $this->fetch('',['admin'=>$data]);
+    }
+
+
 }

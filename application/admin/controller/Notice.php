@@ -75,7 +75,7 @@ class Notice extends Base
     {
         if($this->request->isPost()){
             $data = $this->request->post();
-            return parent::model()->delOne($data['id']);
+            return parent::model()->deleteOne($data['id']);
         }
     }
 
@@ -95,5 +95,6 @@ class Notice extends Base
             return $handle;
         }
     }
+
 
 }

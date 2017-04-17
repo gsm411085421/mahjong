@@ -7,7 +7,7 @@ class DisableMember extends Base
 
     protected $header = '结算记录';
 
-    const PAGE_SIZE = 7 ;
+    const PAGE_SIZE = 4 ;
 
     public function disableMemberList()
     {   

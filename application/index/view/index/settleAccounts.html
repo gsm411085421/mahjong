@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>结算</title>
+	</head>
+	<body>
+		<div class="bg-img-lg fixed balance-box">
+			<header class="bg-img-lg relative bg-repeat-x">
+				<p class="size-13">场次：<span>2</span>金币>><span>2</span>平台房间号：<span>512475</span>>>ID：<span>21571</span></p>
+				<form action="" method="post">
+					<div class="fraction-import">
+						<div class="bg-img-lg relative pull-left">
+							<span class="absolute-zero text-center">输入游戏分</span>
+							<input class="absolute-zero" type="number" name="">
+						</div>
+						<span class="bg-img-lg pull-right"></span>
+						<span class="bg-img-lg pull-right"></span>
+					</div>
+				</form>
+			</header>
+			<div class="accounts-box">
+				<div class="mate-box">
+					<div class="mate-in relative">
+						<p class="absolute-zero"></p>
+						<div class="absolute-zero size-18-f text-center">结算中……</div>
+					</div>
+					<div class="erro-info bg-img-lg size-18-f hide">结算错误，重新结算</div>
+					<div class="noenter-prompt bg-img-lg text-overflow hide">
+						<span>绿色</span>：请结算
+					</div>
+					<div class="enter-prompt bg-img-lg text-overflow hide">
+						<span>绿色</span>：结算错误，请重新计算
+					</div>
+				</div>
+				<div class="mate-people clear">
+					<div class="people-list bg-img-lg pull-left relative">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span class="nickname">绿色1</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<div class="balance-info bg-img-lg size-13 text-center absolute">
+							游戏：<span class="green">+3</span>金币：<span class="green">+6</span>
+						</div>
+						<p class="clear">
+							<span class="bg-img-lg btn-three wrong" onclick="balance(this)"></span><!--请结算按钮-添加wrong显示错误按钮-->
+						</p>						
+					</div>
+					<div class="people-list bg-img-lg pull-left relative">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span class="nickname">绿色2</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<p class="clear">
+							<span class="bg-img-lg btn-three" onclick="balance(this)"></span><!--请结算按钮-添加wrong显示错误按钮-->
+						</p>						
+					</div>		
+					<div class="people-list bg-img-lg pull-left relative">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span class="nickname">绿色3</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<p class="clear">
+							<span class="size-18-f text-center">未结算</span>
+						</p>						
+					</div>		
+					<div class="people-list bg-img-lg pull-left relative">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span class="nickname">绿色4</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<div class="balance-info bg-img-lg size-13 text-center absolute">
+							游戏：<span class="red">+3</span>金币：<span class="red">+6</span>
+						</div>
+						<p class="clear">
+							<span class="bg-img-lg btn-three wrong" onclick="balance(this)"></span><!--请结算按钮-添加wrong显示错误按钮-->
+						</p>						
+					</div>		
+				</div>
+			</div>
+		</div>
+		<!--确认购买-->
+		<div class="mate-case fixed purchase">
+			<div class="blac-bg fixed"></div>
+			<div class="bg-img-lg deficiency-box player-man absolute">
+				<h4 class="size-18 text-center">确认结算</h4>
+				<p class="size-13 text-center" style="line-height:.25rem;">游戏分：<span class="green">+3</span><br />金币数：<span class="green">+6</span></p>
+				<div>
+					<span class="pull-left bg-img-lg" onclick="playerCancel(this)"></span>
+					<span class="pull-right bg-img-lg" onclick=""></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+</html>

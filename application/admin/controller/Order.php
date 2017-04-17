@@ -31,18 +31,6 @@ class Order extends Base
 
 
     /**
-     *  存入一条订单
-     * @return [type] [description]
-     */
-    public function saveOrder()
-    {
-        if($this->request->isPost()){
-            $input = $this->request->post();
-            return parent::model()->saveOrder($input);
-        }
-    }
-
-    /**
      * 删除一条订单
      * @return [type] [description]
      */
@@ -50,7 +38,7 @@ class Order extends Base
     {
         if($this->request->isPost()){
             $data = $this->request->Post();
-            return parent::model()->deleteOrder($data['id']);
+            return parent::model()->deleteOne($data['id']);
         }
     }
 

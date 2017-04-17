@@ -2,27 +2,20 @@
 namespace app\admin\controller;
 
 class PandaRooms extends Base
-{   
-    const PAGE_SIZE = 2 ;
-
+{
     protected $header = '房间管理';
 
+    const PAGE_SIZE = 4 ;
 
-    /**
-     * 熊猫麻将房间页面
-     * @return [type] [description]
-     */
-    public function roomList()  
+    public function roomList()
     {   
-        $this->view->desc = '熊猫麻将';
-        $where = $config = [];
-        if($this->request->isGet() && $this->request->has('query') ){
+        $this->view->desc = '熊猫房间' ;
+        $where = ['status'=>1];
+        $config = [] ;
+        if($this->request->isGet() && $this->request->has('query')){
             $get = $this->request->get();
-            if(isset($get['status']) && $get['status'] != -1){
-                $where['status'] = $config['query']['status'] = $get['status'];
-            }
             if(isset($get['search']) && $get['search'] ){
-                $where['room_member_id'] = ['like','%'.$get['search'].'%'];
+                $where['room_member_id|room_num'] = ['like','%'.$get['search'].'%'];
                 $config['query']['search'] = $get['search'];
             }
         }
@@ -30,37 +23,13 @@ class PandaRooms extends Base
         return $this->fetch('',['list'=>$data]);
     }
 
-
-    /**
-     * 设置房间状态
-     */
     public function setStatus()
     {
         if($this->request->isPost()){
-            $input = $this->request->post();
-            $res = parent::model()->setStatus($input['status'],['id'=>$input['id']]);
-            if ($res) {
-                $handle = ['code'=>1,'msg'=>'修改成功'];
-            } else {
-                $handle = ['code'=>0,'msg'=>'修改失败'];
-            }
-            return $handle;
+            $data = $this->request->post();
+            $data['room_member_id']=$data['type1']=$data['type2']=$data['type3']=$data['type4']=$data['type5']=$data['type6']=$data['type7']=$data['room_num']=$data['low_times']=$data['member_id1']=$data['member_id2']=$data['member_id3']=$data['update_at']=$data['status']=0;
+            return  parent::model()->edit($data);
         }
     }
-
-
-     /**
-     * 删除一条熊猫麻将信息
-     * @return [type] [description]
-     */
-    public function deleteOne()
-    {   
-        if($this->request->isPost()){
-            $data = $this->request->post();
-            return parent::model()->deleteOne($data['id']);
-        }   
-    }
-
-
 
 }

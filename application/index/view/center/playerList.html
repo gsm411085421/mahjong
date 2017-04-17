@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>玩家列表</title>
+	</head>
+	<body>
+		<div class="balance-detail fixed player">
+			<div class="player-nav clear">
+				<div class="bg-img-lg pull-left text-center active" onclick="playerList(this)">总人数<span>{$count}</span></div>
+				<div class="bg-img-lg pull-left text-center" onclick="playerList(this)">活跃人数<span>2</span></div>
+			</div>
+			<!--总人数-->
+			<div class="player-list">
+				<table style="width:100%; border-collapse: collapse;">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>昵称</th>
+							<th>最后登录时间</th>
+						</tr>
+					</thead>	
+					<tbody>
+						{volist name="list" id="v"}						
+						<tr>
+							<td>{$v.id}</td>
+							<td>{$v.nickname}</td>
+							<td>{$v.update_at}</td>
+						</tr>
+						{/volist}
+					</tbody>				
+				</table>
+			<!--活跃人数-->
+			<table style="width:100%; border-collapse: collapse;">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>昵称</th>
+						<th>最后登录时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>215784</td>
+						<td>会飞的鱼</td>
+						<td>17-04-21 17:21:12</td>
+					</tr>
+					<tr>
+						<td>215784</td>
+						<td>会飞的鱼</td>
+						<td>17-04-21 17:21:12</td>
+					</tr>
+				</tbody>				
+			</table>
+			</div>
+			
+		</div>		
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+	<script>
+		$("table").hide().eq(0).show();
+	</script>
+</html>

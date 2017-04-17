@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>提成明细</title>
+		<style>
+			.deduct table thead th:last-child{
+				width:25%;
+			}
+			.deduct table tbody td:last-child{
+				width:25%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="balance-detail fixed deduct">
+			<table>
+				<thead>
+					<tr>
+						<th>玩家</th>
+						<th>等级</th>
+						<th>金额</th>
+						<th>时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>太阳神鸟</td>
+						<td>二级</td>
+						<td>2.00</td>
+						<td>17-04-21 17:21:12</td>
+					</tr>	
+				</tbody>				
+			</table>
+			<p class="hide text-center size-13">暂无提成记录</p>
+		</div>		
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+		<script>
+		if($(".deduct table").length==0){
+			$(".deduct>P").removeClass("hide");
+		}
+	</script>
+</html>

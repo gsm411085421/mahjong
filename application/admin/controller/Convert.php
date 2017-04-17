@@ -5,7 +5,7 @@ namespace app\admin\controller;
 class Convert extends Base
 {
 
-    const PAGE_SIZE = 2 ;
+    const PAGE_SIZE = 3 ;
 
     /**
      * 会员兑换记录页面

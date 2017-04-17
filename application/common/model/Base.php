@@ -105,7 +105,7 @@ class Base extends Model
             }
         }
         if (($this->rule && $check) || ! $this->rule) {
-            $isUpdate = isset($input)&&$input[$this->pk] ? true : false;
+            $isUpdate = isset($input[$this->pk])&& $input[$this->pk] ? true : false;
             $handle = $this->allowField(true)->isUpdate($isUpdate)->save($input);
             $res = $handle ? ['code'=>1, 'msg'=>'操作成功', 'data'=>['id'=>$this->id]] : ['code'=>0, 'msg'=>'操作失败'];
         }
@@ -195,7 +195,7 @@ class Base extends Model
     }
 
     /**
-     * 分页并且根据时间排序
+     * 分页查询并且根据时间排序
      * @param  array  $where    [description]
      * @param  [type] $pageSize [description]
      * @param  array  $config   [description]
@@ -205,6 +205,7 @@ class Base extends Model
     {
         return $this->where($where)->order('create_at desc')->paginate($pageSize,false,$config);
     }
+
 
 }
     

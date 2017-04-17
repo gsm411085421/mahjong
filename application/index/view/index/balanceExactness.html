@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>结算正确</title>
+	</head>
+	<body>
+		<div class="bg-img-lg fixed balance-box">
+			<div class="balance-zq">
+				<div class="bg-img-lg text-center">结算正确</div>
+			</div>
+			<div class="accounts-box">
+				<div class="mate-people clear">
+					<div class="people-list bg-img-lg pull-left relative">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span class="nickname">绿色1</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<div class="balance-info bg-img-lg size-13 text-center absolute">
+							游戏：<span class="green">+3</span>金币：<span class="green">+6</span>
+						</div>						
+					</div>	
+					<div class="people-list bg-img-lg pull-left relative">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span class="nickname">绿色1</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<div class="balance-info bg-img-lg size-13 text-center absolute">
+							游戏：<span class="green">+3</span>金币：<span class="green">+6</span>
+						</div>						
+					</div>		
+					<div class="people-list bg-img-lg pull-left relative">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span class="nickname">绿色1</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<div class="balance-info bg-img-lg size-13 text-center absolute">
+							游戏：<span class="green">+3</span>金币：<span class="green">+6</span>
+						</div>						
+					</div>		
+					<div class="people-list bg-img-lg pull-left relative">
+						<div class="people-news bg-img-lg relative">
+							<div class="head-portrait absolute">
+								<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+								<img class="headPortrair absolute-zero" src="/static/index/images/bg_ headPortrair_home.png"><!--头像边框-->
+							</div>
+							<p class="size-12">ID：<span>21566</span></p>
+							<p class="size-12">昵称：<span class="nickname">绿色1</span></p>
+							<p class="size-12">金币：<span>258</span></p>
+						</div>
+						<div class="balance-info bg-img-lg size-13 text-center absolute">
+							游戏：<span class="red">-3</span>金币：<span class="red">-6</span>
+						</div>						
+					</div>		
+				</div>
+				<p class="bg-img-lg dismiss-btn" onclick=location.href="homePage.html"></p>
+				<div class="count-down text-center size-13">
+					<span>5</span>s后自动解散
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+	<script>
+		var i = parseInt($(".count-down>span").html());
+		var timer=setInterval(function(){			
+			i--;
+			$(".count-down>span").html(i);
+			if(i==0){
+				location.href="homePage.html"
+				clearInterval(timer);
+			}
+		},1000)
+	</script>
+</html>

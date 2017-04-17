@@ -30,6 +30,25 @@ class SettlementRecords extends Base
         return $this->fetch('',['list'=>$data]);
     }
 
+    /**
+     * 结算详情页面
+     * @return [type] [description]
+     */
+    public function recordsDetail($member_id1,$member_id2,$member_id3,$member_id4)
+    {   
+        $this->view->desc = '结算详情' ;
+        $member1 = parent::model()->findMember($member_id1);
+        $member2 = parent::model()->findMember($member_id2);
+        $member3 = parent::model()->findMember($member_id3);
+        $member4 = parent::model()->findMember($member_id4);
+        return $this->fetch('',[
+            'member1'=>$member1,
+            'member2'=>$member2,
+            'member3'=>$member3,
+            'member4'=>$member4
+            ]);
+    }
+
 
     /**
      * 手动结算
@@ -41,32 +60,8 @@ class SettlementRecords extends Base
             $data = $this->request->post();
             $sum = $data['mi1_money']+$data['mi2_money']+$data['mi3_money']+$data['mi4_money'];
             if($sum==0){
-                $member1 = parent::model()->findMember($data['member_id1']);
-                $member2 = parent::model()->findMember($data['member_id2']);
-                $member3 = parent::model()->findMember($data['member_id3']);
-                $member4 = parent::model()->findMember($data['member_id4']);
-                $coin1 = $member1['coin_num']+$data['mi1_money'];
-                $coin2 = $member2['coin_num']+$data['mi2_money'];
-                $coin3 = $member3['coin_num']+$data['mi3_money'];
-                $coin4 = $member4['coin_num']+$data['mi4_money'];
-                $res1 = parent::model()->updataMemberCoin($data['member_id1'],$coin1);
-                $res2 = parent::model()->updataMemberCoin($data['member_id2'],$coin2);
-                $res3 = parent::model()->updataMemberCoin($data['member_id3'],$coin3);
-                $res4 = parent::model()->updataMemberCoin($data['member_id4'],$coin4);
-                if($res1 && $res2 && $res3 && $res4){
-                    $res = parent::model()->setStatus(1,['id'=>$data['id']]);
-                    if($res){
-                        return ['code'=>1,'msg'=>'结算成功'];
-                    }else{
-                        return ['code'=>0,'msg'=>'结算失败'];
-                    }   
-                }else{
-                    return ['code'=>0,'msg'=>'结算失败'];
-                }
-            }else{
-                return ['code'=>0,'msg'=>'结算失败'];
-            }
-            
+                return parent::model()->settle($data);
+            }    
         }
     }
 

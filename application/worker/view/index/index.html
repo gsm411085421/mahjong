@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        #chat-container {
+            min-height: 600px;
+            border:1px solid blue;
+        }
+        #input-area .input-group-addon {
+            cursor:pointer;
+        }
+        #chat-container>.new-box {
+            margin:10px 5px 10px;
+        }
+        #chat-container>.new-box>.user {
+            mix-width: 40px;
+            margin-right:20px;
+            display: inline-block;
+            color: #acc54d;
+        }
+        #chat-container>.new-box>.time {
+            color:#ccc;
+        }
+        #chat-container>.new-box>p{
+            font-size: 16px;
+            color: #ee2d2d;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="col-sm-3">
+        <div class="input-group" style="margin-top:200px;">
+            <div class="input-group-addon">输入昵称</div>
+            <input type="text" id="nickname" class="form-control" value="">
+        </div>
+        <button type="button" class="btn btn-large btn-block btn-primary" id="btn-login" onclick="login(this)">登录</button>
+    </div>
+    <div class="col-sm-6">
+        <div id="chat-container">
+            <!-- <div class="new-box">
+                <span class="user">user</span><span class="time">21:23:00</span>
+                <p>msg</p>
+            </div> -->
+
+        </div>
+        <div id="input-area">
+            <div class="input-group">
+                <input type="text" id="msg" class="form-control">
+                <div class="input-group-addon" onclick="sendMsg()">发送</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <h3>当前用户</h3>
+        <ul id="user-lists"></ul>
+    </div>
+    
+</div>
+
+    <script src="http://cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/static/common/js/web_socket.js"></script>
+    <script>
+        var Storage = {
+            nickname : '',
+        };
+
+        var ws = new WebSocket("ws://192.168.2.108:2346");
+        ws.onopen = function() {
+        };
+        ws.onmessage = function(e) {
+            console.log(e.data);return;
+            var data = JSON.parse(e.data)
+            if (data.code != undefined) {
+                if (data.code == 1) { // 登录失败
+                    alert(data.msg)
+                }
+                return;
+            }
+            if (data.action) {
+                if (data.action == 'login') { // 登录成功
+                    Storage.nickname = data.uid
+                    addUser(data.uid);
+                    $("#btn-login").prop('disabled', true);
+                    $("#nickname").prop('disabled', true)
+                } else if (data.action == 'new') {
+                    addUser(data.uid)
+                } else if (data.action == 'loaduser') {
+                    $.each(data.users, function(index, item){
+                        addUser(item);
+                    })
+                } else if (data.action == 'newmsg') { // 新消息
+                    newMsg(data.data.from, data.data.msg, data.data.time)
+                }
+            }
+        };
+        /** 发送消息 */
+        function sendMsg() {
+            if (! Storage.nickname) {
+                alert('您还未登录');return;
+            }
+            var msg = $("#msg").val();
+            if (! msg) {
+                alert('发送内容不能为空！');return;
+            }
+            if (msg.length >= 30) {
+                alert('发送内容不能超过 30 字！');return;
+            }
+            var data = {action:'sendToRoom', data:{from:Storage.nickname, msg:msg, access:'public'}};
+            ws.send(JSON.stringify(data));
+            $("#msg").val('');
+        }
+        /** 登录 */
+        function login(obj) {
+            var nickname = $("#nickname").val();
+            if ( !nickname) {
+                alert('未填写昵称');return;
+            }
+            ws.send(JSON.stringify({uid:nickname, action:"login", data:{uid:nickname}}));
+        }
+
+        function newMsg(from, msg, time) {
+            var html = '<div class="new-box">\
+                            <span class="user">'+from+'</span><span class="time">'+time+'</span>\
+                            <p>'+msg+'</p>\
+                        </div>';
+            $("#chat-container").append(html);
+        }
+
+        function addUser(nickanme) {
+            $("#user-lists").append('<li>'+nickanme+'</li>')
+        }
+
+        $(function(){
+            document.onkeydown = function(event) {
+                if (event.keyCode == 13) {
+                    sendMsg()
+                }
+            }
+        })
+    </script>
+</body>
+</html>

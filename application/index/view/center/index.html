@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>个人中心</title>
+	</head>
+	<body>
+		<div class="individual-box bg-img-lg fixed">
+			<header class="bg-img-lg">
+				<div class="head-portrait relative">
+					<img src="/static/index/images/pulick-head_02.png"><!--头像-->
+					<img class="headPortrair absolute-zero" src="<?=$G_user['head_img'] ?>"><!--头像边框-->
+				</div>
+				<p class="size-13 text-center">ID:<span><?=$G_user['id'] ?></span></p>
+				<p class="size-13 text-center">昵称：<span><?=$G_user['nickname'] ?></span></p>
+				<div class="deposit-list size-11 clear">
+					<p class="pull-left"><img src="/static/index/images/icon_coin_home.png"><span><?=$G_user['coin_num'] ?></span></p>
+					<p class="pull-right"><img src="/static/index/images/icon_ingot_home.png"><span><?=$G_user['sycee_num'] ?></span></p>
+				</div>
+			</header>
+			<div class="individual-main">
+				<a class="bg-img-lg size-13" href="{:url('Center/profile')}">个人资料<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>
+				<a class="bg-img-lg size-13" href="{:url('Center/qrCode')}">二维码<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>
+				<a class="bg-img-lg size-13" href="{:url('Center/exchangeDetail')}">兑换明细<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>
+				<a class="bg-img-lg size-13" href="{:url('Center/balanceDetail')}">结算明细<img class="pull-right" src="/static/index/images/icon_arrow_right.png"></a>
+			</div>
+		</div>	
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+</html>

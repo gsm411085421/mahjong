@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    	<link rel="stylesheet" href="/static/index/css/public.css"/>
+		<title>结算明细</title>
+	</head>
+	<body>
+		<div class="balance-detail fixed">
+			<table>
+				<thead>
+					<tr>
+						<th>时间</th>
+						<th>类型</th>
+						<th>金额</th>
+						<th>余额</th>
+					</tr>
+				</thead>
+				<tbody>
+					{volist name="list" id="v"}
+						<tr>
+							<td>{$v.create_at}</td>
+							<td>
+								{switch name="v.type"}
+									{case value="1"}游戏消耗{/case}
+									{case value="2"}游戏结算{/case}
+									{case value="3"}兑换{/case}
+									{case value="4"}管理员操作{/case}
+								{/switch}
+							</td>
+							<td>{$v.money}</td>
+							<td>{$v.coin_num}</td>
+						</tr>
+					{/volist}
+				</tbody>				
+			</table>
+			<p class="hide size-13 text-center">暂无结算记录</p>
+		</div>		
+	</body>
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<script src="/static/index/js/mahjong.js"></script>
+	<script src="/static/index/js/public.js"></script>
+	<script>
+		if($(".balance-detail table").length==0){
+			$(".balance-detail>p").removeClass("hide");
+		}
+	</script>
+</html>

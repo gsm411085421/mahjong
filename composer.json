@@ -17,7 +17,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "topthink/framework": "^5.0"
+        "topthink/framework": "^5.0",
+        "workerman/workerman-for-win": "^3.3"
     },
     "extra": {
         "think-path": "thinkphp"
